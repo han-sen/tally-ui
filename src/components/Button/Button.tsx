@@ -23,11 +23,17 @@ export interface ButtonProps
  */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, isLoading = false, disabled, children, ...props }, ref) => {
+    const resolvedVariant = variant ?? 'primary';
+
     return (
       <button
         ref={ref}
         type="button"
-        className={cn(buttonVariants({ variant, size }), className)}
+        data-variant={resolvedVariant}
+        className={cn(
+          buttonVariants({ variant: resolvedVariant, size }),
+          className,
+        )}
         disabled={disabled || isLoading}
         aria-busy={isLoading || undefined}
         {...props}

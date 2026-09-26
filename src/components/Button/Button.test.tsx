@@ -49,4 +49,19 @@ describe('Button', () => {
     render(<Button ref={ref}>Save</Button>);
     expect(ref).toHaveBeenCalledWith(expect.any(HTMLButtonElement));
   });
+
+  it('exposes the resolved variant as a data attribute', () => {
+    render(<Button variant="danger">Remove</Button>);
+    expect(screen.getByRole('button', { name: 'Remove' })).toHaveAttribute(
+      'data-variant',
+      'danger',
+    );
+  });
+
+  it('reports the default variant when none is passed', () => {
+    render(<Button>Save</Button>);
+    const button = screen.getByRole('button', { name: 'Save' });
+    expect(button).toHaveAttribute('data-variant', 'primary');
+    expect(button).toHaveClass('bg-primary');
+  });
 });

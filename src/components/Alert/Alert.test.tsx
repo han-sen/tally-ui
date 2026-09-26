@@ -36,6 +36,22 @@ describe('Alert', () => {
     expect(screen.getByRole('alert')).toHaveClass('bg-danger');
   });
 
+  it('exposes the resolved variant as a data attribute', () => {
+    render(<Alert variant="warning">Message</Alert>);
+    expect(screen.getByRole('alert')).toHaveAttribute(
+      'data-variant',
+      'warning',
+    );
+  });
+
+  it('reports the default variant when none is passed', () => {
+    render(<Alert>Message</Alert>);
+    expect(screen.getByRole('status')).toHaveAttribute(
+      'data-variant',
+      'primary',
+    );
+  });
+
   it('renders an icon that is hidden from assistive tech', () => {
     const { container } = render(<Alert variant="success">Message</Alert>);
     const icon = container.querySelector('svg');

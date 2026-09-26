@@ -25,8 +25,14 @@ export const Badge = ({
   className,
   ...props
 }: BadgeProps) => {
+  const resolvedVariant = variant ?? 'primary';
+
   return (
-    <span className={cn(badgeVariants({ variant }), className)} {...props}>
+    <span
+      data-variant={resolvedVariant}
+      {...props}
+      className={cn(badgeVariants({ variant: resolvedVariant }), className)}
+    >
       {children}
     </span>
   );

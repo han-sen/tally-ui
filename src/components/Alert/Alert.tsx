@@ -51,6 +51,7 @@ export const Alert = ({
 
   return (
     <div
+      data-variant={status}
       className={cn(alertVariants({ variant: status }), className)}
       {...props}
       role={getRole(status)}
