@@ -1,7 +1,7 @@
 import { cva } from 'class-variance-authority';
 
 export const alertVariants = cva(
-  'flex items-start justify-start gap-2 p-4 text-sm font-medium rounded-sm',
+  'flex items-start justify-start gap-2 p-4 text-sm font-medium rounded-panel',
   {
     variants: {
       variant: {

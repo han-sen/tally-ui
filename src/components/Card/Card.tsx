@@ -35,7 +35,7 @@ export function Card({ children, className, ...props }: CardProps) {
     <div
       {...props}
       className={cn(
-        'flex flex-col gap-4 rounded-lg border border-border bg-surface py-4 text-surface-foreground shadow-sm',
+        'flex flex-col gap-4 rounded-card bg-surface py-6 text-surface-foreground shadow-card',
         className,
       )}
     >
@@ -53,7 +53,7 @@ export function CardHeader({
   ...props
 }: CardHeaderProps) {
   return (
-    <div {...props} className={cn('flex flex-col gap-1 px-4', className)}>
+    <div {...props} className={cn('flex flex-col gap-1 px-6', className)}>
       {children}
     </div>
   );
@@ -98,7 +98,7 @@ export function CardContent({
   ...props
 }: CardContentProps) {
   return (
-    <div {...props} className={cn('px-4', className)}>
+    <div {...props} className={cn('px-6', className)}>
       {children}
     </div>
   );
@@ -113,7 +113,7 @@ export function CardFooter({
   ...props
 }: CardFooterProps) {
   return (
-    <div {...props} className={cn('flex items-center gap-2 px-4', className)}>
+    <div {...props} className={cn('flex items-center gap-2 px-6', className)}>
       {children}
     </div>
   );

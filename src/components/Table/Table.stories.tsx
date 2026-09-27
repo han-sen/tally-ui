@@ -77,7 +77,9 @@ export const WithSparklines: Story = {
       <Table.Caption>Daily views over the last 14 days</Table.Caption>
       <Table.Header>
         <Table.Row>
-          <Table.Head>Article</Table.Head>
+          {/* w-full lets this column absorb the spare width, so the others
+              fit their content and the sparkline column stays snug. */}
+          <Table.Head className="w-full">Article</Table.Head>
           <Table.Head numeric>Total views</Table.Head>
           <Table.Head>Trend</Table.Head>
         </Table.Row>

@@ -100,7 +100,10 @@ export function TabsList({ children, className, ...props }: TabsListProps) {
     <ul
       {...props}
       role="tablist"
-      className={cn('flex flex-wrap text-center', className)}
+      className={cn(
+        'inline-flex flex-wrap items-center gap-1 rounded-control bg-muted p-1 text-center',
+        className,
+      )}
     >
       {children}
     </ul>

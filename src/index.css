@@ -7,6 +7,16 @@
   --font-sans:
     'Inter Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+
+  /* Shape: large soft cards, medium panels, pill-shaped controls. Set
+     --radius-control to a small value (for example 0.5rem) for a squarer look. */
+  --radius-card: 1rem;
+  --radius-panel: 0.25rem;
+  --radius-control: 9999px;
+
+  /* Cards float on the page background with a soft shadow, not a border. */
+  --shadow-card:
+    0 1px 2px rgb(16 24 64 / 0.04), 0 8px 24px rgb(16 24 64 / 0.06);
 }
 
 @theme inline {
@@ -38,52 +48,70 @@
 
   --color-ring: var(--ring);
 
+  --color-background: var(--background);
   --color-surface: var(--surface);
   --color-surface-foreground: var(--surface-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border-subtle);
+  --color-input: var(--input);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
 }
 
 :root {
   /* light only until dark mode is implemented */
   color-scheme: light;
 
-  --primary: oklch(0.55 0.2 260);
+  --primary: #2f48f4;
   --primary-foreground: #fff;
-  --primary-hover: oklch(0.48 0.2 260);
-  --secondary: var(--color-gray-100);
-  --secondary-foreground: var(--color-gray-900);
-  --secondary-hover: var(--color-gray-200);
+  --primary-hover: #2438d9;
+  --secondary: #f4f6fa;
+  --secondary-foreground: #0b0c12;
+  --secondary-hover: #e9ecf5;
 
-  --ghost-foreground: var(--color-gray-900);
-  --ghost-hover: var(--color-gray-100);
+  --ghost-foreground: #0b0c12;
+  --ghost-hover: #f4f6fa;
 
-  --ring: var(--color-blue-500);
+  --ring: #2f48f4;
 
   /* neutral surfaces */
 
+  --background: #f4f5f9;
   --surface: #fff;
-  --surface-foreground: var(--color-gray-900);
-  --muted: var(--color-gray-50);
-  --muted-foreground: var(--color-gray-500);
-  --border-subtle: var(--color-gray-200);
+  --surface-foreground: #0b0c12;
+  --muted: #f4f6fa;
+  --muted-foreground: #5a5d66;
+  /* Decorative edges (cards, table rows, gridlines). */
+  --border-subtle: #e4e7f0;
+  /* Form control boundary, stronger so a field is visible without its fill. */
+  --input: #8a90a6;
 
   /* status colors */
 
-  --info: var(--color-gray-200);
-  --info-foreground: var(--color-gray-800);
-  --info-hover: var(--color-gray-400);
+  --info: #f0f3ff;
+  --info-foreground: #1c2677;
+  --info-hover: #e1e7ff;
 
-  --success: var(--color-green-200);
-  --success-foreground: var(--color-green-800);
-  --success-hover: var(--color-green-400);
+  --success: #cff5e3;
+  --success-foreground: #14532d;
+  --success-hover: #b5ebd0;
 
-  --danger: var(--color-red-200);
-  --danger-foreground: var(--color-red-800);
-  --danger-hover: var(--color-red-400);
+  --danger: #fde3e0;
+  --danger-foreground: #8a1c12;
+  --danger-hover: #fbcfca;
 
-  --warning: var(--color-yellow-200);
-  --warning-foreground: var(--color-yellow-800);
-  --warning-hover: var(--color-yellow-400);
+  --warning: #fff1b8;
+  --warning-foreground: #6b4a00;
+  --warning-hover: #ffe58a;
+
+  /* chart series, in the order a multi-series chart should use them */
+
+  --chart-1: #2f48f4;
+  --chart-2: #e86f3a;
+  --chart-3: #2e9e6b;
+  --chart-4: #8a90a6;
 }
