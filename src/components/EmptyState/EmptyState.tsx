@@ -68,7 +68,7 @@ export function EmptyStateIcon({
       {...props}
       aria-hidden="true"
       className={cn(
-        'flex size-10 items-center justify-center rounded-full bg-tally-muted text-tally-muted-foreground [&_svg]:size-5',
+        'flex size-10 items-center justify-center rounded-full bg-tally-muted text-tally-muted-fg [&_svg]:size-5',
         className,
       )}
     >
@@ -104,7 +104,7 @@ export function EmptyStateDescription({
   return (
     <div
       {...props}
-      className={cn('max-w-sm text-sm text-tally-muted-foreground', className)}
+      className={cn('max-w-sm text-sm text-tally-muted-fg', className)}
     >
       {children}
     </div>

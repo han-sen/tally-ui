@@ -8,42 +8,53 @@
   /* Cards float on the page background with a soft shadow, not a border. */
   --shadow-tally-card:
     0 1px 2px rgb(16 24 64 / 0.04), 0 8px 24px rgb(16 24 64 / 0.06);
+
+  /* Soft shadow tucked under an element and shifted down, so it looks lifted
+     off the surface. Pair it with a shadow color class (for example
+     shadow-current/35) to tint it with the element's own color. */
+  --shadow-tally-glow: 0 4px 10px -3px rgb(16 24 64 / 0.35);
 }
 
 @theme inline {
   --color-tally-primary: var(--tally-primary);
-  --color-tally-primary-foreground: var(--tally-primary-foreground);
+  --color-tally-primary-fg: var(--tally-primary-fg);
   --color-tally-primary-hover: var(--tally-primary-hover);
+  --color-tally-primary-chart: var(--tally-primary-chart);
+
   --color-tally-secondary: var(--tally-secondary);
-  --color-tally-secondary-foreground: var(--tally-secondary-foreground);
+  --color-tally-secondary-fg: var(--tally-secondary-fg);
   --color-tally-secondary-hover: var(--tally-secondary-hover);
 
-  --color-tally-ghost-foreground: var(--tally-ghost-foreground);
+  --color-tally-ghost-fg: var(--tally-ghost-fg);
   --color-tally-ghost-hover: var(--tally-ghost-hover);
 
   --color-tally-danger: var(--tally-danger);
-  --color-tally-danger-foreground: var(--tally-danger-foreground);
+  --color-tally-danger-fg: var(--tally-danger-fg);
   --color-tally-danger-hover: var(--tally-danger-hover);
+  --color-tally-danger-chart: var(--tally-danger-chart);
 
   --color-tally-success: var(--tally-success);
-  --color-tally-success-foreground: var(--tally-success-foreground);
+  --color-tally-success-fg: var(--tally-success-fg);
   --color-tally-success-hover: var(--tally-success-hover);
+  --color-tally-success-chart: var(--tally-success-chart);
 
   --color-tally-warning: var(--tally-warning);
-  --color-tally-warning-foreground: var(--tally-warning-foreground);
+  --color-tally-warning-fg: var(--tally-warning-fg);
   --color-tally-warning-hover: var(--tally-warning-hover);
+  --color-tally-warning-chart: var(--tally-warning-chart);
 
   --color-tally-info: var(--tally-info);
-  --color-tally-info-foreground: var(--tally-info-foreground);
+  --color-tally-info-fg: var(--tally-info-fg);
   --color-tally-info-hover: var(--tally-info-hover);
+  --color-tally-info-chart: var(--tally-info-chart);
 
   --color-tally-ring: var(--tally-ring);
 
   --color-tally-background: var(--tally-background);
   --color-tally-surface: var(--tally-surface);
-  --color-tally-surface-foreground: var(--tally-surface-foreground);
+  --color-tally-surface-fg: var(--tally-surface-fg);
   --color-tally-muted: var(--tally-muted);
-  --color-tally-muted-foreground: var(--tally-muted-foreground);
+  --color-tally-muted-fg: var(--tally-muted-fg);
   --color-tally-border: var(--tally-border-subtle);
   --color-tally-input: var(--tally-input);
 
@@ -58,13 +69,15 @@
   color-scheme: light;
 
   --tally-primary: #2f48f4;
-  --tally-primary-foreground: #fff;
+  --tally-primary-fg: #fff;
   --tally-primary-hover: #2438d9;
+  --tally-primary-chart: #31c66d;
+
   --tally-secondary: #f4f6fa;
-  --tally-secondary-foreground: #0b0c12;
+  --tally-secondary-fg: #0b0c12;
   --tally-secondary-hover: #e9ecf5;
 
-  --tally-ghost-foreground: #0b0c12;
+  --tally-ghost-fg: #0b0c12;
   --tally-ghost-hover: #f4f6fa;
 
   --tally-ring: #2f48f4;
@@ -73,9 +86,9 @@
 
   --tally-background: #f4f5f9;
   --tally-surface: #fff;
-  --tally-surface-foreground: #0b0c12;
+  --tally-surface-fg: #0b0c12;
   --tally-muted: #f4f6fa;
-  --tally-muted-foreground: #5a5d66;
+  --tally-muted-fg: #5a5d66;
   /* Decorative edges (cards, table rows, gridlines). */
   --tally-border-subtle: #e4e7f0;
   /* Form control boundary, stronger so a field is visible without its fill. */
@@ -84,20 +97,24 @@
   /* status colors */
 
   --tally-info: #f0f3ff;
-  --tally-info-foreground: #1c2677;
+  --tally-info-fg: #1c2677;
   --tally-info-hover: #e1e7ff;
+  --tally-info-chart: #3174c6;
 
   --tally-success: #cff5e3;
-  --tally-success-foreground: #14532d;
+  --tally-success-fg: #14532d;
   --tally-success-hover: #b5ebd0;
+  --tally-success-chart: #31c66d;
 
   --tally-danger: #fde3e0;
-  --tally-danger-foreground: #8a1c12;
+  --tally-danger-fg: #8a1c12;
   --tally-danger-hover: #fbcfca;
+  --tally-danger-chart: #c63831;
 
   --tally-warning: #fff1b8;
-  --tally-warning-foreground: #6b4a00;
+  --tally-warning-fg: #6b4a00;
   --tally-warning-hover: #ffe58a;
+  --tally-warning-chart: #c69931;
 
   /* chart series, in the order a multi-series chart should use them */
 

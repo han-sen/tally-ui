@@ -1,5 +1,16 @@
 import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { extendTailwindMerge } from 'tailwind-merge';
+
+// tailwind-merge only knows Tailwind's default shadow sizes. Without these, a
+// custom size such as `shadow-tally-glow` is read as a shadow color and drops
+// the real color class (for example `shadow-current/35`) as a conflict.
+const twMerge = extendTailwindMerge({
+  extend: {
+    theme: {
+      shadow: ['tally-card', 'tally-glow'],
+    },
+  },
+});
 
 /**
  * Merges class names, resolving conflicting Tailwind utility classes

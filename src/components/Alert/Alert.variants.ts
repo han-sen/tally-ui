@@ -5,11 +5,11 @@ export const alertVariants = cva(
   {
     variants: {
       variant: {
-        primary: 'bg-tally-primary text-tally-primary-foreground',
-        success: 'bg-tally-success text-tally-success-foreground',
-        danger: 'bg-tally-danger text-tally-danger-foreground',
-        warning: 'bg-tally-warning text-tally-warning-foreground',
-        info: 'bg-tally-info text-tally-info-foreground',
+        primary: 'bg-tally-primary text-tally-primary-fg',
+        success: 'bg-tally-success text-tally-success-fg',
+        danger: 'bg-tally-danger text-tally-danger-fg',
+        warning: 'bg-tally-warning text-tally-warning-fg',
+        info: 'bg-tally-info text-tally-info-fg',
       },
     },
     defaultVariants: {

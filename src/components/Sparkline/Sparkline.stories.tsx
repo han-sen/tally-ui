@@ -14,14 +14,14 @@ type Story = StoryObj<typeof Sparkline>;
 export const UpTrend: Story = {
   args: {
     data: [3, 5, 4, 8, 7, 12, 11, 15],
-    className: 'h-8 w-24 text-tally-success-foreground',
+    className: 'h-8 w-24 text-tally-success-fg',
   },
 };
 
 export const DownTrend: Story = {
   args: {
     data: [15, 12, 13, 9, 10, 6, 7, 3],
-    className: 'h-8 w-24 text-tally-danger-foreground',
+    className: 'h-8 w-24 text-tally-danger-fg',
   },
 };
 
@@ -49,6 +49,37 @@ export const WithGap: Story = {
   ),
 };
 
+export const Glow: Story = {
+  args: {
+    data: [3, 5, 4, 8, 7, 12, 11, 15],
+    glow: true,
+    className: 'h-16 w-64 text-tally-success-fg',
+  },
+};
+
+// Each glow should take its own line's color, like the gradient fill.
+export const GlowMixedColors: Story = {
+  render: () => (
+    <div className="flex flex-col items-start gap-8">
+      <Sparkline
+        data={[3, 5, 4, 8, 7, 12, 11, 15]}
+        glow
+        className="h-16 w-64 text-tally-success-fg"
+      />
+      <Sparkline
+        data={[15, 12, 13, 9, 10, 6, 7, 3]}
+        glow
+        className="h-16 w-64 text-tally-danger-fg"
+      />
+      <Sparkline
+        data={[5, 5, 5, 5, 5]}
+        glow
+        className="h-16 w-64 text-tally-primary"
+      />
+    </div>
+  ),
+};
+
 // Regression check for the per-instance gradient id: each sparkline should
 // keep its own color instead of all taking the first one's.
 export const MixedColors: Story = {
@@ -56,13 +87,16 @@ export const MixedColors: Story = {
     <div className="flex items-center gap-6">
       <Sparkline
         data={[3, 5, 4, 8, 7, 12]}
-        className="h-8 w-24 text-tally-success-foreground"
+        className="h-8 w-24 text-tally-success-fg"
       />
       <Sparkline
         data={[12, 9, 10, 6, 7, 3]}
-        className="h-8 w-24 text-tally-danger-foreground"
+        className="h-8 w-24 text-tally-danger-fg"
       />
-      <Sparkline data={[4, 6, 5, 9, 8, 11]} className="h-8 w-24 text-tally-primary" />
+      <Sparkline
+        data={[4, 6, 5, 9, 8, 11]}
+        className="h-8 w-24 text-tally-primary"
+      />
     </div>
   ),
 };

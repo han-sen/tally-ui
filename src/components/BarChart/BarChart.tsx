@@ -44,6 +44,12 @@ const innerHeight = HEIGHT - margin.top - margin.bottom;
 const CHAR_WIDTH = 6.5;
 const LABEL_GAP = 12;
 
+// Radius of each bar's top corners, in drawing units. SVG's `rx` rounds all
+// four corners, so the bars are clipped with CSS instead, which rounds only the
+// top and shrinks the radius on bars too short to fit it.
+const BAR_RADIUS = 4;
+const barClipPath = `inset(0 round ${BAR_RADIUS}px ${BAR_RADIUS}px 0 0)`;
+
 /**
  * Vertical bar chart with a y-axis, gridlines, and thinned x labels.
  *
@@ -128,7 +134,7 @@ export function BarChart({
               x={-8}
               textAnchor="end"
               dominantBaseline="middle"
-              className="fill-tally-muted-foreground text-xs"
+              className="fill-tally-muted-fg text-xs"
             >
               {formatValue?.(tick) ?? tick}
             </text>
@@ -143,7 +149,7 @@ export function BarChart({
               x={(xScale(d.label) ?? 0) + xScale.bandwidth() / 2} // center under the bar
               y={innerHeight + 16}
               textAnchor="middle"
-              className="fill-tally-muted-foreground text-xs"
+              className="fill-tally-muted-fg text-xs"
             >
               {formatLabel?.(d.label) ?? d.label}
             </text>
@@ -155,6 +161,7 @@ export function BarChart({
           <rect
             key={d.label}
             className="fill-current"
+            style={{ clipPath: barClipPath }}
             x={xScale(d.label)}
             y={yScale(d.value)}
             width={xScale.bandwidth()}

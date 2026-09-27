@@ -57,31 +57,31 @@ const sections: { title: string; pairs: Pair[] }[] = [
   {
     title: 'Buttons',
     pairs: [
-      { label: 'Primary', fg: '--tally-primary-foreground', bg: '--tally-primary', need: 4.5, kind: 'text' },
-      { label: 'Primary hover', fg: '--tally-primary-foreground', bg: '--tally-primary-hover', need: 4.5, kind: 'text' },
-      { label: 'Secondary', fg: '--tally-secondary-foreground', bg: '--tally-secondary', need: 4.5, kind: 'text' },
-      { label: 'Secondary hover', fg: '--tally-secondary-foreground', bg: '--tally-secondary-hover', need: 4.5, kind: 'text' },
-      { label: 'Ghost hover', fg: '--tally-ghost-foreground', bg: '--tally-ghost-hover', need: 4.5, kind: 'text' },
+      { label: 'Primary', fg: '--tally-primary-fg', bg: '--tally-primary', need: 4.5, kind: 'text' },
+      { label: 'Primary hover', fg: '--tally-primary-fg', bg: '--tally-primary-hover', need: 4.5, kind: 'text' },
+      { label: 'Secondary', fg: '--tally-secondary-fg', bg: '--tally-secondary', need: 4.5, kind: 'text' },
+      { label: 'Secondary hover', fg: '--tally-secondary-fg', bg: '--tally-secondary-hover', need: 4.5, kind: 'text' },
+      { label: 'Ghost hover', fg: '--tally-ghost-fg', bg: '--tally-ghost-hover', need: 4.5, kind: 'text' },
     ],
   },
   {
     title: 'Status',
     pairs: [
-      { label: 'Info', fg: '--tally-info-foreground', bg: '--tally-info', need: 4.5, kind: 'text' },
-      { label: 'Success', fg: '--tally-success-foreground', bg: '--tally-success', need: 4.5, kind: 'text' },
-      { label: 'Warning', fg: '--tally-warning-foreground', bg: '--tally-warning', need: 4.5, kind: 'text' },
-      { label: 'Danger', fg: '--tally-danger-foreground', bg: '--tally-danger', need: 4.5, kind: 'text' },
-      { label: 'Danger hover', fg: '--tally-danger-foreground', bg: '--tally-danger-hover', need: 4.5, kind: 'text' },
+      { label: 'Info', fg: '--tally-info-fg', bg: '--tally-info', need: 4.5, kind: 'text' },
+      { label: 'Success', fg: '--tally-success-fg', bg: '--tally-success', need: 4.5, kind: 'text' },
+      { label: 'Warning', fg: '--tally-warning-fg', bg: '--tally-warning', need: 4.5, kind: 'text' },
+      { label: 'Danger', fg: '--tally-danger-fg', bg: '--tally-danger', need: 4.5, kind: 'text' },
+      { label: 'Danger hover', fg: '--tally-danger-fg', bg: '--tally-danger-hover', need: 4.5, kind: 'text' },
     ],
   },
   {
     title: 'Surfaces and text',
     pairs: [
-      { label: 'Text on surface', fg: '--tally-surface-foreground', bg: '--tally-surface', need: 4.5, kind: 'text' },
-      { label: 'Muted text on surface', fg: '--tally-muted-foreground', bg: '--tally-surface', need: 4.5, kind: 'text' },
-      { label: 'Muted text on muted fill', fg: '--tally-muted-foreground', bg: '--tally-muted', need: 4.5, kind: 'text' },
-      { label: 'Success text on surface', fg: '--tally-success-foreground', bg: '--tally-surface', need: 4.5, kind: 'text' },
-      { label: 'Danger text on surface', fg: '--tally-danger-foreground', bg: '--tally-surface', need: 4.5, kind: 'text' },
+      { label: 'Text on surface', fg: '--tally-surface-fg', bg: '--tally-surface', need: 4.5, kind: 'text' },
+      { label: 'Muted text on surface', fg: '--tally-muted-fg', bg: '--tally-surface', need: 4.5, kind: 'text' },
+      { label: 'Muted text on muted fill', fg: '--tally-muted-fg', bg: '--tally-muted', need: 4.5, kind: 'text' },
+      { label: 'Success text on surface', fg: '--tally-success-fg', bg: '--tally-surface', need: 4.5, kind: 'text' },
+      { label: 'Danger text on surface', fg: '--tally-danger-fg', bg: '--tally-surface', need: 4.5, kind: 'text' },
     ],
   },
   {
@@ -89,7 +89,7 @@ const sections: { title: string; pairs: Pair[] }[] = [
     pairs: [
       { label: 'Focus ring', fg: '--tally-ring', bg: '--tally-surface', need: 3, kind: 'graphic' },
       { label: 'Input border', fg: '--tally-input', bg: '--tally-surface', need: 3, kind: 'graphic' },
-      { label: 'Invalid input border', fg: '--tally-danger-foreground', bg: '--tally-surface', need: 3, kind: 'graphic' },
+      { label: 'Invalid input border', fg: '--tally-danger-fg', bg: '--tally-surface', need: 3, kind: 'graphic' },
     ],
   },
   {
@@ -133,7 +133,7 @@ function PairRow({ label, fg, bg, need, kind }: Pair) {
       </div>
       <div className="text-sm">
         <div className="font-medium">{label}</div>
-        <div className="font-mono text-xs text-tally-muted-foreground">
+        <div className="font-mono text-xs text-tally-muted-fg">
           {fg} on {bg}
         </div>
       </div>
@@ -141,7 +141,7 @@ function PairRow({ label, fg, bg, need, kind }: Pair) {
         <span data-testid="ratio">
           {ratio === null ? '…' : ratio.toFixed(2)}
         </span>
-        <span className="text-tally-muted-foreground">/ {need}</span>
+        <span className="text-tally-muted-fg">/ {need}</span>
         {ratio !== null && (
           <Badge variant={passes ? 'success' : 'danger'}>
             {passes ? 'Pass' : 'Fail'}
@@ -156,13 +156,13 @@ function PairRow({ label, fg, bg, need, kind }: Pair) {
 export const Overview: Story = {
   render: () => (
     <div className="flex max-w-3xl flex-col gap-10">
-      <p className="text-sm text-tally-muted-foreground">
+      <p className="text-sm text-tally-muted-fg">
         Contrast is calculated live from the tokens in <code>src/index.css</code>{' '}
         (WCAG: 4.5 for text, 3 for graphics and UI boundaries).
       </p>
       {sections.map((section) => (
         <section key={section.title} className="flex flex-col gap-3">
-          <h2 className="text-xs font-semibold tracking-wide text-tally-muted-foreground uppercase">
+          <h2 className="text-xs font-semibold tracking-wide text-tally-muted-fg uppercase">
             {section.title}
           </h2>
           {section.pairs.map((pair) => (

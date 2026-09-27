@@ -1,4 +1,4 @@
-import type { HTMLAttributes } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 import {
   directionIcons,
   type Direction,
@@ -25,6 +25,11 @@ interface StatCardBaseProps extends Omit<
   label: string;
   /** Optional change compared to an earlier period. */
   delta?: DeltaProps;
+  /**
+   * Optional visual below the value and delta, typically a `Sparkline`.
+   * Not shown while loading.
+   */
+  chart?: ReactNode;
 }
 
 interface StatCardLoadingProps extends StatCardBaseProps {
@@ -74,12 +79,12 @@ function DeltaIndicator({ delta }: { delta: DeltaProps }) {
       </span>
       <div className="flex items-center text-xs gap-2" aria-hidden={true}>
         <Badge variant={sentimentVariant[sentiment]}>
-          <span className="flex items-center text-xs">
+          <span className="flex items-center text-xs gap-1">
             <DirectionIcon aria-hidden={true} size={12} strokeWidth={4} />
-            <p className="font-bold space-x-1">{value}</p>
+            <p className="font-bold">{value}</p>
           </span>
         </Badge>
-        <p className="text-tally-muted-foreground">{comparison}</p>
+        <p className="text-tally-muted-fg">{comparison}</p>
       </div>
     </>
   );
@@ -111,6 +116,7 @@ export function StatCard({
   label,
   value,
   delta,
+  chart,
   isLoading,
   className,
   ...props
@@ -126,7 +132,7 @@ export function StatCard({
           Loading {label}
         </span>
       )}
-      <Card.Header className="text-sm">{label}</Card.Header>
+      <Card.Header className="text-sm font-semibold">{label}</Card.Header>
       <Card.Content>
         {isLoading ? (
           <div className="flex flex-col gap-2">
@@ -134,8 +140,9 @@ export function StatCard({
             <Skeleton className="h-6 w-20" />
           </div>
         ) : (
-          <div className="flex flex-col">
-            <p className="text-xl font-bold mb-2">{value}</p>
+          <div className="flex flex-col gap-3">
+            <p className="text-4xl font-bold">{value}</p>
+            {chart}
             {delta && <DeltaIndicator delta={delta} />}
           </div>
         )}

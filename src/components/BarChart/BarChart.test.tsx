@@ -50,6 +50,14 @@ describe('BarChart', () => {
     expect(heightB / heightA).toBeCloseTo(2);
   });
 
+  it('rounds only the top corners of each bar', () => {
+    const { container } = render(<BarChart data={days(3)} label="Views" />);
+
+    for (const bar of bars(container)) {
+      expect(bar.style.clipPath).toBe('inset(0 round 4px 4px 0 0)');
+    }
+  });
+
   it('extends the y-axis to a round value above the tallest bar', () => {
     render(
       <BarChart
@@ -159,14 +167,14 @@ describe('BarChart', () => {
       <BarChart
         data={days(3)}
         label="Views"
-        className="w-full text-tally-success-foreground"
+        className="w-full text-tally-success-fg"
         data-testid="chart"
       />,
     );
 
     const chart = screen.getByTestId('chart');
     expect(chart).toHaveClass('w-full');
-    expect(chart).toHaveClass('text-tally-success-foreground');
+    expect(chart).toHaveClass('text-tally-success-fg');
     expect(chart).not.toHaveClass('text-tally-primary');
   });
 });

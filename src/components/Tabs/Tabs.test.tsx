@@ -6,11 +6,15 @@ import { describe, it, expect, vi } from 'vitest';
 import { Tabs } from './Tabs';
 
 function renderTabs(
-  props: { onContactClick?: () => void; contactClassName?: string } = {},
+  props: {
+    onContactClick?: () => void;
+    contactClassName?: string;
+    glow?: boolean;
+  } = {},
 ) {
   const ref = createRef<HTMLButtonElement>();
   render(
-    <Tabs defaultValue="account">
+    <Tabs defaultValue="account" glow={props.glow}>
       <Tabs.List>
         <Tabs.Trigger value="account" ref={ref}>
           Account
@@ -102,5 +106,28 @@ describe('Tabs', () => {
     ).toThrow('Tabs must be used inside <Tabs>');
 
     consoleError.mockRestore();
+  });
+
+  it('has no glow by default', () => {
+    renderTabs();
+
+    expect(screen.getByRole('tab', { name: 'Account' })).not.toHaveClass(
+      'shadow-tally-glow',
+    );
+  });
+
+  it('glows only the selected tab and moves the glow when it changes', async () => {
+    const user = userEvent.setup();
+    renderTabs({ glow: true });
+
+    const account = screen.getByRole('tab', { name: 'Account' });
+    const contact = screen.getByRole('tab', { name: 'Contact' });
+    expect(account).toHaveClass('shadow-tally-glow', 'shadow-tally-primary/45');
+    expect(contact).not.toHaveClass('shadow-tally-glow');
+
+    await user.click(contact);
+
+    expect(contact).toHaveClass('shadow-tally-glow', 'shadow-tally-primary/45');
+    expect(account).not.toHaveClass('shadow-tally-glow');
   });
 });

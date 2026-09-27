@@ -50,6 +50,17 @@ const articles = [
 
 const total = (values: number[]) => values.reduce((sum, v) => sum + v, 0);
 
+// Small trend fixtures for the stat cards, shaped to match each delta.
+const totalViewsTrend = [
+  38200, 39100, 40400, 41800, 42600, 44100, 45300, 46200, 47100, 47800, 48210,
+];
+const dailyAverageTrend = [
+  1720, 1705, 1690, 1668, 1650, 1642, 1630, 1621, 1615, 1610, 1607,
+];
+const peakDayTrend = [
+  1940, 1948, 1935, 1952, 1944, 1950, 1946, 1952, 1949, 1951, 1952,
+];
+
 export const AttentionTracker: Story = {
   render: () => (
     <div className="min-h-screen bg-tally-background p-6">
@@ -57,7 +68,7 @@ export const AttentionTracker: Story = {
         <header className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="text-xl font-semibold">Attention tracker</h1>
-            <p className="text-sm text-tally-muted-foreground">
+            <p className="text-sm text-tally-muted-fg">
               Wikipedia page views for car models
             </p>
           </div>
@@ -70,7 +81,9 @@ export const AttentionTracker: Story = {
             <Button>Add</Button>
             <Button variant="secondary">Export</Button>
             <Button variant="ghost">Reset</Button>
-            <Button variant="danger">Clear all</Button>
+            <Button variant="danger" glow>
+              Clear all
+            </Button>
           </div>
         </header>
 
@@ -81,8 +94,8 @@ export const AttentionTracker: Story = {
           </Alert.Description>
         </Alert>
 
-        <Tabs defaultValue="30">
-          <Tabs.List>
+        <Tabs defaultValue="30" glow>
+          <Tabs.List className="flex-shrink border border-tally-info">
             <Tabs.Trigger value="7">7 days</Tabs.Trigger>
             <Tabs.Trigger value="30">30 days</Tabs.Trigger>
             <Tabs.Trigger value="90">90 days</Tabs.Trigger>
@@ -97,8 +110,15 @@ export const AttentionTracker: Story = {
               value: '4.2%',
               direction: 'up',
               sentiment: 'positive',
-              comparison: 'vs previous 30 days',
+              comparison: 'last 30 days',
             }}
+            chart={
+              <Sparkline
+                data={totalViewsTrend}
+                className="h-20 w-full text-tally-success-chart"
+                glow
+              />
+            }
           />
           <StatCard
             label="Daily average"
@@ -107,8 +127,15 @@ export const AttentionTracker: Story = {
               value: '1.1%',
               direction: 'down',
               sentiment: 'negative',
-              comparison: 'vs previous 30 days',
+              comparison: 'last 30 days',
             }}
+            chart={
+              <Sparkline
+                data={dailyAverageTrend}
+                className="h-20 w-full text-tally-danger-chart"
+                glow
+              />
+            }
           />
           <StatCard
             label="Peak day"
@@ -117,8 +144,15 @@ export const AttentionTracker: Story = {
               value: '0%',
               direction: 'flat',
               sentiment: 'neutral',
-              comparison: 'vs previous 30 days',
+              comparison: 'last 30 days',
             }}
+            chart={
+              <Sparkline
+                data={peakDayTrend}
+                className="h-20 w-full text-tally-info-chart"
+                glow
+              />
+            }
           />
           <StatCard label="Articles tracked" isLoading />
         </div>
@@ -168,8 +202,8 @@ export const AttentionTracker: Story = {
                             label={`${name} trend, ${rising ? 'rising' : 'falling'}`}
                             className={
                               rising
-                                ? 'h-8 w-24 text-tally-success-foreground'
-                                : 'h-8 w-24 text-tally-danger-foreground'
+                                ? 'h-8 w-24 text-tally-success-chart'
+                                : 'h-8 w-24 text-tally-danger-chart'
                             }
                           />
                         </Table.Cell>
@@ -210,11 +244,21 @@ export const AttentionTracker: Story = {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="primary">Primary</Badge>
-          <Badge variant="info">Info</Badge>
-          <Badge variant="success">Success</Badge>
-          <Badge variant="warning">Warning</Badge>
-          <Badge variant="danger">Danger</Badge>
+          <Badge variant="primary" glow>
+            Primary
+          </Badge>
+          <Badge variant="info" glow>
+            Info
+          </Badge>
+          <Badge variant="success" glow>
+            Success
+          </Badge>
+          <Badge variant="warning" glow>
+            Warning
+          </Badge>
+          <Badge variant="danger" glow>
+            Danger
+          </Badge>
         </div>
       </div>
     </div>

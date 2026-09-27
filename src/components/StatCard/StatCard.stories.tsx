@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+import { Sparkline } from '../Sparkline/Sparkline';
 import { StatCard } from './StatCard';
 
 const meta: Meta<typeof StatCard> = {
@@ -54,6 +55,25 @@ export const WithoutDelta: Story = {
   args: {
     label: 'Revenue',
     value: '$2400',
+  },
+};
+
+export const WithChart: Story = {
+  args: {
+    label: 'Revenue',
+    value: '$2400',
+    delta: {
+      value: '2.4%',
+      direction: 'up',
+      sentiment: 'positive',
+      comparison: 'vs last week',
+    },
+    chart: (
+      <Sparkline
+        data={[1900, 2000, 1950, 2100, 2250, 2180, 2400]}
+        className="h-30 w-full text-tally-success-fg"
+      />
+    ),
   },
 };
 

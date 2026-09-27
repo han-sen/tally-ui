@@ -171,4 +171,30 @@ describe('StatCard', () => {
       expect(screen.queryByRole('status')).not.toBeInTheDocument();
     });
   });
+
+  describe('chart slot', () => {
+    it('renders the chart when provided', () => {
+      render(
+        <StatCard
+          label="Revenue"
+          value="$2400"
+          chart={<div data-testid="chart">chart</div>}
+        />,
+      );
+
+      expect(screen.getByTestId('chart')).toBeInTheDocument();
+    });
+
+    it('does not render the chart while loading', () => {
+      render(
+        <StatCard
+          label="Revenue"
+          isLoading
+          chart={<div data-testid="chart">chart</div>}
+        />,
+      );
+
+      expect(screen.queryByTestId('chart')).not.toBeInTheDocument();
+    });
+  });
 });

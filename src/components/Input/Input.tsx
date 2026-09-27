@@ -30,12 +30,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         type={type}
         {...props}
         className={cn(
-          'h-10 w-full rounded-tally-control border border-tally-input bg-tally-surface px-4 text-sm text-tally-surface-foreground',
-          'placeholder:text-tally-muted-foreground',
+          'h-10 w-full rounded-tally-control border border-tally-input bg-tally-surface px-4 text-sm text-tally-surface-fg',
+          'placeholder:text-tally-muted-fg',
           'focus-visible:ring-2 focus-visible:ring-tally-ring focus-visible:ring-offset-2 focus-visible:outline-none',
           'disabled:cursor-not-allowed disabled:opacity-50',
           'read-only:bg-tally-muted',
-          'aria-invalid:border-tally-danger-foreground',
+          'aria-invalid:border-tally-danger-fg',
           className,
         )}
       />

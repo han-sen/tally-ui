@@ -89,6 +89,48 @@ describe('Sparkline', () => {
     expect(fills).toEqual(ids.map((id) => `url(#${id})`));
   });
 
+  it('draws no glow by default', () => {
+    const { container } = render(<Sparkline data={[3, 5, 4, 8]} />);
+
+    expect(container.querySelector('filter')).not.toBeInTheDocument();
+    expect(
+      container.querySelector('[data-sparkline-glow]'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('draws a blurred copy of the line behind it when glow is on', () => {
+    const { container } = render(<Sparkline data={[3, 5, 4, 8]} glow />);
+
+    const filter = container.querySelector('filter');
+    const glowPath = container.querySelector('[data-sparkline-glow]');
+    const paths = [...container.querySelectorAll('svg path')];
+
+    expect(filter).toBeInTheDocument();
+    expect(glowPath).toHaveAttribute('filter', `url(#${filter?.id})`);
+    expect(glowPath?.getAttribute('d')).toBe(paths.at(-1)?.getAttribute('d'));
+    // Area, glow, line: the glow sits between the fill and the line.
+    expect(paths.indexOf(glowPath as SVGPathElement)).toBe(1);
+  });
+
+  it('keeps the glow inside the chart', () => {
+    const { container } = render(<Sparkline data={[0, 4, 0, 6]} glow />);
+
+    const filter = container.querySelector('filter');
+    expect(filter).toHaveAttribute('x', '0');
+    expect(filter).toHaveAttribute('y', '0');
+    expect(filter).toHaveAttribute('width', '100');
+    expect(filter).toHaveAttribute('height', '32');
+
+    // The lowest and highest points are inset from the edges to leave room
+    // for the shadow. Monotone curves keep their control points between the
+    // points they join, so checking every coordinate in the path is safe.
+    const ys = [
+      ...linePathOf(container).matchAll(/(-?[\d.]+),(-?[\d.]+)/g),
+    ].map((match) => Number(match[2]));
+    expect(Math.max(...ys)).toBeLessThan(32);
+    expect(Math.min(...ys)).toBeGreaterThan(0);
+  });
+
   it('merges className and passes other props through', () => {
     render(
       <Sparkline
@@ -101,5 +143,28 @@ describe('Sparkline', () => {
     const svg = screen.getByTestId('sparkline');
     expect(svg).toHaveClass('h-8');
     expect(svg).toHaveClass('text-tally-primary');
+  });
+
+  it('defaults to filling the width of its container', () => {
+    render(<Sparkline data={[3, 5, 4, 8]} data-testid="sparkline" />);
+
+    const svg = screen.getByTestId('sparkline');
+    expect(svg).toHaveClass('w-full');
+    expect(svg).toHaveClass('h-8');
+    expect(svg).toHaveAttribute('preserveAspectRatio', 'none');
+  });
+
+  it('lets a consumer override the default width', () => {
+    render(
+      <Sparkline
+        data={[3, 5, 4, 8]}
+        className="w-24"
+        data-testid="sparkline"
+      />,
+    );
+
+    const svg = screen.getByTestId('sparkline');
+    expect(svg).toHaveClass('w-24');
+    expect(svg).not.toHaveClass('w-full');
   });
 });

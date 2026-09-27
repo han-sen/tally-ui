@@ -45,3 +45,19 @@ export const SwitchesTabOnClick: Story = {
     expect(canvas.queryByText('Account page')).not.toBeInTheDocument();
   },
 };
+
+export const Glow: Story = {
+  args: {
+    defaultValue: 'account',
+    glow: true,
+  },
+  render: (args) => (
+    <Tabs {...args}>
+      <Tabs.List>
+        <Tabs.Trigger value="account">Account</Tabs.Trigger>
+        <Tabs.Trigger value="contact">Contact</Tabs.Trigger>
+        <Tabs.Trigger value="billing">Billing</Tabs.Trigger>
+      </Tabs.List>
+    </Tabs>
+  ),
+};

@@ -56,3 +56,21 @@ export const Loading: Story = {
 export const Disabled: Story = {
   args: { variant: 'primary', disabled: true, children: 'Save changes' },
 };
+
+// Ghost is included to show it ignores glow, since it has no fill to lift.
+export const Glow: Story = {
+  render: () => (
+    <div className="flex flex-wrap items-center gap-4 bg-tally-surface p-6">
+      <Button glow>Primary</Button>
+      <Button variant="secondary" glow>
+        Secondary
+      </Button>
+      <Button variant="danger" glow>
+        Danger
+      </Button>
+      <Button variant="ghost" glow>
+        Ghost
+      </Button>
+    </div>
+  ),
+};

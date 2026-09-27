@@ -71,7 +71,7 @@ npm run build:lib   # library build: dist/ with JS, type declarations, and CSS
 
 ## Design decisions
 
-**Semantic design tokens.** Components use role-based classes such as `bg-tally-primary` and `text-tally-danger-foreground`, never raw palette colors. The tokens live in `src/tokens.css`: Tailwind v4's `@theme inline` points at CSS variables defined in `:root`. Adding dark mode later means adding a `.dark` block of variable values, with no component changes.
+**Semantic design tokens.** Components use role-based classes such as `bg-tally-primary` and `text-tally-danger-fg`, never raw palette colors. The tokens live in `src/tokens.css`: Tailwind v4's `@theme inline` points at CSS variables defined in `:root`. Adding dark mode later means adding a `.dark` block of variable values, with no component changes.
 
 **Prefixed tokens, so they never collide.** Every variable and theme key carries the `tally` prefix (`--tally-primary`, `bg-tally-primary`, `rounded-tally-control`). Generic names like `--primary` or `bg-primary` are what shadcn/ui and many apps define themselves, and sharing them would silently change one set of colors when both are loaded. `tokens.css` also leaves fonts alone, so importing it never replaces an app's own font. The fonts live in a separate `fonts.css` that only the prebuilt stylesheet and Storybook use.
 

@@ -35,7 +35,7 @@ export function Card({ children, className, ...props }: CardProps) {
     <div
       {...props}
       className={cn(
-        'flex flex-col gap-4 rounded-tally-card bg-tally-surface py-6 text-tally-surface-foreground shadow-tally-card',
+        'flex flex-col gap-4 rounded-tally-card bg-tally-surface py-6 text-tally-surface-fg shadow-tally-card',
         className,
       )}
     >
@@ -82,7 +82,7 @@ export function CardDescription({
   return (
     <div
       {...props}
-      className={cn('text-sm text-tally-muted-foreground', className)}
+      className={cn('text-sm text-tally-muted-fg', className)}
     >
       {children}
     </div>

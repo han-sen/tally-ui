@@ -40,6 +40,7 @@ export interface TabsContentProps extends HTMLAttributes<HTMLDivElement> {
 const TabsContext = createContext<{
   activeTab: string;
   setActiveTab: (arg0: string) => void;
+  glow: boolean;
 } | null>(null);
 
 function useTabsContext() {
@@ -74,6 +75,7 @@ function useTabsContext() {
 export function Tabs({
   children,
   defaultValue,
+  glow = false,
 }: {
   children: ReactNode;
   /**
@@ -83,11 +85,16 @@ export function Tabs({
    * a typo here will silently result in no active tab.
    */
   defaultValue: string;
+  /**
+   * Adds a soft shadow under the selected tab in its own color, so it looks
+   * lifted off the tab list. Off by default.
+   */
+  glow?: boolean;
 }) {
   const [activeTab, setActiveTab] = useState(defaultValue);
 
   return (
-    <TabsContext.Provider value={{ activeTab, setActiveTab }}>
+    <TabsContext.Provider value={{ activeTab, setActiveTab, glow }}>
       {children}
     </TabsContext.Provider>
   );
@@ -119,7 +126,7 @@ export function TabsList({ children, className, ...props }: TabsListProps) {
  */
 export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
   ({ children, value, className, ...props }, ref) => {
-    const { activeTab, setActiveTab } = useTabsContext();
+    const { activeTab, setActiveTab, glow } = useTabsContext();
     const isActiveTab = value === activeTab;
 
     const { onClick = () => {} } = props;
@@ -136,7 +143,7 @@ export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
           ref={ref}
           onClick={handleOnClick}
           className={cn(
-            tabsTriggerVariants({ active: isActiveTab }),
+            tabsTriggerVariants({ active: isActiveTab, glow }),
             className,
           )}
         >
