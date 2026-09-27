@@ -1,7 +1,7 @@
 {
-  "name": "@han-sen/tally",
+  "name": "@han-sen/tally-ui",
   "version": "0.1.0",
-  "description": "Tally: a small React and Tailwind component library for building dashboards.",
+  "description": "Tally UI: a small React and Tailwind component library for building dashboards.",
   "private": true,
   "type": "module",
   "sideEffects": [

@@ -4,7 +4,7 @@ import { create } from 'storybook/theming';
 addons.setConfig({
   theme: create({
     base: 'light',
-    brandTitle: 'Tally',
+    brandTitle: 'Tally UI',
     colorPrimary: '#2f48f4',
     colorSecondary: '#2f48f4',
   }),

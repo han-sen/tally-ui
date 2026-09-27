@@ -1,8 +1,8 @@
-# Tally
+# Tally UI
 
 [![CI](https://github.com/han-sen/tally-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/han-sen/tally-ui/actions/workflows/ci.yml)
 
-Tally is a small component library designed for building dashboards.
+Tally UI is a small component library designed for building dashboards.
 
 Built with React, TypeScript, Tailwind CSS v4, and class-variance-authority, documented and developed in Storybook. This is a work in progress: the generic components come first, then the dashboard-specific ones.
 
@@ -30,8 +30,8 @@ Planned: `DescriptionList` and a data-driven `DataTable` built on the `Table` pa
 The package is not published to npm yet. Build a tarball and install it, the same file npm would publish:
 
 ```bash
-npm pack                      # builds dist/ and writes han-sen-tally-0.1.0.tgz
-npm install ../tally/han-sen-tally-0.1.0.tgz   # from your app
+npm pack                      # builds dist/ and writes han-sen-tally-ui-0.1.0.tgz
+npm install ../tally-ui/han-sen-tally-ui-0.1.0.tgz   # from your app
 ```
 
 It needs `react` and `react-dom` (18.3 or 19) in your app, and ships ES modules with type declarations. Then pick one way to load the styles:
@@ -39,21 +39,21 @@ It needs `react` and `react-dom` (18.3 or 19) in your app, and ships ES modules 
 **Any app: one prebuilt stylesheet.** It contains Tailwind's base styles, the design tokens, and only the utilities the components use.
 
 ```ts
-import '@han-sen/tally/styles.css';
+import '@han-sen/tally-ui/styles.css';
 ```
 
 **Apps that already use Tailwind v4:** load just the tokens and let your own Tailwind generate the utilities from the package.
 
 ```css
 @import 'tailwindcss';
-@import '@han-sen/tally/tokens.css';
-@source '../node_modules/@han-sen/tally/dist';
+@import '@han-sen/tally-ui/tokens.css';
+@source '../node_modules/@han-sen/tally-ui/dist';
 ```
 
 Fonts are not bundled. The tokens use `Inter Variable` and `JetBrains Mono Variable` with system fonts as the fallback, so load those fonts yourself (for example `@fontsource-variable/inter`) or override `--font-sans` and `--font-mono`.
 
 ```tsx
-import { Button, StatCard, BarChart } from '@han-sen/tally';
+import { Button, StatCard, BarChart } from '@han-sen/tally-ui';
 ```
 
 Components that use React state (`Tabs`) are marked `'use client'`, so they work in Next.js App Router pages.
