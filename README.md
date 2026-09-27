@@ -1,6 +1,6 @@
 # Tally
 
-[![CI](https://github.com/han-sen/design-system/actions/workflows/ci.yml/badge.svg)](https://github.com/han-sen/design-system/actions/workflows/ci.yml)
+[![CI](https://github.com/han-sen/tally-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/han-sen/tally-ui/actions/workflows/ci.yml)
 
 Tally is a small component library designed for building dashboards.
 
