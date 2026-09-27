@@ -64,7 +64,7 @@ const LABEL_GAP = 12;
  *   ]}
  *   label="Daily views for Toyota Camry"
  *   formatValue={(v) => v.toLocaleString('en-US')}
- *   className="w-full max-w-2xl text-primary"
+ *   className="w-full max-w-2xl text-tally-primary"
  * />
  * ```
  */
@@ -113,7 +113,7 @@ export function BarChart({
   return (
     <svg
       {...props}
-      className={cn('text-primary', className)}
+      className={cn('text-tally-primary', className)}
       viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
       role="img"
       aria-label={label}
@@ -123,12 +123,12 @@ export function BarChart({
         {/* create y-axis */}
         {yTicks.map((tick) => (
           <g key={tick} transform={`translate(0, ${yScale(tick)})`}>
-            <line x2={innerWidth} className="stroke-border" /> {/* gridline */}
+            <line x2={innerWidth} className="stroke-tally-border" /> {/* gridline */}
             <text
               x={-8}
               textAnchor="end"
               dominantBaseline="middle"
-              className="fill-muted-foreground text-xs"
+              className="fill-tally-muted-foreground text-xs"
             >
               {formatValue?.(tick) ?? tick}
             </text>
@@ -143,7 +143,7 @@ export function BarChart({
               x={(xScale(d.label) ?? 0) + xScale.bandwidth() / 2} // center under the bar
               y={innerHeight + 16}
               textAnchor="middle"
-              className="fill-muted-foreground text-xs"
+              className="fill-tally-muted-foreground text-xs"
             >
               {formatLabel?.(d.label) ?? d.label}
             </text>

@@ -1,0 +1,7 @@
+/* Font roles: sans for UI text, mono for identifiers (VINs, IDs, codes).
+   Kept out of tokens.css so importing the tokens never replaces an app's own fonts. */
+@theme {
+  --font-sans:
+    'Inter Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+}

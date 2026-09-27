@@ -1,8 +1,8 @@
-# Dashboard Design System
+# Tally
 
 [![CI](https://github.com/han-sen/design-system/actions/workflows/ci.yml/badge.svg)](https://github.com/han-sen/design-system/actions/workflows/ci.yml)
 
-A small component library designed for building dashboards.
+Tally is a small component library designed for building dashboards.
 
 Built with React, TypeScript, Tailwind CSS v4, and class-variance-authority, documented and developed in Storybook. This is a work in progress: the generic components come first, then the dashboard-specific ones.
 
@@ -25,6 +25,39 @@ Built with React, TypeScript, Tailwind CSS v4, and class-variance-authority, doc
 
 Planned: `DescriptionList` and a data-driven `DataTable` built on the `Table` parts. The charts use D3 only for scales and shape math and render the SVG with React, so they need no client-side DOM access.
 
+## Using the library
+
+The package is not published to npm yet. Build a tarball and install it, the same file npm would publish:
+
+```bash
+npm pack                      # builds dist/ and writes han-sen-tally-0.1.0.tgz
+npm install ../tally/han-sen-tally-0.1.0.tgz   # from your app
+```
+
+It needs `react` and `react-dom` (18.3 or 19) in your app, and ships ES modules with type declarations. Then pick one way to load the styles:
+
+**Any app: one prebuilt stylesheet.** It contains Tailwind's base styles, the design tokens, and only the utilities the components use.
+
+```ts
+import '@han-sen/tally/styles.css';
+```
+
+**Apps that already use Tailwind v4:** load just the tokens and let your own Tailwind generate the utilities from the package.
+
+```css
+@import 'tailwindcss';
+@import '@han-sen/tally/tokens.css';
+@source '../node_modules/@han-sen/tally/dist';
+```
+
+Fonts are not bundled. The tokens use `Inter Variable` and `JetBrains Mono Variable` with system fonts as the fallback, so load those fonts yourself (for example `@fontsource-variable/inter`) or override `--font-sans` and `--font-mono`.
+
+```tsx
+import { Button, StatCard, BarChart } from '@han-sen/tally';
+```
+
+Components that use React state (`Tabs`) are marked `'use client'`, so they work in Next.js App Router pages.
+
 ## Getting started
 
 ```bash
@@ -33,11 +66,14 @@ npm run storybook   # component explorer at http://localhost:6006
 npm test            # unit tests (Vitest + Testing Library), watch mode
 npm run lint
 npm run build       # type-check
+npm run build:lib   # library build: dist/ with JS, type declarations, and CSS
 ```
 
 ## Design decisions
 
-**Semantic design tokens.** Components use role-based classes such as `bg-primary` and `text-danger-foreground`, never raw palette colors. The tokens live in `src/index.css`: Tailwind v4's `@theme inline` points at CSS variables defined in `:root`. Adding dark mode later means adding a `.dark` block of variable values, with no component changes.
+**Semantic design tokens.** Components use role-based classes such as `bg-tally-primary` and `text-tally-danger-foreground`, never raw palette colors. The tokens live in `src/tokens.css`: Tailwind v4's `@theme inline` points at CSS variables defined in `:root`. Adding dark mode later means adding a `.dark` block of variable values, with no component changes.
+
+**Prefixed tokens, so they never collide.** Every variable and theme key carries the `tally` prefix (`--tally-primary`, `bg-tally-primary`, `rounded-tally-control`). Generic names like `--primary` or `bg-primary` are what shadcn/ui and many apps define themselves, and sharing them would silently change one set of colors when both are loaded. `tokens.css` also leaves fonts alone, so importing it never replaces an app's own font. The fonts live in a separate `fonts.css` that only the prebuilt stylesheet and Storybook use.
 
 **Variants with CVA.** Each element with variant logic gets its own `cva()` definition, kept in a separate `*.variants.ts` file so React Fast Refresh keeps working. Variant prop types are inferred from the definition rather than written by hand.
 

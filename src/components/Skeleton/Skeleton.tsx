@@ -24,7 +24,7 @@ export function Skeleton({ className, ...props }: SkeletonProps) {
       {...props}
       aria-hidden="true"
       className={cn(
-        'block rounded-md bg-border motion-safe:animate-pulse',
+        'block rounded-md bg-tally-border motion-safe:animate-pulse',
         className,
       )}
     />

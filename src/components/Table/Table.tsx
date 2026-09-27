@@ -73,7 +73,7 @@ export function TableCaption({ className, ...props }: TableCaptionProps) {
   return (
     <caption
       {...props}
-      className={cn('py-2 text-sm text-muted-foreground', className)}
+      className={cn('py-2 text-sm text-tally-muted-foreground', className)}
     />
   );
 }
@@ -104,7 +104,7 @@ export function TableRow({ className, ...props }: TableRowProps) {
     <tr
       {...props}
       className={cn(
-        'border-b border-border transition-colors hover:bg-muted',
+        'border-b border-tally-border transition-colors hover:bg-tally-muted',
         className,
       )}
     />
@@ -121,7 +121,7 @@ export function TableHead({ numeric, className, ...props }: TableHeadProps) {
       scope="col"
       {...props}
       className={cn(
-        'h-10 px-2 text-left align-middle font-medium text-muted-foreground',
+        'h-10 px-2 text-left align-middle font-medium text-tally-muted-foreground',
         numeric && 'text-right tabular-nums',
         className,
       )}

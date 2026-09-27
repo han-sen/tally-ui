@@ -79,7 +79,7 @@ function DeltaIndicator({ delta }: { delta: DeltaProps }) {
             <p className="font-bold space-x-1">{value}</p>
           </span>
         </Badge>
-        <p className="text-muted-foreground">{comparison}</p>
+        <p className="text-tally-muted-foreground">{comparison}</p>
       </div>
     </>
   );

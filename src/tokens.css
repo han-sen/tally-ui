@@ -1,0 +1,108 @@
+@theme {
+  /* Shape: large soft cards, medium panels, pill-shaped controls. Set
+     --radius-tally-control to a small value (for example 0.5rem) for a squarer look. */
+  --radius-tally-card: 1rem;
+  --radius-tally-panel: 0.25rem;
+  --radius-tally-control: 9999px;
+
+  /* Cards float on the page background with a soft shadow, not a border. */
+  --shadow-tally-card:
+    0 1px 2px rgb(16 24 64 / 0.04), 0 8px 24px rgb(16 24 64 / 0.06);
+}
+
+@theme inline {
+  --color-tally-primary: var(--tally-primary);
+  --color-tally-primary-foreground: var(--tally-primary-foreground);
+  --color-tally-primary-hover: var(--tally-primary-hover);
+  --color-tally-secondary: var(--tally-secondary);
+  --color-tally-secondary-foreground: var(--tally-secondary-foreground);
+  --color-tally-secondary-hover: var(--tally-secondary-hover);
+
+  --color-tally-ghost-foreground: var(--tally-ghost-foreground);
+  --color-tally-ghost-hover: var(--tally-ghost-hover);
+
+  --color-tally-danger: var(--tally-danger);
+  --color-tally-danger-foreground: var(--tally-danger-foreground);
+  --color-tally-danger-hover: var(--tally-danger-hover);
+
+  --color-tally-success: var(--tally-success);
+  --color-tally-success-foreground: var(--tally-success-foreground);
+  --color-tally-success-hover: var(--tally-success-hover);
+
+  --color-tally-warning: var(--tally-warning);
+  --color-tally-warning-foreground: var(--tally-warning-foreground);
+  --color-tally-warning-hover: var(--tally-warning-hover);
+
+  --color-tally-info: var(--tally-info);
+  --color-tally-info-foreground: var(--tally-info-foreground);
+  --color-tally-info-hover: var(--tally-info-hover);
+
+  --color-tally-ring: var(--tally-ring);
+
+  --color-tally-background: var(--tally-background);
+  --color-tally-surface: var(--tally-surface);
+  --color-tally-surface-foreground: var(--tally-surface-foreground);
+  --color-tally-muted: var(--tally-muted);
+  --color-tally-muted-foreground: var(--tally-muted-foreground);
+  --color-tally-border: var(--tally-border-subtle);
+  --color-tally-input: var(--tally-input);
+
+  --color-tally-chart-1: var(--tally-chart-1);
+  --color-tally-chart-2: var(--tally-chart-2);
+  --color-tally-chart-3: var(--tally-chart-3);
+  --color-tally-chart-4: var(--tally-chart-4);
+}
+
+:root {
+  /* light only until dark mode is implemented */
+  color-scheme: light;
+
+  --tally-primary: #2f48f4;
+  --tally-primary-foreground: #fff;
+  --tally-primary-hover: #2438d9;
+  --tally-secondary: #f4f6fa;
+  --tally-secondary-foreground: #0b0c12;
+  --tally-secondary-hover: #e9ecf5;
+
+  --tally-ghost-foreground: #0b0c12;
+  --tally-ghost-hover: #f4f6fa;
+
+  --tally-ring: #2f48f4;
+
+  /* neutral surfaces */
+
+  --tally-background: #f4f5f9;
+  --tally-surface: #fff;
+  --tally-surface-foreground: #0b0c12;
+  --tally-muted: #f4f6fa;
+  --tally-muted-foreground: #5a5d66;
+  /* Decorative edges (cards, table rows, gridlines). */
+  --tally-border-subtle: #e4e7f0;
+  /* Form control boundary, stronger so a field is visible without its fill. */
+  --tally-input: #8a90a6;
+
+  /* status colors */
+
+  --tally-info: #f0f3ff;
+  --tally-info-foreground: #1c2677;
+  --tally-info-hover: #e1e7ff;
+
+  --tally-success: #cff5e3;
+  --tally-success-foreground: #14532d;
+  --tally-success-hover: #b5ebd0;
+
+  --tally-danger: #fde3e0;
+  --tally-danger-foreground: #8a1c12;
+  --tally-danger-hover: #fbcfca;
+
+  --tally-warning: #fff1b8;
+  --tally-warning-foreground: #6b4a00;
+  --tally-warning-hover: #ffe58a;
+
+  /* chart series, in the order a multi-series chart should use them */
+
+  --tally-chart-1: #2f48f4;
+  --tally-chart-2: #e86f3a;
+  --tally-chart-3: #2e9e6b;
+  --tally-chart-4: #8a90a6;
+}

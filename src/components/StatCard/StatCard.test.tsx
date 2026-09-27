@@ -132,7 +132,7 @@ describe('StatCard', () => {
 
     const card = screen.getByTestId('stat-card');
     expect(card).toHaveClass('custom-class');
-    expect(card).toHaveClass('bg-surface');
+    expect(card).toHaveClass('bg-tally-surface');
   });
 
   describe('when loading', () => {

@@ -99,8 +99,8 @@ export const WithSparklines: Story = {
                   label={`${article} daily views, last 14 days, ${rising ? 'rising' : 'falling'}`}
                   className={
                     rising
-                      ? 'h-8 w-24 text-success-foreground'
-                      : 'h-8 w-24 text-danger-foreground'
+                      ? 'h-8 w-24 text-tally-success-foreground'
+                      : 'h-8 w-24 text-tally-danger-foreground'
                   }
                 />
               </Table.Cell>

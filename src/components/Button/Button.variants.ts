@@ -1,18 +1,18 @@
 import { cva } from 'class-variance-authority';
 
 export const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 rounded-control font-medium transition-colors ' +
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-ring ' +
+  'inline-flex items-center justify-center gap-2 rounded-tally-control font-medium transition-colors ' +
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-tally-ring ' +
     'disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       /** Visual style. Use `danger` for actions or states that need attention. */
       variant: {
-        primary: 'bg-primary text-primary-foreground hover:bg-primary-hover',
+        primary: 'bg-tally-primary text-tally-primary-foreground hover:bg-tally-primary-hover',
         secondary:
-          'bg-secondary text-secondary-foreground hover:bg-secondary-hover',
-        ghost: 'bg-transparent text-ghost-foreground hover:bg-ghost-hover',
-        danger: 'bg-danger text-danger-foreground hover:bg-danger-hover',
+          'bg-tally-secondary text-tally-secondary-foreground hover:bg-tally-secondary-hover',
+        ghost: 'bg-transparent text-tally-ghost-foreground hover:bg-tally-ghost-hover',
+        danger: 'bg-tally-danger text-tally-danger-foreground hover:bg-tally-danger-hover',
       },
       /** Button height and padding. */
       size: {

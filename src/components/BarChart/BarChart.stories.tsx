@@ -7,7 +7,7 @@ const meta: Meta<typeof BarChart> = {
   component: BarChart,
   tags: ['autodocs'],
   args: {
-    className: 'w-full max-w-2xl text-primary',
+    className: 'w-full max-w-2xl text-tally-primary',
   },
 };
 export default meta;

@@ -159,14 +159,14 @@ describe('BarChart', () => {
       <BarChart
         data={days(3)}
         label="Views"
-        className="w-full text-success-foreground"
+        className="w-full text-tally-success-foreground"
         data-testid="chart"
       />,
     );
 
     const chart = screen.getByTestId('chart');
     expect(chart).toHaveClass('w-full');
-    expect(chart).toHaveClass('text-success-foreground');
-    expect(chart).not.toHaveClass('text-primary');
+    expect(chart).toHaveClass('text-tally-success-foreground');
+    expect(chart).not.toHaveClass('text-tally-primary');
   });
 });

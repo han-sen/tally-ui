@@ -39,7 +39,7 @@ describe('Card', () => {
 
     const card = screen.getByTestId('card');
     expect(card).toHaveClass('custom-class');
-    expect(card).toHaveClass('bg-surface');
+    expect(card).toHaveClass('bg-tally-surface');
   });
 
   it.each(parts)(

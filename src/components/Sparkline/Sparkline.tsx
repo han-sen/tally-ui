@@ -41,7 +41,7 @@ const AREA_TOP_OPACITY = 0.3;
  * <Sparkline
  *   data={[3, 5, 4, 8, 7, 12]}
  *   label="Views trending up"
- *   className="h-8 w-24 text-success-foreground"
+ *   className="h-8 w-24 text-tally-success-foreground"
  * />
  * ```
  */

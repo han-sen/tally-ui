@@ -1,3 +1,5 @@
+'use client';
+
 import {
   forwardRef,
   useState,
@@ -101,7 +103,7 @@ export function TabsList({ children, className, ...props }: TabsListProps) {
       {...props}
       role="tablist"
       className={cn(
-        'inline-flex flex-wrap items-center gap-1 rounded-control bg-muted p-1 text-center',
+        'inline-flex flex-wrap items-center gap-1 rounded-tally-control bg-tally-muted p-1 text-center',
         className,
       )}
     >

@@ -93,13 +93,13 @@ describe('Sparkline', () => {
     render(
       <Sparkline
         data={[3, 5, 4, 8]}
-        className="h-8 w-24 text-primary"
+        className="h-8 w-24 text-tally-primary"
         data-testid="sparkline"
       />,
     );
 
     const svg = screen.getByTestId('sparkline');
     expect(svg).toHaveClass('h-8');
-    expect(svg).toHaveClass('text-primary');
+    expect(svg).toHaveClass('text-tally-primary');
   });
 });

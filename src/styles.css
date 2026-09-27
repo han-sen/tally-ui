@@ -1,0 +1,12 @@
+/*
+ * Prebuilt library stylesheet: Tailwind's base styles, the design tokens, and
+ * only the utility classes the components use. Storybook uses `index.css`
+ * instead, which scans the stories too.
+ */
+@import 'tailwindcss' source(none);
+@source './components';
+@source './lib';
+@source not './**/*.stories.tsx';
+@source not './**/*.test.tsx';
+@import './fonts.css';
+@import './tokens.css';

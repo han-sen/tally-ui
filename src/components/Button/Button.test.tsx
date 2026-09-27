@@ -62,6 +62,6 @@ describe('Button', () => {
     render(<Button>Save</Button>);
     const button = screen.getByRole('button', { name: 'Save' });
     expect(button).toHaveAttribute('data-variant', 'primary');
-    expect(button).toHaveClass('bg-primary');
+    expect(button).toHaveClass('bg-tally-primary');
   });
 });

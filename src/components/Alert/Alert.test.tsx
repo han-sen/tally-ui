@@ -28,12 +28,12 @@ describe('Alert', () => {
   it('falls back to the primary variant when none is passed', () => {
     render(<Alert>Message</Alert>);
     const alert = screen.getByRole('status');
-    expect(alert).toHaveClass('bg-primary');
+    expect(alert).toHaveClass('bg-tally-primary');
   });
 
   it('applies the classes for the chosen variant', () => {
     render(<Alert variant="danger">Message</Alert>);
-    expect(screen.getByRole('alert')).toHaveClass('bg-danger');
+    expect(screen.getByRole('alert')).toHaveClass('bg-tally-danger');
   });
 
   it('exposes the resolved variant as a data attribute', () => {
@@ -67,7 +67,7 @@ describe('Alert', () => {
     );
     const alert = screen.getByRole('status');
     expect(alert).toHaveClass('custom-class');
-    expect(alert).toHaveClass('bg-info');
+    expect(alert).toHaveClass('bg-tally-info');
     expect(alert).toHaveAttribute('id', 'my-alert');
   });
 

@@ -6,7 +6,7 @@ describe('Badge', () => {
   it('renders a badge variant', () => {
     render(<Badge variant="danger">Test</Badge>);
 
-    expect(screen.getByText('Test')).toHaveClass('bg-danger');
+    expect(screen.getByText('Test')).toHaveClass('bg-tally-danger');
   });
 
   it('exposes the resolved variant as a data attribute', () => {
@@ -23,7 +23,7 @@ describe('Badge', () => {
 
     const badge = screen.getByText('Test');
     expect(badge).toHaveAttribute('data-variant', 'primary');
-    expect(badge).toHaveClass('bg-primary');
+    expect(badge).toHaveClass('bg-tally-primary');
   });
 
   it('merges a consumer className and passes other props through', () => {

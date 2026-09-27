@@ -52,12 +52,12 @@ const total = (values: number[]) => values.reduce((sum, v) => sum + v, 0);
 
 export const AttentionTracker: Story = {
   render: () => (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-tally-background p-6">
       <div className="mx-auto flex max-w-5xl flex-col gap-6">
         <header className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="text-xl font-semibold">Attention tracker</h1>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-tally-muted-foreground">
               Wikipedia page views for car models
             </p>
           </div>
@@ -168,8 +168,8 @@ export const AttentionTracker: Story = {
                             label={`${name} trend, ${rising ? 'rising' : 'falling'}`}
                             className={
                               rising
-                                ? 'h-8 w-24 text-success-foreground'
-                                : 'h-8 w-24 text-danger-foreground'
+                                ? 'h-8 w-24 text-tally-success-foreground'
+                                : 'h-8 w-24 text-tally-danger-foreground'
                             }
                           />
                         </Table.Cell>

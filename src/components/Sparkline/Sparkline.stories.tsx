@@ -14,28 +14,28 @@ type Story = StoryObj<typeof Sparkline>;
 export const UpTrend: Story = {
   args: {
     data: [3, 5, 4, 8, 7, 12, 11, 15],
-    className: 'h-8 w-24 text-success-foreground',
+    className: 'h-8 w-24 text-tally-success-foreground',
   },
 };
 
 export const DownTrend: Story = {
   args: {
     data: [15, 12, 13, 9, 10, 6, 7, 3],
-    className: 'h-8 w-24 text-danger-foreground',
+    className: 'h-8 w-24 text-tally-danger-foreground',
   },
 };
 
 export const FlatData: Story = {
   args: {
     data: [5, 5, 5, 5, 5],
-    className: 'h-8 w-24 text-primary',
+    className: 'h-8 w-24 text-tally-primary',
   },
 };
 
 export const WithZeros: Story = {
   args: {
     data: [0, 4, 0, 6, 0, 8],
-    className: 'h-8 w-24 text-primary',
+    className: 'h-8 w-24 text-tally-primary',
   },
 };
 
@@ -44,7 +44,7 @@ export const WithGap: Story = {
   render: () => (
     <Sparkline
       data={[3, 5, NaN, 8, 7, 12]}
-      className="h-8 w-24 text-primary"
+      className="h-8 w-24 text-tally-primary"
     />
   ),
 };
@@ -56,13 +56,13 @@ export const MixedColors: Story = {
     <div className="flex items-center gap-6">
       <Sparkline
         data={[3, 5, 4, 8, 7, 12]}
-        className="h-8 w-24 text-success-foreground"
+        className="h-8 w-24 text-tally-success-foreground"
       />
       <Sparkline
         data={[12, 9, 10, 6, 7, 3]}
-        className="h-8 w-24 text-danger-foreground"
+        className="h-8 w-24 text-tally-danger-foreground"
       />
-      <Sparkline data={[4, 6, 5, 9, 8, 11]} className="h-8 w-24 text-primary" />
+      <Sparkline data={[4, 6, 5, 9, 8, 11]} className="h-8 w-24 text-tally-primary" />
     </div>
   ),
 };
@@ -71,7 +71,7 @@ export const Sizes: Story = {
   render: () => {
     const data = [3, 5, 4, 8, 7, 12, 11, 15];
     return (
-      <div className="flex flex-col items-start gap-4 text-primary">
+      <div className="flex flex-col items-start gap-4 text-tally-primary">
         <Sparkline data={data} className="h-6 w-16" />
         <Sparkline data={data} className="h-8 w-24" />
         <Sparkline data={data} className="h-16 w-48" />
