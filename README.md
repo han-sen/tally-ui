@@ -8,18 +8,22 @@ Built with React, TypeScript, Tailwind CSS v4, and class-variance-authority, doc
 
 ## Components
 
-| Component  | Notes                                                                                                                                                            |
-| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Button`   | `primary`, `secondary`, `ghost`, `danger` variants, three sizes, loading state, ref forwarding                                                                   |
-| `Tabs`     | Compound component (`Tabs.List`, `Tabs.Trigger`, `Tabs.Content`) with `tablist`/`tab`/`tabpanel` roles and `aria-selected`                                       |
-| `Badge`    | Status variants for short labels                                                                                                                                 |
-| `Alert`    | Compound component (`Alert.Title`, `Alert.Description`), status icon per variant, `alert` vs `status` role by severity                                           |
-| `Card`     | Compound component (`Card.Header`, `Card.Title`, `Card.Description`, `Card.Content`, `Card.Footer`) on the surface tokens                                        |
-| `StatCard` | Headline number built on `Card` and `Badge`, with an optional change (`delta`) whose direction and sentiment are separate, and an `isLoading` state              |
-| `Table`    | Semantic table parts (`Table.Header`, `Table.Body`, `Table.Row`, `Table.Head`, `Table.Cell`, `Table.Caption`) with a scrolling container and `numeric` alignment |
-| `Skeleton` | Single-shape loading placeholder sized with `className`, hidden from assistive tech, animated only when motion is allowed                                        |
+| Component    | Notes                                                                                                                                                            |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Button`     | `primary`, `secondary`, `ghost`, `danger` variants, three sizes, loading state, ref forwarding                                                                   |
+| `Tabs`       | Compound component (`Tabs.List`, `Tabs.Trigger`, `Tabs.Content`) with `tablist`/`tab`/`tabpanel` roles and `aria-selected`                                       |
+| `Badge`      | Status variants for short labels                                                                                                                                 |
+| `Alert`      | Compound component (`Alert.Title`, `Alert.Description`), status icon per variant, `alert` vs `status` role by severity                                           |
+| `Card`       | Compound component (`Card.Header`, `Card.Title`, `Card.Description`, `Card.Content`, `Card.Footer`) on the surface tokens                                        |
+| `StatCard`   | Headline number built on `Card` and `Badge`, with an optional change (`delta`) whose direction and sentiment are separate, and an `isLoading` state              |
+| `Table`      | Semantic table parts (`Table.Header`, `Table.Body`, `Table.Row`, `Table.Head`, `Table.Cell`, `Table.Caption`) with a scrolling container and `numeric` alignment |
+| `Skeleton`   | Single-shape loading placeholder sized with `className`, hidden from assistive tech, animated only when motion is allowed                                        |
+| `EmptyState` | Compound component (`EmptyState.Icon`, `.Title`, `.Description`, `.Actions`) for "no data" and "no results" views                                                |
+| `Input`      | Styled native text field with a forwarded ref, styled from `disabled`, `readOnly`, and `aria-invalid` instead of variants                                        |
+| `Sparkline`  | Tiny D3-scaled line chart with a gradient area fill, gaps for missing values, and an optional accessible `label`                                                 |
+| `BarChart`   | D3-scaled bar chart with a y-axis, gridlines, thinned x labels, optional `formatValue`/`formatLabel`, and an accessible `label`                                  |
 
-Planned: `EmptyState`, `DescriptionList`, a data-driven `DataTable` built on the `Table` parts, and two charts (`Sparkline`, `BarChart`) built on D3 scales and shapes rendered as React SVG.
+Planned: `DescriptionList` and a data-driven `DataTable` built on the `Table` parts. The charts use D3 only for scales and shape math and render the SVG with React, so they need no client-side DOM access.
 
 ## Getting started
 
@@ -57,6 +61,8 @@ npm run build       # type-check
 - `Tabs` doesn't yet support arrow-key navigation or roving `tabindex`.
 - `Table`'s horizontal scroll container isn't keyboard-focusable on its own, so a wide table with no focusable content inside it can't be scrolled by keyboard.
 - `Card.Title` renders a `div`, so it doesn't appear in the page outline unless the caller adds `role="heading"` and `aria-level`.
+- `BarChart` exposes only its `label` to assistive tech. The per-bar tooltips are for mouse users, so a hidden data table is still to do. It assumes non-negative values and unique labels.
+- `BarChart` draws in a fixed 600 by 300 coordinate space, so its text scales with the chart instead of measuring the container.
 - Dark mode isn't implemented yet, and the status colors are provisional until more components exist.
 
 ## Testing

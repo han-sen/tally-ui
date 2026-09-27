@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Badge } from '../Badge/Badge';
+import { Sparkline } from '../Sparkline/Sparkline';
 import { Table } from './Table';
 
 const meta: Meta<typeof Table> = {
@@ -44,6 +45,66 @@ export const ExampleTable: Story = {
             <Table.Cell numeric>{recall.cost}</Table.Cell>
           </Table.Row>
         ))}
+      </Table.Body>
+    </Table>
+  ),
+};
+
+const articleViews = [
+  {
+    article: 'Toyota Camry',
+    views: [1364, 1365, 1369, 1402, 1450, 1433, 1510, 1548, 1602, 1590, 1655, 1701, 1688, 1750],
+  },
+  {
+    article: 'Honda Accord',
+    views: [1180, 1175, 1190, 1162, 1140, 1155, 1120, 1101, 1098, 1075, 1080, 1052, 1040, 1031],
+  },
+  {
+    article: 'Ford F-150',
+    views: [2210, 2250, 2190, 2305, 2280, 2340, 2298, 2360, 2331, 2402, 2385, 2420, 2398, 2440],
+  },
+  {
+    article: 'Tesla Model 3',
+    views: [3120, 3050, 3210, 2980, 3300, 3105, 2890, 3400, 3250, 3010, 3360, 3120, 3290, 3180],
+  },
+];
+
+const sum = (values: number[]) => values.reduce((total, v) => total + v, 0);
+
+export const WithSparklines: Story = {
+  render: (args) => (
+    <Table {...args}>
+      <Table.Caption>Daily views over the last 14 days</Table.Caption>
+      <Table.Header>
+        <Table.Row>
+          <Table.Head>Article</Table.Head>
+          <Table.Head numeric>Total views</Table.Head>
+          <Table.Head>Trend</Table.Head>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        {articleViews.map(({ article, views }) => {
+          const rising = views[views.length - 1]! >= views[0]!;
+          return (
+            <Table.Row key={article}>
+              <Table.Cell>{article}</Table.Cell>
+              <Table.Cell numeric>
+                {sum(views).toLocaleString('en-US')}
+              </Table.Cell>
+              <Table.Cell>
+                <Sparkline
+                  data={views}
+                  label={`${article} daily views, last 14 days, ${rising ? 'rising' : 'falling'}`}
+                  className={
+                    rising
+                      ? 'h-8 w-24 text-success-foreground'
+                      : 'h-8 w-24 text-danger-foreground'
+                  }
+                />
+              </Table.Cell>
+            </Table.Row>
+          );
+        })}
       </Table.Body>
     </Table>
   ),
