@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, it, expect } from 'vitest';
 
 import { StatCard, type DeltaProps } from './StatCard';
@@ -165,7 +166,9 @@ describe('StatCard', () => {
     });
 
     it('is not marked busy and has no status message when loaded', () => {
-      render(<StatCard label="Revenue" value="$2400" data-testid="stat-card" />);
+      render(
+        <StatCard label="Revenue" value="$2400" data-testid="stat-card" />,
+      );
 
       expect(screen.getByTestId('stat-card')).not.toHaveAttribute('aria-busy');
       expect(screen.queryByRole('status')).not.toBeInTheDocument();
@@ -196,5 +199,42 @@ describe('StatCard', () => {
 
       expect(screen.queryByTestId('chart')).not.toBeInTheDocument();
     });
+  });
+
+  it('adds an actions button named after the label', async () => {
+    const user = userEvent.setup();
+    render(
+      <StatCard
+        label="Total views"
+        value="48,210"
+        actions={<button type="button">Export CSV</button>}
+      />,
+    );
+
+    await user.click(
+      screen.getByRole('button', { name: 'Total views actions' }),
+    );
+
+    expect(screen.getByRole('button', { name: 'Export CSV' })).toBeVisible();
+  });
+
+  it('keeps the actions button while loading', () => {
+    render(
+      <StatCard
+        label="Total views"
+        isLoading
+        actions={<button type="button">Export CSV</button>}
+      />,
+    );
+
+    expect(
+      screen.getByRole('button', { name: 'Total views actions' }),
+    ).toBeInTheDocument();
+  });
+
+  it('shows no actions button without actions', () => {
+    render(<StatCard label="Total views" value="48,210" />);
+
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 });

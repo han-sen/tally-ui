@@ -125,6 +125,16 @@ export const AttentionTracker: Story = {
         <div className="grid gap-4 md:grid-cols-4">
           <StatCard
             label="Total views"
+            actions={
+              <>
+                <Button variant="ghost" size="sm" className="justify-start">
+                  Show breakdown
+                </Button>
+                <Button variant="ghost" size="sm" className="justify-start">
+                  Copy value
+                </Button>
+              </>
+            }
             value="48,210"
             delta={{
               value: '4.2%',
@@ -142,6 +152,16 @@ export const AttentionTracker: Story = {
           />
           <StatCard
             label="Daily average"
+            actions={
+              <>
+                <Button variant="ghost" size="sm" className="justify-start">
+                  Show breakdown
+                </Button>
+                <Button variant="ghost" size="sm" className="justify-start">
+                  Copy value
+                </Button>
+              </>
+            }
             value="1,607"
             delta={{
               value: '1.1%',
@@ -159,6 +179,16 @@ export const AttentionTracker: Story = {
           />
           <StatCard
             label="Peak day"
+            actions={
+              <>
+                <Button variant="ghost" size="sm" className="justify-start">
+                  Show breakdown
+                </Button>
+                <Button variant="ghost" size="sm" className="justify-start">
+                  Copy value
+                </Button>
+              </>
+            }
             value="1,952"
             delta={{
               value: '0%',
@@ -178,7 +208,22 @@ export const AttentionTracker: Story = {
         </div>
 
         <Card>
-          <Card.Header>
+          <Card.Header
+            actionsLabel="Daily views actions"
+            actions={
+              <>
+                <Button variant="ghost" size="sm" className="justify-start">
+                  Download PNG
+                </Button>
+                <Button variant="ghost" size="sm" className="justify-start">
+                  Export CSV
+                </Button>
+                <Button variant="ghost" size="sm" className="justify-start">
+                  Change article
+                </Button>
+              </>
+            }
+          >
             <Card.Title>Daily views</Card.Title>
             <Card.Description>Toyota Camry, last 30 days</Card.Description>
           </Card.Header>
@@ -194,7 +239,26 @@ export const AttentionTracker: Story = {
 
         <div className="grid gap-4 md:grid-cols-3">
           <Card className="md:col-span-2">
-            <Card.Header>
+            <Card.Header
+              actionsLabel="Compared articles actions"
+              actions={
+                <>
+                  <Button variant="ghost" size="sm" className="justify-start">
+                    Export CSV
+                  </Button>
+                  <Button variant="ghost" size="sm" className="justify-start">
+                    Sort by total views
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="justify-start text-tally-danger-fg"
+                  >
+                    Remove all
+                  </Button>
+                </>
+              }
+            >
               <Card.Title>Compared articles</Card.Title>
               <Card.Description>Views over the last 12 days</Card.Description>
             </Card.Header>

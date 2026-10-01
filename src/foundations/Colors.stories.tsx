@@ -152,6 +152,13 @@ const sections: { title: string; pairs: Pair[] }[] = [
         kind: 'text',
       },
       {
+        label: 'Card heading on surface',
+        fg: '--tally-muted-heading',
+        bg: '--tally-surface',
+        need: 4.5,
+        kind: 'text',
+      },
+      {
         label: 'Muted text on muted fill',
         fg: '--tally-muted-fg',
         bg: '--tally-muted',

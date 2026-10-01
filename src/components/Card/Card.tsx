@@ -1,12 +1,27 @@
 import { type ReactNode } from 'react';
 import type { HTMLAttributes } from 'react';
 import { cn } from '../../lib/utils';
+import { CardActions } from './CardActions';
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
 }
 
-export type CardHeaderProps = CardProps;
+export interface CardHeaderProps extends CardProps {
+  /**
+   * Content for a popup opened by an ellipsis button in the header's top-right
+   * corner, such as buttons or links for this card. The button only appears
+   * when `actions` is passed. Clicking a button or link inside closes the
+   * popup.
+   */
+  actions?: ReactNode;
+  /**
+   * Accessible name for the ellipsis button. Name it after the card when a
+   * page has several, like "Total views actions".
+   * @default 'More actions'
+   */
+  actionsLabel?: string;
+}
 export type CardTitleProps = CardProps;
 export type CardDescriptionProps = CardProps;
 export type CardContentProps = CardProps;
@@ -46,17 +61,47 @@ export function Card({ children, className, ...props }: CardProps) {
 
 /**
  * Top section of a `Card`, usually holding `Card.Title` and `Card.Description`.
+ * Pass `actions` to add an ellipsis button that opens them in a popup.
+ *
+ * @example
+ * ```tsx
+ * <Card.Header
+ *   actions={
+ *     <>
+ *       <Button variant="ghost" size="sm">Export CSV</Button>
+ *       <Button variant="ghost" size="sm">Remove</Button>
+ *     </>
+ *   }
+ * >
+ *   <Card.Title>Total views</Card.Title>
+ * </Card.Header>
+ * ```
  */
-export function CardHeader({ children, className, ...props }: CardHeaderProps) {
+export function CardHeader({
+  children,
+  className,
+  actions,
+  actionsLabel = 'More actions',
+  ...props
+}: CardHeaderProps) {
   return (
     <div
       {...props}
       className={cn(
-        'flex flex-col gap-1 px-6 text-tally-secondary-heading',
+        'flex flex-col gap-1 px-6 text-tally-muted-heading',
+        // Room on the right for the actions button, so text never runs under it.
+        actions != null && 'relative pr-14',
         className,
       )}
     >
       {children}
+      {actions != null && (
+        // Out of the layout flow, so a header is the same height with or
+        // without actions. Pulled up to center the 32px button on a 20px line.
+        <div className="absolute -top-1.5 right-4">
+          <CardActions label={actionsLabel}>{actions}</CardActions>
+        </div>
+      )}
     </div>
   );
 }
