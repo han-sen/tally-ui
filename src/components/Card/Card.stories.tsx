@@ -36,3 +36,27 @@ export const ContentOnly: Story = {
     </Card>
   ),
 };
+
+export const WithActions: Story = {
+  render: (args) => (
+    <Card {...args} className="w-80">
+      <Card.Header
+        actionsLabel="Total views actions"
+        actions={
+          <>
+            <Button variant="ghost" size="sm" className="justify-start">
+              Export CSV
+            </Button>
+            <Button variant="ghost" size="sm" className="justify-start">
+              Remove from comparison
+            </Button>
+          </>
+        }
+      >
+        <Card.Title>Total views</Card.Title>
+        <Card.Description>Last 30 days</Card.Description>
+      </Card.Header>
+      <Card.Content className="text-2xl font-semibold">48,210</Card.Content>
+    </Card>
+  ),
+};

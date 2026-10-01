@@ -53,7 +53,7 @@
   --color-tally-background: var(--tally-background);
   --color-tally-surface: var(--tally-surface);
   --color-tally-surface-fg: var(--tally-surface-fg);
-  --color-tally-secondary-heading: var(--tally-secondary-heading);
+  --color-tally-muted-heading: var(--tally-muted-heading);
   --color-tally-muted: var(--tally-muted);
   --color-tally-muted-fg: var(--tally-muted-fg);
   --color-tally-border: var(--tally-border-subtle);
@@ -88,7 +88,7 @@
   --tally-background: #f4f5f9;
   --tally-surface: #fff;
   --tally-surface-fg: #0b0c12;
-  --tally-secondary-heading: #868686;
+  --tally-muted-heading: #6b6b6b;
   --tally-muted: #e3e2ed;
   --tally-muted-fg: #8f9094;
   /* Decorative edges (cards, table rows, gridlines). */

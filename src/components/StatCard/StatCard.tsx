@@ -30,6 +30,17 @@ interface StatCardBaseProps extends Omit<
    * Not shown while loading.
    */
   chart?: ReactNode;
+  /**
+   * Content for a popup opened by an ellipsis button in the card's top-right
+   * corner, such as buttons for this metric. Shown while loading too. See
+   * `Card.Header` for how the popup behaves.
+   */
+  actions?: ReactNode;
+  /**
+   * Accessible name for the ellipsis button.
+   * @default `${label} actions`
+   */
+  actionsLabel?: string;
 }
 
 interface StatCardLoadingProps extends StatCardBaseProps {
@@ -117,6 +128,8 @@ export function StatCard({
   value,
   delta,
   chart,
+  actions,
+  actionsLabel = `${label} actions`,
   isLoading,
   className,
   ...props
@@ -132,7 +145,13 @@ export function StatCard({
           Loading {label}
         </span>
       )}
-      <Card.Header className="text-sm font-semibold">{label}</Card.Header>
+      <Card.Header
+        className="text-sm font-semibold text-tally-muted-heading"
+        actions={actions}
+        actionsLabel={actionsLabel}
+      >
+        {label}
+      </Card.Header>
       <Card.Content>
         {isLoading ? (
           <div className="flex flex-col gap-2">
