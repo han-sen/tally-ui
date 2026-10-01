@@ -55,6 +55,15 @@ const sections: RoadmapSection[] = [
     description: 'Next up, roughly in order.',
     items: [
       {
+        name: 'SegmentedControl',
+        description:
+          'Pick one option, like a date range, with radio semantics and a tab-like look.',
+      },
+      {
+        name: 'Legend',
+        description: "Color swatches and labels that key a chart's series.",
+      },
+      {
         name: 'DataTable',
         description: 'Typed columns and sorting, built on Table.',
       },
@@ -118,6 +127,11 @@ const sections: RoadmapSection[] = [
         name: 'Combobox',
         description:
           'Searchable select with async results, loading and empty states, and full keyboard support.',
+      },
+      {
+        name: 'Text and Heading',
+        description:
+          'Type scale and text colors as components, with heading level kept separate from size.',
       },
       {
         name: 'ProgressBar',

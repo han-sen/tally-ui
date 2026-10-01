@@ -13,6 +13,8 @@ import { Sparkline } from '../components/Sparkline/Sparkline';
 import { StatCard } from '../components/StatCard/StatCard';
 import { Table } from '../components/Table/Table';
 import { Tabs } from '../components/Tabs/Tabs';
+import { Heading } from '../components/Heading/Heading';
+import { Text } from '../components/Text/Text';
 
 const meta: Meta = {
   title: 'Foundations/Dashboard preview',
@@ -88,10 +90,10 @@ export const AttentionTracker: Story = {
       <div className="mx-auto flex max-w-5xl flex-col gap-6">
         <header className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="text-xl font-semibold">Attention tracker</h1>
-            <p className="text-sm text-tally-muted-fg">
+            <Heading level={1}>Attention tracker</Heading>
+            <Text variant="muted" size="sm">
               Wikipedia page views for car models
-            </p>
+            </Text>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-56">
