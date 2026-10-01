@@ -36,6 +36,7 @@ export {
   type EmptyStateDescriptionProps,
   type EmptyStateActionsProps,
 } from './components/EmptyState/EmptyState';
+export { Heading, type HeadingProps } from './components/Heading/Heading';
 export { Input, type InputProps } from './components/Input/Input';
 export {
   ProgressBar,
@@ -76,3 +77,4 @@ export {
   type TabsTriggerProps,
   type TabsContentProps,
 } from './components/Tabs/Tabs';
+export { Text, type TextProps } from './components/Text/Text';
