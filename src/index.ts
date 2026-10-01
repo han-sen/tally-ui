@@ -37,6 +37,10 @@ export {
   type EmptyStateActionsProps,
 } from './components/EmptyState/EmptyState';
 export { Input, type InputProps } from './components/Input/Input';
+export {
+  ProgressBar,
+  type ProgressBarProps,
+} from './components/ProgressBar/ProgressBar';
 export { Skeleton, type SkeletonProps } from './components/Skeleton/Skeleton';
 export {
   Sparkline,

@@ -59,11 +59,6 @@ const sections: RoadmapSection[] = [
         description: 'Typed columns and sorting, built on Table.',
       },
       {
-        name: 'ProgressBar',
-        description:
-          'A labelled progress bar with status color variants, for shares and goals.',
-      },
-      {
         name: 'DescriptionList',
         description: 'Label and value pairs for detail panels.',
       },
@@ -125,12 +120,18 @@ const sections: RoadmapSection[] = [
           'Searchable select with async results, loading and empty states, and full keyboard support.',
       },
       {
+        name: 'ProgressBar',
+        description:
+          'A labelled bar for shares and goals, in the bright chart colors.',
+      },
+      {
         name: 'BarChart and Sparkline',
         description: 'D3 scales rendered as React SVG.',
       },
       {
         name: 'StatCard',
-        description: 'A headline number with a trend and loading state.',
+        description:
+          'A headline number with a trend, a loading state, and an actions menu.',
       },
       {
         name: 'Table',
@@ -142,7 +143,8 @@ const sections: RoadmapSection[] = [
       },
       {
         name: 'Button, Input, Badge, Alert, Card',
-        description: 'The core controls and containers.',
+        description:
+          'The core controls and containers. Card headers can hold an actions menu.',
       },
       {
         name: 'Skeleton and EmptyState',

@@ -8,6 +8,7 @@ import { Button } from '../components/Button/Button';
 import { Card } from '../components/Card/Card';
 import { Combobox } from '../components/Combobox/Combobox';
 import { EmptyState } from '../components/EmptyState/EmptyState';
+import { ProgressBar } from '../components/ProgressBar/ProgressBar';
 import { Sparkline } from '../components/Sparkline/Sparkline';
 import { StatCard } from '../components/StatCard/StatCard';
 import { Table } from '../components/Table/Table';
@@ -63,6 +64,12 @@ const suggestedArticles = [
 ];
 
 const total = (values: number[]) => values.reduce((sum, v) => sum + v, 0);
+
+// Combined views of every compared article, for each one's share.
+const comparedTotal = articles.reduce(
+  (sum, { views }) => sum + total(views),
+  0,
+);
 
 // Small trend fixtures for the stat cards, shaped to match each delta.
 const totalViewsTrend = [
@@ -270,7 +277,10 @@ export const AttentionTracker: Story = {
                         others fit their content instead of stretching. */}
                     <Table.Head className="w-full">Article</Table.Head>
                     <Table.Head>Trend</Table.Head>
-                    <Table.Head numeric>Total views</Table.Head>
+                    <Table.Head numeric className="whitespace-nowrap">
+                      Total views
+                    </Table.Head>
+                    <Table.Head>Share</Table.Head>
                     <Table.Head>Status</Table.Head>
                   </Table.Row>
                 </Table.Header>
@@ -293,6 +303,25 @@ export const AttentionTracker: Story = {
                         </Table.Cell>
                         <Table.Cell numeric>
                           {total(views).toLocaleString('en-US')}
+                        </Table.Cell>
+                        <Table.Cell>
+                          <div className="flex items-center gap-2">
+                            <ProgressBar
+                              label={`${name} share of views`}
+                              value={total(views)}
+                              max={comparedTotal}
+                              size="sm"
+                              className="w-20"
+                            />
+                            {/* The progressbar already announces the share. */}
+                            <span
+                              aria-hidden="true"
+                              className="text-xs text-tally-muted-fg tabular-nums"
+                            >
+                              {Math.round((total(views) / comparedTotal) * 100)}
+                              %
+                            </span>
+                          </div>
                         </Table.Cell>
                         <Table.Cell>
                           <Badge variant={rising ? 'success' : 'danger'}>
