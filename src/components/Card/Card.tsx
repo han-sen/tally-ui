@@ -47,13 +47,15 @@ export function Card({ children, className, ...props }: CardProps) {
 /**
  * Top section of a `Card`, usually holding `Card.Title` and `Card.Description`.
  */
-export function CardHeader({
-  children,
-  className,
-  ...props
-}: CardHeaderProps) {
+export function CardHeader({ children, className, ...props }: CardHeaderProps) {
   return (
-    <div {...props} className={cn('flex flex-col gap-1 px-6', className)}>
+    <div
+      {...props}
+      className={cn(
+        'flex flex-col gap-1 px-6 text-tally-secondary-heading',
+        className,
+      )}
+    >
       {children}
     </div>
   );
@@ -80,10 +82,7 @@ export function CardDescription({
   ...props
 }: CardDescriptionProps) {
   return (
-    <div
-      {...props}
-      className={cn('text-sm text-tally-muted-fg', className)}
-    >
+    <div {...props} className={cn('text-sm text-tally-muted-fg', className)}>
       {children}
     </div>
   );
@@ -107,11 +106,7 @@ export function CardContent({
 /**
  * Bottom section of a `Card`, laid out as a row for actions or metadata.
  */
-export function CardFooter({
-  children,
-  className,
-  ...props
-}: CardFooterProps) {
+export function CardFooter({ children, className, ...props }: CardFooterProps) {
   return (
     <div {...props} className={cn('flex items-center gap-2 px-6', className)}>
       {children}

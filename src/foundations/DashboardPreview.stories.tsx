@@ -6,8 +6,8 @@ import { Badge } from '../components/Badge/Badge';
 import { BarChart } from '../components/BarChart/BarChart';
 import { Button } from '../components/Button/Button';
 import { Card } from '../components/Card/Card';
+import { Combobox } from '../components/Combobox/Combobox';
 import { EmptyState } from '../components/EmptyState/EmptyState';
-import { Input } from '../components/Input/Input';
 import { Sparkline } from '../components/Sparkline/Sparkline';
 import { StatCard } from '../components/StatCard/StatCard';
 import { Table } from '../components/Table/Table';
@@ -48,6 +48,20 @@ const articles = [
   },
 ];
 
+// Articles the user can add, as a search for "car models" might return them.
+const suggestedArticles = [
+  'Chevrolet Silverado',
+  'Honda CR-V',
+  'Hyundai Elantra',
+  'Nissan Altima',
+  'Ram Pickup',
+  'Subaru Outback',
+  'Tesla Model 3',
+  'Tesla Model Y',
+  'Toyota Corolla',
+  'Toyota RAV4',
+];
+
 const total = (values: number[]) => values.reduce((sum, v) => sum + v, 0);
 
 // Small trend fixtures for the stat cards, shaped to match each delta.
@@ -73,11 +87,17 @@ export const AttentionTracker: Story = {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Input
-              aria-label="Add an article"
-              placeholder="Add an article"
-              className="w-56"
-            />
+            <div className="w-56">
+              <Combobox
+                label="Add an article"
+                hideLabel
+                placeholder="Add an article"
+                items={suggestedArticles}
+                getLabel={(title) => title}
+                getKey={(title) => title}
+                emptyMessage="No matching articles"
+              />
+            </div>
             <Button>Add</Button>
             <Button variant="secondary">Export</Button>
             <Button variant="ghost">Reset</Button>
@@ -95,7 +115,7 @@ export const AttentionTracker: Story = {
         </Alert>
 
         <Tabs defaultValue="30" glow>
-          <Tabs.List className="flex-shrink border border-tally-info">
+          <Tabs.List className="border border-tally-info">
             <Tabs.Trigger value="7">7 days</Tabs.Trigger>
             <Tabs.Trigger value="30">30 days</Tabs.Trigger>
             <Tabs.Trigger value="90">90 days</Tabs.Trigger>

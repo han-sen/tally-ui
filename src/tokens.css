@@ -53,6 +53,7 @@
   --color-tally-background: var(--tally-background);
   --color-tally-surface: var(--tally-surface);
   --color-tally-surface-fg: var(--tally-surface-fg);
+  --color-tally-secondary-heading: var(--tally-secondary-heading);
   --color-tally-muted: var(--tally-muted);
   --color-tally-muted-fg: var(--tally-muted-fg);
   --color-tally-border: var(--tally-border-subtle);
@@ -87,8 +88,9 @@
   --tally-background: #f4f5f9;
   --tally-surface: #fff;
   --tally-surface-fg: #0b0c12;
-  --tally-muted: #f4f6fa;
-  --tally-muted-fg: #5a5d66;
+  --tally-secondary-heading: #868686;
+  --tally-muted: #e3e2ed;
+  --tally-muted-fg: #8f9094;
   /* Decorative edges (cards, table rows, gridlines). */
   --tally-border-subtle: #e4e7f0;
   /* Form control boundary, stronger so a field is visible without its fill. */

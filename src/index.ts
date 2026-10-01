@@ -23,6 +23,7 @@ export {
   type CardContentProps,
   type CardFooterProps,
 } from './components/Card/Card';
+export { Combobox, type ComboboxProps } from './components/Combobox/Combobox';
 export {
   EmptyState,
   EmptyStateIcon,

@@ -57,48 +57,180 @@ const sections: { title: string; pairs: Pair[] }[] = [
   {
     title: 'Buttons',
     pairs: [
-      { label: 'Primary', fg: '--tally-primary-fg', bg: '--tally-primary', need: 4.5, kind: 'text' },
-      { label: 'Primary hover', fg: '--tally-primary-fg', bg: '--tally-primary-hover', need: 4.5, kind: 'text' },
-      { label: 'Secondary', fg: '--tally-secondary-fg', bg: '--tally-secondary', need: 4.5, kind: 'text' },
-      { label: 'Secondary hover', fg: '--tally-secondary-fg', bg: '--tally-secondary-hover', need: 4.5, kind: 'text' },
-      { label: 'Ghost hover', fg: '--tally-ghost-fg', bg: '--tally-ghost-hover', need: 4.5, kind: 'text' },
+      {
+        label: 'Primary',
+        fg: '--tally-primary-fg',
+        bg: '--tally-primary',
+        need: 4.5,
+        kind: 'text',
+      },
+      {
+        label: 'Primary hover',
+        fg: '--tally-primary-fg',
+        bg: '--tally-primary-hover',
+        need: 4.5,
+        kind: 'text',
+      },
+      {
+        label: 'Secondary',
+        fg: '--tally-secondary-fg',
+        bg: '--tally-secondary',
+        need: 4.5,
+        kind: 'text',
+      },
+      {
+        label: 'Secondary hover',
+        fg: '--tally-secondary-fg',
+        bg: '--tally-secondary-hover',
+        need: 4.5,
+        kind: 'text',
+      },
+      {
+        label: 'Ghost hover',
+        fg: '--tally-ghost-fg',
+        bg: '--tally-ghost-hover',
+        need: 4.5,
+        kind: 'text',
+      },
     ],
   },
   {
     title: 'Status',
     pairs: [
-      { label: 'Info', fg: '--tally-info-fg', bg: '--tally-info', need: 4.5, kind: 'text' },
-      { label: 'Success', fg: '--tally-success-fg', bg: '--tally-success', need: 4.5, kind: 'text' },
-      { label: 'Warning', fg: '--tally-warning-fg', bg: '--tally-warning', need: 4.5, kind: 'text' },
-      { label: 'Danger', fg: '--tally-danger-fg', bg: '--tally-danger', need: 4.5, kind: 'text' },
-      { label: 'Danger hover', fg: '--tally-danger-fg', bg: '--tally-danger-hover', need: 4.5, kind: 'text' },
+      {
+        label: 'Info',
+        fg: '--tally-info-fg',
+        bg: '--tally-info',
+        need: 4.5,
+        kind: 'text',
+      },
+      {
+        label: 'Success',
+        fg: '--tally-success-fg',
+        bg: '--tally-success',
+        need: 4.5,
+        kind: 'text',
+      },
+      {
+        label: 'Warning',
+        fg: '--tally-warning-fg',
+        bg: '--tally-warning',
+        need: 4.5,
+        kind: 'text',
+      },
+      {
+        label: 'Danger',
+        fg: '--tally-danger-fg',
+        bg: '--tally-danger',
+        need: 4.5,
+        kind: 'text',
+      },
+      {
+        label: 'Danger hover',
+        fg: '--tally-danger-fg',
+        bg: '--tally-danger-hover',
+        need: 4.5,
+        kind: 'text',
+      },
     ],
   },
   {
     title: 'Surfaces and text',
     pairs: [
-      { label: 'Text on surface', fg: '--tally-surface-fg', bg: '--tally-surface', need: 4.5, kind: 'text' },
-      { label: 'Muted text on surface', fg: '--tally-muted-fg', bg: '--tally-surface', need: 4.5, kind: 'text' },
-      { label: 'Muted text on muted fill', fg: '--tally-muted-fg', bg: '--tally-muted', need: 4.5, kind: 'text' },
-      { label: 'Success text on surface', fg: '--tally-success-fg', bg: '--tally-surface', need: 4.5, kind: 'text' },
-      { label: 'Danger text on surface', fg: '--tally-danger-fg', bg: '--tally-surface', need: 4.5, kind: 'text' },
+      {
+        label: 'Text on surface',
+        fg: '--tally-surface-fg',
+        bg: '--tally-surface',
+        need: 4.5,
+        kind: 'text',
+      },
+      {
+        label: 'Muted text on surface',
+        fg: '--tally-muted-fg',
+        bg: '--tally-surface',
+        need: 4.5,
+        kind: 'text',
+      },
+      {
+        label: 'Muted text on muted fill',
+        fg: '--tally-muted-fg',
+        bg: '--tally-muted',
+        need: 4.5,
+        kind: 'text',
+      },
+      {
+        label: 'Success text on surface',
+        fg: '--tally-success-fg',
+        bg: '--tally-surface',
+        need: 4.5,
+        kind: 'text',
+      },
+      {
+        label: 'Danger text on surface',
+        fg: '--tally-danger-fg',
+        bg: '--tally-surface',
+        need: 4.5,
+        kind: 'text',
+      },
     ],
   },
   {
     title: 'Non-text: borders, focus, charts',
     pairs: [
-      { label: 'Focus ring', fg: '--tally-ring', bg: '--tally-surface', need: 3, kind: 'graphic' },
-      { label: 'Input border', fg: '--tally-input', bg: '--tally-surface', need: 3, kind: 'graphic' },
-      { label: 'Invalid input border', fg: '--tally-danger-fg', bg: '--tally-surface', need: 3, kind: 'graphic' },
+      {
+        label: 'Focus ring',
+        fg: '--tally-ring',
+        bg: '--tally-surface',
+        need: 3,
+        kind: 'graphic',
+      },
+      {
+        label: 'Input border',
+        fg: '--tally-input',
+        bg: '--tally-surface',
+        need: 3,
+        kind: 'graphic',
+      },
+      {
+        label: 'Invalid input border',
+        fg: '--tally-danger-fg',
+        bg: '--tally-surface',
+        need: 3,
+        kind: 'graphic',
+      },
     ],
   },
   {
     title: 'Chart series (on a card surface)',
     pairs: [
-      { label: 'Series 1', fg: '--tally-chart-1', bg: '--tally-surface', need: 3, kind: 'graphic' },
-      { label: 'Series 2', fg: '--tally-chart-2', bg: '--tally-surface', need: 3, kind: 'graphic' },
-      { label: 'Series 3', fg: '--tally-chart-3', bg: '--tally-surface', need: 3, kind: 'graphic' },
-      { label: 'Series 4', fg: '--tally-chart-4', bg: '--tally-surface', need: 3, kind: 'graphic' },
+      {
+        label: 'Series 1',
+        fg: '--tally-chart-1',
+        bg: '--tally-surface',
+        need: 3,
+        kind: 'graphic',
+      },
+      {
+        label: 'Series 2',
+        fg: '--tally-chart-2',
+        bg: '--tally-surface',
+        need: 3,
+        kind: 'graphic',
+      },
+      {
+        label: 'Series 3',
+        fg: '--tally-chart-3',
+        bg: '--tally-surface',
+        need: 3,
+        kind: 'graphic',
+      },
+      {
+        label: 'Series 4',
+        fg: '--tally-chart-4',
+        bg: '--tally-surface',
+        need: 3,
+        kind: 'graphic',
+      },
     ],
   },
 ];
@@ -107,7 +239,9 @@ function PairRow({ label, fg, bg, need, kind }: Pair) {
   const [ratio, setRatio] = useState<number | null>(null);
 
   useEffect(() => {
-    const frame = requestAnimationFrame(() => setRatio(contrastBetween(fg, bg)));
+    const frame = requestAnimationFrame(() =>
+      setRatio(contrastBetween(fg, bg)),
+    );
     return () => cancelAnimationFrame(frame);
   }, [fg, bg]);
 
@@ -157,8 +291,9 @@ export const Overview: Story = {
   render: () => (
     <div className="flex max-w-3xl flex-col gap-10">
       <p className="text-sm text-tally-muted-fg">
-        Contrast is calculated live from the tokens in <code>src/index.css</code>{' '}
-        (WCAG: 4.5 for text, 3 for graphics and UI boundaries).
+        Contrast is calculated live from the tokens in{' '}
+        <code>src/index.css</code> (WCAG: 4.5 for text, 3 for graphics and UI
+        boundaries).
       </p>
       {sections.map((section) => (
         <section key={section.title} className="flex flex-col gap-3">
