@@ -75,6 +75,8 @@ npm run build:lib   # library build: dist/ with JS, type declarations, and CSS
 
 **Prefixed tokens, so they never collide.** Every variable and theme key carries the `tally` prefix (`--tally-primary`, `bg-tally-primary`, `rounded-tally-control`). Generic names like `--primary` or `bg-primary` are what shadcn/ui and many apps define themselves, and sharing them would silently change one set of colors when both are loaded. `tokens.css` also leaves fonts alone, so importing it never replaces an app's own font. The fonts live in a separate `fonts.css` that only the prebuilt stylesheet and Storybook use.
 
+**Glow is a token, not a prop.** Charts use a soft glow to lift a line off the surface, and `Sparkline` has a `glow` prop for it. Other components leave it out, but you can opt in with the `shadow-tally-glow` token and a shadow color class: `<Button className="shadow-tally-glow shadow-tally-primary/45">`. Tinted fills look best with `shadow-current/35`, which uses the element's text color.
+
 **Variants with CVA.** Each element with variant logic gets its own `cva()` definition, kept in a separate `*.variants.ts` file so React Fast Refresh keeps working. Variant prop types are inferred from the definition rather than written by hand.
 
 **Variants are visible in the DOM.** Components with a `variant` prop (`Button`, `Badge`, `Alert`) expose the resolved variant as `data-variant`, including the default when none is passed. Tests, consumer CSS, and debugging can rely on one predictable attribute instead of matching class names, and it isn't a test-only hook.

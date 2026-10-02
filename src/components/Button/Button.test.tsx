@@ -64,43 +64,4 @@ describe('Button', () => {
     expect(button).toHaveAttribute('data-variant', 'primary');
     expect(button).toHaveClass('bg-tally-primary');
   });
-
-  it('has no glow by default', () => {
-    render(<Button>Save</Button>);
-    expect(screen.getByRole('button', { name: 'Save' })).not.toHaveClass(
-      'shadow-tally-glow',
-    );
-  });
-
-  it('adds a shadow tinted with the button color when glow is on', () => {
-    render(
-      <>
-        <Button glow>Save</Button>
-        <Button variant="danger" glow>
-          Remove
-        </Button>
-      </>,
-    );
-
-    // Primary text is white, so its glow takes the fill color instead.
-    expect(screen.getByRole('button', { name: 'Save' })).toHaveClass(
-      'shadow-tally-glow',
-      'shadow-tally-primary/45',
-    );
-    expect(screen.getByRole('button', { name: 'Remove' })).toHaveClass(
-      'shadow-tally-glow',
-      'shadow-current/35',
-    );
-  });
-
-  it('ignores glow on the ghost variant', () => {
-    render(
-      <Button variant="ghost" glow>
-        Reset
-      </Button>,
-    );
-    expect(screen.getByRole('button', { name: 'Reset' })).not.toHaveClass(
-      'shadow-tally-glow',
-    );
-  });
 });

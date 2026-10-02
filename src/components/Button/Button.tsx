@@ -13,11 +13,6 @@ export interface ButtonProps
    * actions (e.g. form submission) rather than manually toggling `disabled`.
    */
   isLoading?: boolean;
-  /**
-   * Adds a soft shadow under the button in its own color, so it looks lifted
-   * off the surface. Has no effect on the `ghost` variant. Off by default.
-   */
-  glow?: boolean;
 }
 
 /**
@@ -32,7 +27,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       className,
       variant,
       size,
-      glow = false,
       isLoading = false,
       disabled,
       children,
@@ -48,7 +42,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         type="button"
         data-variant={resolvedVariant}
         className={cn(
-          buttonVariants({ variant: resolvedVariant, size, glow }),
+          buttonVariants({ variant: resolvedVariant, size }),
           className,
         )}
         disabled={disabled || isLoading}
