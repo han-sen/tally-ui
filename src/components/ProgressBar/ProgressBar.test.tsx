@@ -59,17 +59,20 @@ describe('ProgressBar', () => {
     expect(fill()).toHaveStyle({ width: '0%' });
   });
 
-  it('hides the label visually by default', () => {
+  it('shows the label and percentage by default', () => {
     render(<ProgressBar label="Upload" value={40} />);
-
-    expect(screen.getByText('Upload').parentElement).toHaveClass('sr-only');
-  });
-
-  it('shows the label and percentage with showLabel', () => {
-    render(<ProgressBar label="Upload" value={40} showLabel />);
 
     expect(screen.getByText('Upload').parentElement).not.toHaveClass('sr-only');
     expect(screen.getByText('40%')).toBeVisible();
+  });
+
+  it('hides the label visually with hideLabel, keeping the accessible name', () => {
+    render(<ProgressBar label="Upload" value={40} hideLabel />);
+
+    expect(screen.getByText('Upload').parentElement).toHaveClass('sr-only');
+    expect(
+      screen.getByRole('progressbar', { name: 'Upload' }),
+    ).toBeInTheDocument();
   });
 
   it('uses the chart color for its variant', () => {
