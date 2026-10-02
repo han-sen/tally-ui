@@ -55,11 +55,6 @@ const sections: RoadmapSection[] = [
     description: 'Next up, roughly in order.',
     items: [
       {
-        name: 'SegmentedControl',
-        description:
-          'Pick one option, like a date range, with radio semantics and a tab-like look.',
-      },
-      {
         name: 'Legend',
         description: "Color swatches and labels that key a chart's series.",
       },
@@ -127,6 +122,11 @@ const sections: RoadmapSection[] = [
         name: 'Combobox',
         description:
           'Searchable select with async results, loading and empty states, and full keyboard support.',
+      },
+      {
+        name: 'RadioGroup',
+        description:
+          'Pick one option, like a date range, in a column or a row. Built on native radios.',
       },
       {
         name: 'Text and Heading',

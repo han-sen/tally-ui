@@ -42,6 +42,11 @@ export {
   ProgressBar,
   type ProgressBarProps,
 } from './components/ProgressBar/ProgressBar';
+export {
+  RadioGroup,
+  type RadioGroupOption,
+  type RadioGroupProps,
+} from './components/RadioGroup/RadioGroup';
 export { Skeleton, type SkeletonProps } from './components/Skeleton/Skeleton';
 export {
   Sparkline,

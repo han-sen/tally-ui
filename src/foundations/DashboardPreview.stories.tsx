@@ -9,10 +9,10 @@ import { Card } from '../components/Card/Card';
 import { Combobox } from '../components/Combobox/Combobox';
 import { EmptyState } from '../components/EmptyState/EmptyState';
 import { ProgressBar } from '../components/ProgressBar/ProgressBar';
+import { RadioGroup } from '../components/RadioGroup/RadioGroup';
 import { Sparkline } from '../components/Sparkline/Sparkline';
 import { StatCard } from '../components/StatCard/StatCard';
 import { Table } from '../components/Table/Table';
-import { Tabs } from '../components/Tabs/Tabs';
 import { Heading } from '../components/Heading/Heading';
 import { Text } from '../components/Text/Text';
 
@@ -123,13 +123,19 @@ export const AttentionTracker: Story = {
           </Alert.Description>
         </Alert>
 
-        <Tabs defaultValue="30" glow>
-          <Tabs.List className="border border-tally-info">
-            <Tabs.Trigger value="7">7 days</Tabs.Trigger>
-            <Tabs.Trigger value="30">30 days</Tabs.Trigger>
-            <Tabs.Trigger value="90">90 days</Tabs.Trigger>
-          </Tabs.List>
-        </Tabs>
+        {/* A RadioGroup, not Tabs: the range changes the data below rather
+            than switching between panels. */}
+        <RadioGroup
+          label="Date range"
+          hideLabel
+          orientation="horizontal"
+          options={[
+            { value: '7', label: '7 days' },
+            { value: '30', label: '30 days' },
+            { value: '90', label: '90 days' },
+          ]}
+          defaultValue="30"
+        />
 
         <div className="grid gap-4 md:grid-cols-4">
           <StatCard
