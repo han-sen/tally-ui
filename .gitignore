@@ -28,3 +28,6 @@ storybook-static
 
 # npm pack output
 *.tgz
+
+# Local Claude Code config
+.claude/
