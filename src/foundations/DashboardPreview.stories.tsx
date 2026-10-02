@@ -317,6 +317,7 @@ export const AttentionTracker: Story = {
                               value={total(views)}
                               max={comparedTotal}
                               size="sm"
+                              hideLabel
                               className="w-20"
                             />
                             {/* The progressbar already announces the share. */}

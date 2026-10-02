@@ -21,40 +21,42 @@ export interface ProgressBarProps
    */
   max?: number;
   /**
-   * What the bar measures, like "Upload" or "Share of views". Always used as
-   * the accessible name; shown above the bar only when `showLabel` is set.
+   * What the bar measures, like "Upload" or "Share of views". Shown above the
+   * bar with the percentage, and used as the accessible name.
    */
   label: string;
   /**
-   * Shows `label` above the bar, with the percentage on the right.
+   * Hides the label and percentage visually but keeps the label for screen
+   * readers. Use it where the context already says what the bar measures, like
+   * a table column.
    * @default false
    */
-  showLabel?: boolean;
+  hideLabel?: boolean;
 }
 
 /**
  * Horizontal bar that shows how far along something is, as a share of `max`.
  *
  * The bar is a `progressbar` for screen readers, named by `label` and read as
- * a percentage. Pass `showLabel` to also show the label and percentage above
- * the bar.
+ * a percentage. The label and percentage show above the bar unless `hideLabel`
+ * is set.
  *
  * @example
  * ```tsx
- * <ProgressBar label="Share of views" value={62} showLabel variant="success" />
+ * <ProgressBar label="Share of views" value={62} variant="success" />
  * ```
  *
  * @example
  * A count instead of a percentage, read as "60%":
  * ```tsx
- * <ProgressBar label="Articles loaded" value={3} max={5} size="sm" />
+ * <ProgressBar label="Articles loaded" value={3} max={5} size="sm" hideLabel />
  * ```
  */
 export function ProgressBar({
   value,
   max = 100,
   label,
-  showLabel = false,
+  hideLabel = false,
   variant,
   size,
   className,
@@ -76,7 +78,7 @@ export function ProgressBar({
       <div
         className={cn(
           'flex items-baseline justify-between gap-2 text-sm',
-          !showLabel && 'sr-only',
+          hideLabel && 'sr-only',
         )}
       >
         <span id={labelId} className="font-medium text-tally-surface-fg">

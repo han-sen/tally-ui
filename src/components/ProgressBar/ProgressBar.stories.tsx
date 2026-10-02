@@ -24,9 +24,10 @@ type Story = StoryObj<typeof ProgressBar>;
 
 export const Default: Story = {};
 
-export const WithLabel: Story = {
+/** The label is still read by screen readers. */
+export const HiddenLabel: Story = {
   args: {
-    showLabel: true,
+    hideLabel: true,
   },
 };
 
@@ -41,7 +42,6 @@ export const Variants: Story = {
             label={variant}
             value={80 - i * 15}
             variant={variant}
-            showLabel
           />
         ),
       )}
@@ -52,8 +52,8 @@ export const Variants: Story = {
 export const Sizes: Story = {
   render: (args) => (
     <div className="flex flex-col gap-4">
-      <ProgressBar {...args} label="Small" size="sm" showLabel />
-      <ProgressBar {...args} label="Medium" size="md" showLabel />
+      <ProgressBar {...args} label="Small" size="sm" />
+      <ProgressBar {...args} label="Medium" size="md" />
     </div>
   ),
 };
@@ -64,6 +64,5 @@ export const CustomMax: Story = {
     label: 'Articles loaded',
     value: 3,
     max: 5,
-    showLabel: true,
   },
 };
