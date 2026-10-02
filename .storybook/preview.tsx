@@ -4,6 +4,13 @@ import '../src/index.css';
 
 const preview: Preview = {
   parameters: {
+    // Welcome comes first, so it is also the page Storybook opens on.
+    options: {
+      storySort: {
+        order: ['Welcome', 'Foundations', 'Components', 'Project'],
+      },
+    },
+
     controls: {
       matchers: {
         color: /(background|color)$/i,
