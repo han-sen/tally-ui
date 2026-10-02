@@ -6,22 +6,15 @@ export const buttonVariants = cva(
     'disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
-      /**
-       * Visual style. Use `danger` for actions or states that need attention.
-       *
-       * Each variant also sets the glow's color, which only shows when `glow`
-       * adds the shadow. Pale fills would barely show as a shadow, so those
-       * variants use their darker text color instead. Primary has white text,
-       * so it uses its fill.
-       */
+      /** Visual style. Use `danger` for actions or states that need attention. */
       variant: {
         primary:
-          'bg-tally-primary text-tally-primary-fg hover:bg-tally-primary-hover shadow-tally-primary/45',
+          'bg-tally-primary text-tally-primary-fg hover:bg-tally-primary-hover',
         secondary:
-          'bg-tally-secondary text-tally-secondary-fg hover:bg-tally-secondary-hover shadow-current/25',
+          'bg-tally-secondary text-tally-secondary-fg hover:bg-tally-secondary-hover',
         ghost: 'bg-transparent text-tally-ghost-fg hover:bg-tally-ghost-hover',
         danger:
-          'bg-tally-danger text-tally-danger-fg hover:bg-tally-danger-hover shadow-current/35',
+          'bg-tally-danger text-tally-danger-fg hover:bg-tally-danger-hover',
       },
       /** Button height and padding. */
       size: {
@@ -29,24 +22,10 @@ export const buttonVariants = cva(
         md: 'h-10 px-4 text-sm',
         lg: 'h-12 px-6 text-base',
       },
-      /** Soft shadow under the button in its own color. */
-      glow: {
-        true: '',
-        false: '',
-      },
     },
-    // Ghost has no fill, so a shadow would float under nothing. It ignores glow.
-    compoundVariants: [
-      {
-        variant: ['primary', 'secondary', 'danger'],
-        glow: true,
-        class: 'shadow-tally-glow',
-      },
-    ],
     defaultVariants: {
       variant: 'primary',
       size: 'md',
-      glow: false,
     },
   },
 );

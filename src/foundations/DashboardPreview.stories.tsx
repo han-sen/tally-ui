@@ -110,9 +110,7 @@ export const AttentionTracker: Story = {
             <Button>Add</Button>
             <Button variant="secondary">Export</Button>
             <Button variant="ghost">Reset</Button>
-            <Button variant="danger" glow>
-              Clear all
-            </Button>
+            <Button variant="danger">Clear all</Button>
           </div>
         </header>
 
@@ -365,21 +363,11 @@ export const AttentionTracker: Story = {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="primary" glow>
-            Primary
-          </Badge>
-          <Badge variant="info" glow>
-            Info
-          </Badge>
-          <Badge variant="success" glow>
-            Success
-          </Badge>
-          <Badge variant="warning" glow>
-            Warning
-          </Badge>
-          <Badge variant="danger" glow>
-            Danger
-          </Badge>
+          <Badge variant="primary">Primary</Badge>
+          <Badge variant="info">Info</Badge>
+          <Badge variant="success">Success</Badge>
+          <Badge variant="warning">Warning</Badge>
+          <Badge variant="danger">Danger</Badge>
         </div>
       </div>
     </div>

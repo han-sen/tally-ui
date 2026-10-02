@@ -10,11 +10,6 @@ export interface BadgeProps
    * Text content for the badge
    */
   children: ReactNode;
-  /**
-   * Adds a soft shadow under the badge in its own color, so it looks lifted
-   * off the surface. Off by default.
-   */
-  glow?: boolean;
 }
 
 /**
@@ -26,7 +21,6 @@ export interface BadgeProps
 
 export const Badge = ({
   variant,
-  glow = false,
   children,
   className,
   ...props
@@ -37,10 +31,7 @@ export const Badge = ({
     <span
       data-variant={resolvedVariant}
       {...props}
-      className={cn(
-        badgeVariants({ variant: resolvedVariant, glow }),
-        className,
-      )}
+      className={cn(badgeVariants({ variant: resolvedVariant }), className)}
     >
       {children}
     </span>
