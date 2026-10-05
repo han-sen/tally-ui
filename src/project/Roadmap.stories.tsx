@@ -35,25 +35,19 @@ const statusBadge: Record<
 };
 
 // Keep this list current: move items between sections as work lands, and add
-// new ideas to "Planned".
+// new ideas to "Planned". When a component is being built, add an
+// 'in-progress' "Building now" section at the top for it.
 const sections: RoadmapSection[] = [
   {
-    status: 'in-progress',
-    title: 'Building now',
-    description: 'Being built now, on its own branch.',
+    status: 'planned',
+    title: 'Next components',
+    description: 'Next up, roughly in order.',
     items: [
       {
         name: 'LineChart',
         description:
           'Several series over time, with a hover crosshair and tooltip that are also reachable by keyboard.',
       },
-    ],
-  },
-  {
-    status: 'planned',
-    title: 'Next components',
-    description: 'Next up, roughly in order.',
-    items: [
       {
         name: 'Legend',
         description: "Color swatches and labels that key a chart's series.",

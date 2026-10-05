@@ -4,26 +4,35 @@
 
 Tally UI is a small component library designed for building dashboards.
 
+**[Browse the live Storybook](https://han-sen.github.io/tally-ui/)**, which includes a [full dashboard built from the components](https://han-sen.github.io/tally-ui/?path=/story/foundations-dashboard-preview--attention-tracker) and a [roadmap](https://han-sen.github.io/tally-ui/?path=/story/project-roadmap--roadmap).
+
+[![A dashboard built with Tally UI: a header with an article search, a delayed-data alert, a date range picker, and stat cards with sparklines](docs/dashboard-preview.png)](https://han-sen.github.io/tally-ui/?path=/story/foundations-dashboard-preview--attention-tracker)
+
 Built with React, TypeScript, Tailwind CSS v4, and class-variance-authority, documented and developed in Storybook. This is a work in progress: the generic components come first, then the dashboard-specific ones.
 
 ## Components
 
-| Component    | Notes                                                                                                                                                            |
-| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Button`     | `primary`, `secondary`, `ghost`, `danger` variants, three sizes, loading state, ref forwarding                                                                   |
-| `Tabs`       | Compound component (`Tabs.List`, `Tabs.Trigger`, `Tabs.Content`) with `tablist`/`tab`/`tabpanel` roles and `aria-selected`                                       |
-| `Badge`      | Status variants for short labels                                                                                                                                 |
-| `Alert`      | Compound component (`Alert.Title`, `Alert.Description`), status icon per variant, `alert` vs `status` role by severity                                           |
-| `Card`       | Compound component (`Card.Header`, `Card.Title`, `Card.Description`, `Card.Content`, `Card.Footer`) on the surface tokens                                        |
-| `StatCard`   | Headline number built on `Card` and `Badge`, with an optional change (`delta`) whose direction and sentiment are separate, and an `isLoading` state              |
-| `Table`      | Semantic table parts (`Table.Header`, `Table.Body`, `Table.Row`, `Table.Head`, `Table.Cell`, `Table.Caption`) with a scrolling container and `numeric` alignment |
-| `Skeleton`   | Single-shape loading placeholder sized with `className`, hidden from assistive tech, animated only when motion is allowed                                        |
-| `EmptyState` | Compound component (`EmptyState.Icon`, `.Title`, `.Description`, `.Actions`) for "no data" and "no results" views                                                |
-| `Input`      | Styled native text field with a forwarded ref, styled from `disabled`, `readOnly`, and `aria-invalid` instead of variants                                        |
-| `Sparkline`  | Tiny D3-scaled line chart with a gradient area fill, gaps for missing values, and an optional accessible `label`                                                 |
-| `BarChart`   | D3-scaled bar chart with a y-axis, gridlines, thinned x labels, optional `formatValue`/`formatLabel`, and an accessible `label`                                  |
+| Component     | Notes                                                                                                                                                            |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Button`      | `primary`, `secondary`, `ghost`, `danger` variants, three sizes, loading state, ref forwarding                                                                   |
+| `Tabs`        | Compound component (`Tabs.List`, `Tabs.Trigger`, `Tabs.Content`) with `tablist`/`tab`/`tabpanel` roles and `aria-selected`                                       |
+| `Badge`       | Status variants for short labels                                                                                                                                 |
+| `Alert`       | Compound component (`Alert.Title`, `Alert.Description`), status icon per variant, `alert` vs `status` role by severity                                           |
+| `Card`        | Compound component (`Card.Header`, `Card.Title`, `Card.Description`, `Card.Content`, `Card.Footer`) on the surface tokens                                        |
+| `StatCard`    | Headline number built on `Card` and `Badge`, with an optional change (`delta`) whose direction and sentiment are separate, and an `isLoading` state              |
+| `Table`       | Semantic table parts (`Table.Header`, `Table.Body`, `Table.Row`, `Table.Head`, `Table.Cell`, `Table.Caption`) with a scrolling container and `numeric` alignment |
+| `Skeleton`    | Single-shape loading placeholder sized with `className`, hidden from assistive tech, animated only when motion is allowed                                        |
+| `EmptyState`  | Compound component (`EmptyState.Icon`, `.Title`, `.Description`, `.Actions`) for "no data" and "no results" views                                                |
+| `Input`       | Styled native text field with a forwarded ref, styled from `disabled`, `readOnly`, and `aria-invalid` instead of variants                                        |
+| `Sparkline`   | Tiny D3-scaled line chart with a gradient area fill, gaps for missing values, and an optional accessible `label`                                                 |
+| `BarChart`    | D3-scaled bar chart with a y-axis, gridlines, thinned x labels, optional `formatValue`/`formatLabel`, and an accessible `label`                                  |
+| `Combobox`    | Generic searchable select (WAI-ARIA combobox pattern) with keyboard support, filtering or async results, loading and empty states, controlled or uncontrolled    |
+| `RadioGroup`  | One choice from a set, built on native radios, with option values inferred as a typed union                                                                      |
+| `ProgressBar` | Labelled `progressbar` for shares and goals, in the chart colors, with `hideLabel`                                                                               |
+| `Text`        | Body text on the type scale and text color tokens                                                                                                                |
+| `Heading`     | `h1`–`h6` with the heading level kept separate from its visual size                                                                                              |
 
-Planned: `DescriptionList` and a data-driven `DataTable` built on the `Table` parts. The charts use D3 only for scales and shape math and render the SVG with React, so they need no client-side DOM access.
+Planned: `LineChart`, `Legend`, a data-driven `DataTable` built on the `Table` parts, and `DescriptionList`. See the [roadmap](https://han-sen.github.io/tally-ui/?path=/story/project-roadmap--roadmap) for the full list. The charts use D3 only for scales and shape math and render the SVG with React, so they need no client-side DOM access.
 
 ## Using the library
 
@@ -56,7 +65,7 @@ Fonts are not bundled. The tokens use `Inter Variable` and `JetBrains Mono Varia
 import { Button, StatCard, BarChart } from '@han-sen/tally-ui';
 ```
 
-Components that use React state (`Tabs`) are marked `'use client'`, so they work in Next.js App Router pages.
+Components that use React state (`Tabs`, `Combobox`, and the `Card` actions menu) are marked `'use client'`, so they work in Next.js App Router pages.
 
 ## Getting started
 
