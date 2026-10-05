@@ -106,4 +106,78 @@ describe('Tabs', () => {
 
     consoleError.mockRestore();
   });
+
+  it('links the active tab and its panel', () => {
+    renderTabs();
+
+    const trigger = screen.getByRole('tab', { name: 'Account' });
+    const panel = screen.getByRole('tabpanel');
+
+    expect(panel).toHaveAttribute('aria-labelledby', trigger.id);
+    expect(trigger).toHaveAttribute('aria-controls', panel.id);
+  });
+
+  it('names the panel after its tab', () => {
+    renderTabs();
+
+    // The panel's name comes from its tab ("Account"), not its content ("Account page")
+    expect(
+      screen.getByRole('tabpanel', { name: 'Account' }),
+    ).toBeInTheDocument();
+  });
+
+  it('sets aria-controls only on the active tab', async () => {
+    const user = userEvent.setup();
+    renderTabs();
+
+    const account = screen.getByRole('tab', { name: 'Account' });
+    const contact = screen.getByRole('tab', { name: 'Contact' });
+    // Inactive panels ('contact') aren't rendered, so there is nothing to point at
+    expect(account).toHaveAttribute('aria-controls');
+    expect(contact).not.toHaveAttribute('aria-controls');
+
+    await user.click(contact);
+
+    expect(contact).toHaveAttribute('aria-controls');
+    expect(account).not.toHaveAttribute('aria-controls');
+  });
+
+  it('links tabs whose value contains a space', () => {
+    render(
+      <Tabs defaultValue="page views">
+        <Tabs.List>
+          <Tabs.Trigger value="page views">Page views</Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content value="page views">Chart</Tabs.Content>
+      </Tabs>,
+    );
+
+    const trigger = screen.getByRole('tab', { name: 'Page views' });
+    const panel = screen.getByRole('tabpanel', { name: 'Page views' });
+
+    // A space would split the id reference in two
+    expect(trigger.id).not.toContain(' ');
+    expect(trigger).toHaveAttribute('aria-controls', panel.id);
+  });
+
+  it('makes the panel focusable by default', () => {
+    renderTabs();
+
+    expect(screen.getByRole('tabpanel')).toHaveAttribute('tabindex', '0');
+  });
+
+  it('lets a consumer override the panel tabIndex', () => {
+    render(
+      <Tabs defaultValue="account">
+        <Tabs.List>
+          <Tabs.Trigger value="account">Account</Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content value="account" tabIndex={-1}>
+          <button type="button">Edit</button>
+        </Tabs.Content>
+      </Tabs>,
+    );
+
+    expect(screen.getByRole('tabpanel')).toHaveAttribute('tabindex', '-1');
+  });
 });

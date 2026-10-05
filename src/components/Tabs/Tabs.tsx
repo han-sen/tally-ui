@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  useId,
   forwardRef,
   useState,
   createContext,
@@ -40,12 +41,21 @@ export interface TabsContentProps extends HTMLAttributes<HTMLDivElement> {
 const TabsContext = createContext<{
   activeTab: string;
   setActiveTab: (arg0: string) => void;
+  baseId: string;
 } | null>(null);
 
 function useTabsContext() {
   const ctx = useContext(TabsContext);
   if (!ctx) throw new Error('Tabs must be used inside <Tabs>');
   return ctx;
+}
+
+function getTabsId(
+  baseId: string,
+  stub: 'trigger' | 'panel',
+  value: string,
+): string {
+  return `${baseId}-${stub}-${encodeURIComponent(value)}`;
 }
 
 /**
@@ -85,9 +95,10 @@ export function Tabs({
   defaultValue: string;
 }) {
   const [activeTab, setActiveTab] = useState(defaultValue);
+  const baseId = useId();
 
   return (
-    <TabsContext.Provider value={{ activeTab, setActiveTab }}>
+    <TabsContext.Provider value={{ activeTab, setActiveTab, baseId }}>
       {children}
     </TabsContext.Provider>
   );
@@ -119,7 +130,7 @@ export function TabsList({ children, className, ...props }: TabsListProps) {
  */
 export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
   ({ children, value, className, ...props }, ref) => {
-    const { activeTab, setActiveTab } = useTabsContext();
+    const { activeTab, setActiveTab, baseId } = useTabsContext();
     const isActiveTab = value === activeTab;
 
     const { onClick = () => {} } = props;
@@ -131,6 +142,10 @@ export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
       <li role="presentation">
         <button
           {...props}
+          id={getTabsId(baseId, 'trigger', value)}
+          aria-controls={
+            isActiveTab ? getTabsId(baseId, 'panel', value) : undefined
+          }
           role="tab"
           aria-selected={isActiveTab}
           ref={ref}
@@ -158,7 +173,7 @@ export function TabsContent({
   className,
   ...props
 }: TabsContentProps) {
-  const { activeTab } = useTabsContext();
+  const { activeTab, baseId } = useTabsContext();
   const isActiveTab = value === activeTab;
 
   if (!isActiveTab) {
@@ -166,7 +181,19 @@ export function TabsContent({
   }
 
   return (
-    <div className={className} {...props} role="tabpanel">
+    <div
+      // insert tabindex before prop spread so consumer
+      // can override this if panel has interactive content
+      tabIndex={0}
+      className={cn(
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-tally-ring',
+        className,
+      )}
+      {...props}
+      role="tabpanel"
+      id={getTabsId(baseId, 'panel', value)}
+      aria-labelledby={getTabsId(baseId, 'trigger', value)}
+    >
       {children}
     </div>
   );
