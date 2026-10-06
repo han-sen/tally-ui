@@ -39,6 +39,11 @@ export {
 export { Heading, type HeadingProps } from './components/Heading/Heading';
 export { Input, type InputProps } from './components/Input/Input';
 export {
+  Legend,
+  type LegendItem,
+  type LegendProps,
+} from './components/Legend/Legend';
+export {
   ProgressBar,
   type ProgressBarProps,
 } from './components/ProgressBar/ProgressBar';

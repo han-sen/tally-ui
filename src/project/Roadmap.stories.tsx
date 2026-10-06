@@ -49,10 +49,6 @@ const sections: RoadmapSection[] = [
           'Several series over time, with a hover crosshair and tooltip that are also reachable by keyboard.',
       },
       {
-        name: 'Legend',
-        description: "Color swatches and labels that key a chart's series.",
-      },
-      {
         name: 'DataTable',
         description: 'Typed columns and sorting, built on Table.',
       },
@@ -131,6 +127,11 @@ const sections: RoadmapSection[] = [
         name: 'Text and Heading',
         description:
           'Type scale and text colors as components, with heading level kept separate from size.',
+      },
+      {
+        name: 'Legend',
+        description:
+          "Color swatches and labels that key a chart's series, with an optional value for each.",
       },
       {
         name: 'ProgressBar',
