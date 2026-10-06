@@ -45,3 +45,24 @@ export const SwitchesTabOnClick: Story = {
     expect(canvas.queryByText('Account page')).not.toBeInTheDocument();
   },
 };
+
+export const SwitchesTabWithArrowKeys: Story = {
+  ...ExampleTabs,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByRole('tab', { name: 'Account' }));
+    await userEvent.keyboard('{ArrowRight}');
+
+    expect(canvas.getByRole('tab', { name: 'Contact' })).toHaveFocus();
+    expect(canvas.getByText('Contact page')).toBeInTheDocument();
+  },
+};
+
+export const ManualActivation: Story = {
+  ...ExampleTabs,
+  args: {
+    defaultValue: 'account',
+    activationMode: 'manual',
+  },
+};

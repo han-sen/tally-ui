@@ -81,5 +81,7 @@ export {
   type TabsListProps,
   type TabsTriggerProps,
   type TabsContentProps,
+  type TabsProps,
+  type TabsActivationMode,
 } from './components/Tabs/Tabs';
 export { Text, type TextProps } from './components/Text/Text';

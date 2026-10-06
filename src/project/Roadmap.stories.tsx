@@ -73,9 +73,14 @@ const sections: RoadmapSection[] = [
           'A dark set of the same tokens; components need no changes.',
       },
       {
-        name: 'Tabs keyboard navigation',
+        name: 'Vertical tabs',
         description:
-          'Arrow keys move between tabs, as the ARIA pattern expects.',
+          'A vertical orientation, where ArrowUp and ArrowDown move between tabs.',
+      },
+      {
+        name: 'Discoverable disabled tabs',
+        description:
+          "Arrow keys still reach a disabled tab, so keyboard users learn it exists, but it can't be selected. For now, disabled tabs are skipped.",
       },
       {
         name: 'Accessible chart data',
@@ -147,7 +152,8 @@ const sections: RoadmapSection[] = [
       },
       {
         name: 'Tabs',
-        description: 'Compound tabs that also work from Server Components.',
+        description:
+          'Compound tabs with arrow-key navigation, automatic or manual activation, and Server Component support.',
       },
       {
         name: 'Button, Input, Badge, Alert, Card',

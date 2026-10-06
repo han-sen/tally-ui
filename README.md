@@ -12,25 +12,25 @@ Built with React, TypeScript, Tailwind CSS v4, and class-variance-authority, doc
 
 ## Components
 
-| Component     | Notes                                                                                                                                                            |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Button`      | `primary`, `secondary`, `ghost`, `danger` variants, three sizes, loading state, ref forwarding                                                                   |
-| `Tabs`        | Compound component (`Tabs.List`, `Tabs.Trigger`, `Tabs.Content`) with `tablist`/`tab`/`tabpanel` roles and `aria-selected`                                       |
-| `Badge`       | Status variants for short labels                                                                                                                                 |
-| `Alert`       | Compound component (`Alert.Title`, `Alert.Description`), status icon per variant, `alert` vs `status` role by severity                                           |
-| `Card`        | Compound component (`Card.Header`, `Card.Title`, `Card.Description`, `Card.Content`, `Card.Footer`) on the surface tokens                                        |
-| `StatCard`    | Headline number built on `Card` and `Badge`, with an optional change (`delta`) whose direction and sentiment are separate, and an `isLoading` state              |
-| `Table`       | Semantic table parts (`Table.Header`, `Table.Body`, `Table.Row`, `Table.Head`, `Table.Cell`, `Table.Caption`) with a scrolling container and `numeric` alignment |
-| `Skeleton`    | Single-shape loading placeholder sized with `className`, hidden from assistive tech, animated only when motion is allowed                                        |
-| `EmptyState`  | Compound component (`EmptyState.Icon`, `.Title`, `.Description`, `.Actions`) for "no data" and "no results" views                                                |
-| `Input`       | Styled native text field with a forwarded ref, styled from `disabled`, `readOnly`, and `aria-invalid` instead of variants                                        |
-| `Sparkline`   | Tiny D3-scaled line chart with a gradient area fill, gaps for missing values, and an optional accessible `label`                                                 |
-| `BarChart`    | D3-scaled bar chart with a y-axis, gridlines, thinned x labels, optional `formatValue`/`formatLabel`, and an accessible `label`                                  |
-| `Combobox`    | Generic searchable select (WAI-ARIA combobox pattern) with keyboard support, filtering or async results, loading and empty states, controlled or uncontrolled    |
-| `RadioGroup`  | One choice from a set, built on native radios, with option values inferred as a typed union                                                                      |
-| `ProgressBar` | Labelled `progressbar` for shares and goals, in the chart colors, with `hideLabel`                                                                               |
-| `Text`        | Body text on the type scale and text color tokens                                                                                                                |
-| `Heading`     | `h1`–`h6` with the heading level kept separate from its visual size                                                                                              |
+| Component     | Notes                                                                                                                                                                         |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Button`      | `primary`, `secondary`, `ghost`, `danger` variants, three sizes, loading state, ref forwarding                                                                                |
+| `Tabs`        | Compound component (`Tabs.List`, `Tabs.Trigger`, `Tabs.Content`) with `tablist`/`tab`/`tabpanel` roles, linked tabs and panels, arrow-key navigation, and an `activationMode` |
+| `Badge`       | Status variants for short labels                                                                                                                                              |
+| `Alert`       | Compound component (`Alert.Title`, `Alert.Description`), status icon per variant, `alert` vs `status` role by severity                                                        |
+| `Card`        | Compound component (`Card.Header`, `Card.Title`, `Card.Description`, `Card.Content`, `Card.Footer`) on the surface tokens                                                     |
+| `StatCard`    | Headline number built on `Card` and `Badge`, with an optional change (`delta`) whose direction and sentiment are separate, and an `isLoading` state                           |
+| `Table`       | Semantic table parts (`Table.Header`, `Table.Body`, `Table.Row`, `Table.Head`, `Table.Cell`, `Table.Caption`) with a scrolling container and `numeric` alignment              |
+| `Skeleton`    | Single-shape loading placeholder sized with `className`, hidden from assistive tech, animated only when motion is allowed                                                     |
+| `EmptyState`  | Compound component (`EmptyState.Icon`, `.Title`, `.Description`, `.Actions`) for "no data" and "no results" views                                                             |
+| `Input`       | Styled native text field with a forwarded ref, styled from `disabled`, `readOnly`, and `aria-invalid` instead of variants                                                     |
+| `Sparkline`   | Tiny D3-scaled line chart with a gradient area fill, gaps for missing values, and an optional accessible `label`                                                              |
+| `BarChart`    | D3-scaled bar chart with a y-axis, gridlines, thinned x labels, optional `formatValue`/`formatLabel`, and an accessible `label`                                               |
+| `Combobox`    | Generic searchable select (WAI-ARIA combobox pattern) with keyboard support, filtering or async results, loading and empty states, controlled or uncontrolled                 |
+| `RadioGroup`  | One choice from a set, built on native radios, with option values inferred as a typed union                                                                                   |
+| `ProgressBar` | Labelled `progressbar` for shares and goals, in the chart colors, with `hideLabel`                                                                                            |
+| `Text`        | Body text on the type scale and text color tokens                                                                                                                             |
+| `Heading`     | `h1`–`h6` with the heading level kept separate from its visual size                                                                                                           |
 
 Planned: `LineChart`, `Legend`, a data-driven `DataTable` built on the `Table` parts, and `DescriptionList`. See the [roadmap](https://han-sen.github.io/tally-ui/?path=/story/project-roadmap--roadmap) for the full list. The charts use D3 only for scales and shape math and render the SVG with React, so they need no client-side DOM access.
 
@@ -98,14 +98,14 @@ npm run build:lib   # library build: dist/ with JS, type declarations, and CSS
 
 **No outer margins.** Components style their inside (padding, gap, color). The layout that contains them decides the space around them.
 
-**Accessibility.** Tabs use the ARIA tabs roles. `Alert` uses `role="alert"` for warning and danger and `role="status"` otherwise. Status is conveyed by an icon and text as well as color, and decorative icons are `aria-hidden`. Loading states put `aria-busy` on the component and add visually hidden status text, while the skeleton shapes themselves are `aria-hidden`. The Storybook a11y addon runs axe checks on every story.
+**Accessibility.** Tabs follow the ARIA tabs pattern: each tab and its panel are linked with `aria-controls` and `aria-labelledby`, only the active tab is in the Tab order (roving `tabindex`), and arrow keys, Home, and End move between tabs. `Alert` uses `role="alert"` for warning and danger and `role="status"` otherwise. Status is conveyed by an icon and text as well as color, and decorative icons are `aria-hidden`. Loading states put `aria-busy` on the component and add visually hidden status text, while the skeleton shapes themselves are `aria-hidden`. The Storybook a11y addon runs axe checks on every story.
 
 **Documentation as the API surface.** Props carry JSDoc (including usage notes and known caveats), which shows up in editor hovers and in Storybook's autodocs.
 
 ## Known limitations
 
 - `Tabs` `defaultValue` must match a `Tabs.Trigger` and `Tabs.Content` value, but TypeScript can't verify that. A typo silently results in no active tab.
-- `Tabs` doesn't yet support arrow-key navigation or roving `tabindex`.
+- `Tabs` lists are horizontal only: there's no vertical orientation with ArrowUp and ArrowDown yet. Disabled tabs are skipped by the arrow keys rather than kept focusable.
 - `Table`'s horizontal scroll container isn't keyboard-focusable on its own, so a wide table with no focusable content inside it can't be scrolled by keyboard.
 - `Card.Title` renders a `div`, so it doesn't appear in the page outline unless the caller adds `role="heading"` and `aria-level`.
 - `BarChart` exposes only its `label` to assistive tech. The per-bar tooltips are for mouse users, so a hidden data table is still to do. It assumes non-negative values and unique labels.
