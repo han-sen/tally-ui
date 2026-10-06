@@ -28,11 +28,12 @@ Built with React, TypeScript, Tailwind CSS v4, and class-variance-authority, doc
 | `BarChart`    | D3-scaled bar chart with a y-axis, gridlines, thinned x labels, optional `formatValue`/`formatLabel`, and an accessible `label`                                               |
 | `Combobox`    | Generic searchable select (WAI-ARIA combobox pattern) with keyboard support, filtering or async results, loading and empty states, controlled or uncontrolled                 |
 | `RadioGroup`  | One choice from a set, built on native radios, with option values inferred as a typed union                                                                                   |
+| `Legend`      | Swatches and labels that key a chart's series, colored with the same text color class as the series, with an optional value per item                                          |
 | `ProgressBar` | Labelled `progressbar` for shares and goals, in the chart colors, with `hideLabel`                                                                                            |
 | `Text`        | Body text on the type scale and text color tokens                                                                                                                             |
 | `Heading`     | `h1`–`h6` with the heading level kept separate from its visual size                                                                                                           |
 
-Planned: `LineChart`, `Legend`, a data-driven `DataTable` built on the `Table` parts, and `DescriptionList`. See the [roadmap](https://han-sen.github.io/tally-ui/?path=/story/project-roadmap--roadmap) for the full list. The charts use D3 only for scales and shape math and render the SVG with React, so they need no client-side DOM access.
+Planned: `LineChart`, a data-driven `DataTable` built on the `Table` parts, and `DescriptionList`. See the [roadmap](https://han-sen.github.io/tally-ui/?path=/story/project-roadmap--roadmap) for the full list. The charts use D3 only for scales and shape math and render the SVG with React, so they need no client-side DOM access.
 
 ## Using the library
 
