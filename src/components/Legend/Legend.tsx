@@ -15,7 +15,7 @@ export interface LegendItem {
    *
    * ```tsx
    * <Legend items={[{ label: 'Camry', colorClassName: 'text-tally-chart-1' }]} />
-   * <BarChart className="text-tally-chart-1" … />
+   * <LineChart series={[{ name: 'Camry', colorClassName: 'text-tally-chart-1', … }]} … />
    * ```
    */
   colorClassName: string;

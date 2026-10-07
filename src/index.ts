@@ -44,6 +44,11 @@ export {
   type LegendProps,
 } from './components/Legend/Legend';
 export {
+  LineChart,
+  type LineChartProps,
+  type LineChartSeries,
+} from './components/LineChart/LineChart';
+export {
   ProgressBar,
   type ProgressBarProps,
 } from './components/ProgressBar/ProgressBar';

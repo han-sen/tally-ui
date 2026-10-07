@@ -8,6 +8,8 @@ import { Button } from '../components/Button/Button';
 import { Card } from '../components/Card/Card';
 import { Combobox } from '../components/Combobox/Combobox';
 import { EmptyState } from '../components/EmptyState/EmptyState';
+import { Legend } from '../components/Legend/Legend';
+import { LineChart } from '../components/LineChart/LineChart';
 import { ProgressBar } from '../components/ProgressBar/ProgressBar';
 import { RadioGroup } from '../components/RadioGroup/RadioGroup';
 import { Sparkline } from '../components/Sparkline/Sparkline';
@@ -49,6 +51,14 @@ const articles = [
       2210, 2250, 2190, 2305, 2280, 2340, 2298, 2360, 2331, 2402, 2385, 2420,
     ],
   },
+];
+
+// The last 12 days of August, matching the compared articles' views.
+const comparedDays = Array.from({ length: 12 }, (_, i) => `Aug ${i + 19}`);
+const articleColors = [
+  'text-tally-chart-1',
+  'text-tally-chart-2',
+  'text-tally-chart-3',
 ];
 
 // Articles the user can add, as a search for "car models" might return them.
@@ -246,6 +256,34 @@ export const AttentionTracker: Story = {
               label="Daily views for Toyota Camry over the last 30 days"
               formatValue={(v) => v.toLocaleString('en-US')}
               className="w-full"
+            />
+          </Card.Content>
+        </Card>
+
+        <Card>
+          <Card.Header>
+            <Card.Title>Views compared</Card.Title>
+            <Card.Description>
+              Three articles, last 12 days. Hover or focus the chart and use the
+              arrow keys for daily values.
+            </Card.Description>
+          </Card.Header>
+          <Card.Content className="flex flex-col gap-4">
+            <Legend
+              items={articles.map((article, i) => ({
+                label: article.name,
+                colorClassName: articleColors[i] ?? '',
+              }))}
+            />
+            <LineChart
+              label="Daily views for three vehicle articles over the last 12 days"
+              xLabels={comparedDays}
+              series={articles.map((article, i) => ({
+                name: article.name,
+                values: article.views,
+                colorClassName: articleColors[i],
+              }))}
+              formatValue={(v) => v.toLocaleString('en-US')}
             />
           </Card.Content>
         </Card>

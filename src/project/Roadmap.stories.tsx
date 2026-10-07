@@ -44,11 +44,6 @@ const sections: RoadmapSection[] = [
     description: 'Next up, roughly in order.',
     items: [
       {
-        name: 'LineChart',
-        description:
-          'Several series over time, with a hover crosshair and tooltip that are also reachable by keyboard.',
-      },
-      {
         name: 'DataTable',
         description: 'Typed columns and sorting, built on Table.',
       },
@@ -113,6 +108,11 @@ const sections: RoadmapSection[] = [
     description:
       'Each has stories, tests, and JSDoc. See them under Components.',
     items: [
+      {
+        name: 'LineChart',
+        description:
+          'Several series over time, with a hover crosshair and tooltip that are also reachable by keyboard.',
+      },
       {
         name: 'Combobox',
         description:
