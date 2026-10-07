@@ -11,6 +11,7 @@ import type {
 import { useControllableState } from '../../hooks/useControllableState';
 
 import { cn } from '../../lib/utils';
+import { getNextIndex } from '../../lib/navigation';
 import { Input } from '../Input/Input';
 import { Skeleton } from '../Skeleton/Skeleton';
 
@@ -295,7 +296,9 @@ export function Combobox<T>({
           break;
         }
         // From -1 (nothing highlighted) this lands on 0.
-        setActiveIndex((prev) => (prev >= lastIndex ? 0 : prev + 1));
+        setActiveIndex((prev) =>
+          getNextIndex(prev, 'next', filteredItems.length, { wrap: true }),
+        );
         break;
       case 'ArrowUp':
         e.preventDefault();
@@ -305,7 +308,9 @@ export function Combobox<T>({
           setActiveIndex(lastIndex);
           break;
         }
-        setActiveIndex((prev) => (prev <= 0 ? lastIndex : prev - 1));
+        setActiveIndex((prev) =>
+          getNextIndex(prev, 'previous', filteredItems.length, { wrap: true }),
+        );
         break;
       case 'Enter':
         if (activeItem === undefined) break;

@@ -16,6 +16,7 @@ import type {
 } from 'react';
 import { tabsTriggerVariants } from './Tabs.variants';
 import { cn } from '../../lib/utils';
+import { getNextIndex, type NavigationMove } from '../../lib/navigation';
 
 export interface TabsListProps extends HTMLAttributes<HTMLUListElement> {
   children: ReactNode;
@@ -131,6 +132,14 @@ export function Tabs({
   );
 }
 
+// Tabs wrap at the ends, following the APG tabs pattern.
+const TAB_KEY_MOVES: Partial<Record<string, NavigationMove>> = {
+  ArrowRight: 'next',
+  ArrowLeft: 'previous',
+  Home: 'first',
+  End: 'last',
+};
+
 /**
  * The container for a group of `Tabs.Trigger` elements,
  * must be used inside Tabs.
@@ -158,27 +167,11 @@ export function TabsList({
     const focusIndex = tabs.indexOf(event.target as HTMLButtonElement);
     if (focusIndex < 0) return;
 
-    let nextIndex: number;
-    switch (event.key) {
-      case 'ArrowRight':
-        nextIndex = (focusIndex + 1) % tabs.length;
-        break;
-      case 'ArrowLeft':
-        // Adding tabs.length keeps the left side positive, so 0 wraps to the
-        // last tab instead of -1.
-        nextIndex = (focusIndex - 1 + tabs.length) % tabs.length;
-        break;
-      case 'Home':
-        nextIndex = 0;
-        break;
-      case 'End':
-        nextIndex = tabs.length - 1;
-        break;
-      default:
-        return;
-    }
+    const move = TAB_KEY_MOVES[event.key];
+    if (!move) return;
 
-    const nextTab = tabs[nextIndex];
+    const nextTab =
+      tabs[getNextIndex(focusIndex, move, tabs.length, { wrap: true })];
     if (!nextTab) return;
     event.preventDefault();
     nextTab.focus();

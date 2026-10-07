@@ -1,5 +1,6 @@
 import type { SVGAttributes } from 'react';
 import { scaleLinear, scaleBand } from 'd3-scale';
+import { getLabelStep } from '../../lib/chart';
 import { cn, isDrawable } from '../../lib/utils';
 import { EmptyState } from '../EmptyState/EmptyState';
 
@@ -38,11 +39,6 @@ const margin = { top: 16, right: 16, bottom: 32, left: 40 };
 
 const innerWidth = WIDTH - margin.left - margin.right;
 const innerHeight = HEIGHT - margin.top - margin.bottom;
-
-// Rough width of one character at text-xs (12px) and the space left between
-// labels, both in drawing units. Used to decide how many x labels fit.
-const CHAR_WIDTH = 6.5;
-const LABEL_GAP = 12;
 
 // Radius of each bar's top corners, in drawing units. SVG's `rx` rounds all
 // four corners, so the bars are clipped with CSS instead, which rounds only the
@@ -106,15 +102,11 @@ export function BarChart({
 
   const yTicks = yScale.ticks(5);
 
-  // Show every nth x label so they never overlap: work out how many labels
-  // fit across the chart, then space them out to match the number of bars.
-  const longestLabel = Math.max(
-    ...data.map((d) => String(formatLabel?.(d.label) ?? d.label).length),
+  // Show every nth x label so they never overlap.
+  const step = getLabelStep(
+    data.map((d) => String(formatLabel?.(d.label) ?? d.label)),
+    innerWidth,
   );
-  const maxLabels = Math.floor(
-    innerWidth / (longestLabel * CHAR_WIDTH + LABEL_GAP),
-  );
-  const step = Math.max(1, Math.ceil(data.length / maxLabels));
 
   return (
     <svg
