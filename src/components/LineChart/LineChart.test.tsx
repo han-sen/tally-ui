@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
+import { mockElementWidth } from '../../test/resizeObserver';
 import { LineChart } from './LineChart';
 
 const xLabels = ['Aug 1', 'Aug 2', 'Aug 3'];
@@ -27,8 +28,9 @@ function getChart() {
   return screen.getByRole('img', { name: 'Daily views for two sedans' });
 }
 
-// jsdom has no layout, so give the SVG the 600-unit width of its viewBox.
-// The plot then starts at x = 40 and the three points sit at 40, 312 and 584.
+// jsdom has no layout, so place the SVG at the left edge of the page. At the
+// mocked 600px width, the plot starts at x = 40 and the three points sit at
+// 40, 312 and 584.
 function mockChartRect(svg: Element) {
   vi.spyOn(svg, 'getBoundingClientRect').mockReturnValue({
     left: 0,
@@ -37,6 +39,10 @@ function mockChartRect(svg: Element) {
 }
 
 describe('LineChart', () => {
+  // 600 is the width the chart used to draw at, so the coordinates in these
+  // tests are the same before and after it started measuring its container.
+  mockElementWidth(600);
+
   it('is an image named by its label', () => {
     render(
       <LineChart

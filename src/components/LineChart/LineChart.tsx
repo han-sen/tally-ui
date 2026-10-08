@@ -8,6 +8,7 @@ import { cn, isDrawable } from '../../lib/utils';
 import { scaleLinear } from 'd3-scale';
 import { EmptyState } from '../EmptyState/EmptyState';
 import { line, curveMonotoneX } from 'd3-shape';
+import { useElementWidth } from '../../hooks/useElementWidth';
 
 export interface LineChartSeries {
   /**
@@ -61,14 +62,16 @@ export interface LineChartProps extends Omit<
    * @default false
    */
   showPoints?: boolean;
+  /**
+   * The chart's height in pixels. The width always fills the container, but
+   * the height comes from this prop, not from `className` (an `h-64` class
+   * won't size the chart).
+   * @default 300
+   */
+  height?: number;
 }
 
-const WIDTH = 600;
-const HEIGHT = 300;
 const margin = { top: 16, right: 16, bottom: 32, left: 40 };
-
-const innerWidth = WIDTH - margin.left - margin.right;
-const innerHeight = HEIGHT - margin.top - margin.bottom;
 
 // Default series colors, in order. Tailwind only generates classes it finds
 // written out in full, so these can't be built as `text-tally-chart-${n}`.
@@ -145,12 +148,19 @@ export function LineChart({
   formatLabel,
   showPoints = false,
   className,
+  style,
+  height = 300,
   ...props
 }: LineChartProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   // Only keyboard moves are announced. Mousing across the chart
   // would be too noisy for screen readers.
   const [isKeyboardActive, setIsKeyboardActive] = useState(false);
+
+  const { ref, width } = useElementWidth();
+
+  const innerWidth = Math.max(0, width - margin.left - margin.right);
+  const innerHeight = Math.max(0, height - margin.top - margin.bottom);
 
   const hasData = series.some((d) => d.values.some(isDrawable));
   if (!hasData) {
@@ -197,13 +207,10 @@ export function LineChart({
   const activeX = active === null ? 0 : xScale(active);
 
   const handlePointerMove = (event: PointerEvent<SVGSVGElement>) => {
+    // The SVG is drawn at its real size, so one unit is one screen pixel.
+    // Only the offset of the SVG on the page needs removing.
     const rect = event.currentTarget.getBoundingClientRect();
-    if (rect.width === 0) return;
-
-    // The SVG scales to its container, so convert screen pixels to viewBox
-    // units before asking the scale which point is closest.
-    const plotX =
-      (event.clientX - rect.left) * (WIDTH / rect.width) - margin.left;
+    const plotX = event.clientX - rect.left - margin.left;
     const index = Math.round(xScale.invert(plotX));
 
     setActiveIndex(Math.min(Math.max(index, 0), xLabels.length - 1));
@@ -235,10 +242,19 @@ export function LineChart({
   const tooltipOnLeft = activeX > innerWidth / 2;
 
   return (
-    <div {...props} className={cn('relative w-full', className)}>
+    <div
+      {...props}
+      className={cn('relative w-full min-w-0', className)}
+      ref={ref}
+      // The height is set before measuring, so the page doesn't jump when
+      // the chart is drawn.
+      style={{ ...style, height }}
+    >
       <svg
-        className="w-full rounded-tally-panel focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tally-ring focus-visible:ring-offset-2"
-        viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+        className="block rounded-tally-panel focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tally-ring focus-visible:ring-offset-2"
+        width={width}
+        height={height}
+        viewBox={`0 0 ${width} ${height}`}
         role="img"
         aria-label={label}
         tabIndex={0}
@@ -247,89 +263,94 @@ export function LineChart({
         onKeyDown={handleKeyDown}
         onBlur={() => setActiveIndex(null)}
       >
-        <g transform={`translate(${margin.left}, ${margin.top})`}>
-          {yTicks.map((tick) => (
-            <g key={tick} transform={`translate(0, ${yScale(tick)})`}>
-              <line x2={innerWidth} className="stroke-tally-border" />
-              <text
-                x={-8}
-                textAnchor="end"
-                dominantBaseline="middle"
-                className="fill-tally-muted-fg text-xs"
-              >
-                {formatValue?.(tick) ?? tick}
-              </text>
-            </g>
-          ))}
-          {/* Each label sits under its point; there's no band to center in. */}
-          {formattedXLabels.map((x, idx) =>
-            idx % xLabelStep === 0 ? (
-              <text
-                key={idx}
-                x={xScale(idx)}
-                y={innerHeight + 16}
-                textAnchor={xLabelAnchor(idx, formattedXLabels.length)}
-                className="fill-tally-muted-fg text-xs"
-              >
-                {x}
-              </text>
-            ) : null,
-          )}
-          {active !== null && (
-            <line
-              data-testid="crosshair"
-              x1={activeX}
-              x2={activeX}
-              y2={innerHeight}
-              className="stroke-tally-muted-fg"
-              strokeDasharray="4 4"
-            />
-          )}
-          {series.map((s, idx) => (
-            <path
-              key={s.name}
-              d={lineGenerator(s.values) ?? undefined}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              className={getSeriesColor(s, idx)}
-            />
-          ))}
-          {series.map((s, seriesIdx) => (
-            <g key={s.name} className={getSeriesColor(s, seriesIdx)}>
-              {s.values.map((value, i) => {
-                if (!isDrawable(value)) return null;
+        {/* Nothing is drawn until the width is known: on the server, and
+            before the first measurement. The named, sized frame is enough. */}
+        {width > 0 && (
+          <g transform={`translate(${margin.left}, ${margin.top})`}>
+            {yTicks.map((tick) => (
+              <g key={tick} transform={`translate(0, ${yScale(tick)})`}>
+                <line x2={innerWidth} className="stroke-tally-border" />
+                <text
+                  x={-8}
+                  textAnchor="end"
+                  dominantBaseline="middle"
+                  className="fill-tally-muted-fg text-xs"
+                >
+                  {formatValue?.(tick) ?? tick}
+                </text>
+              </g>
+            ))}
+            {/* Each label sits under its point; there's no band to center in. */}
+            {formattedXLabels.map((x, idx) =>
+              idx % xLabelStep === 0 ? (
+                <text
+                  key={idx}
+                  x={xScale(idx)}
+                  y={innerHeight + 16}
+                  textAnchor={xLabelAnchor(idx, formattedXLabels.length)}
+                  className="fill-tally-muted-fg text-xs"
+                >
+                  {x}
+                </text>
+              ) : null,
+            )}
+            {active !== null && (
+              <line
+                data-testid="crosshair"
+                x1={activeX}
+                x2={activeX}
+                y2={innerHeight}
+                className="stroke-tally-muted-fg"
+                strokeDasharray="4 4"
+              />
+            )}
+            {series.map((s, idx) => (
+              <path
+                key={s.name}
+                d={lineGenerator(s.values) ?? undefined}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                className={getSeriesColor(s, idx)}
+              />
+            ))}
+            {series.map((s, seriesIdx) => (
+              <g key={s.name} className={getSeriesColor(s, seriesIdx)}>
+                {s.values.map((value, i) => {
+                  if (!isDrawable(value)) return null;
 
-                // A point with no drawable neighbor has no segment to sit on,
-                // so d3 draws nothing for it. Always give it a circle.
-                const isIsolated =
-                  !isDrawable(s.values[i - 1]) && !isDrawable(s.values[i + 1]);
-                const isActive = i === active;
+                  // A point with no drawable neighbor has no segment to sit on,
+                  // so d3 draws nothing for it. Always give it a circle.
+                  const isIsolated =
+                    !isDrawable(s.values[i - 1]) &&
+                    !isDrawable(s.values[i + 1]);
+                  const isActive = i === active;
 
-                if (!showPoints && !isIsolated && !isActive) return null;
+                  if (!showPoints && !isIsolated && !isActive) return null;
 
-                return (
-                  <circle
-                    key={i}
-                    cx={xScale(i)}
-                    cy={yScale(value)}
-                    r={isActive ? 5 : 3}
-                    fill="currentColor"
-                    // A surface-colored ring separates the active dot from
-                    // the line under it.
-                    className={isActive ? 'stroke-tally-surface' : undefined}
-                    strokeWidth={isActive ? 2 : undefined}
-                  />
-                );
-              })}
-            </g>
-          ))}
-        </g>
+                  return (
+                    <circle
+                      key={i}
+                      cx={xScale(i)}
+                      cy={yScale(value)}
+                      r={isActive ? 5 : 3}
+                      fill="currentColor"
+                      // A surface-colored ring separates the active dot from
+                      // the line under it.
+                      className={isActive ? 'stroke-tally-surface' : undefined}
+                      strokeWidth={isActive ? 2 : undefined}
+                    />
+                  );
+                })}
+              </g>
+            ))}
+          </g>
+        )}
       </svg>
 
       {active !== null && (
         // Hidden from screen readers; the live region below reads the same
-        // values. Positioned in percentages so it follows the scaled SVG.
+        // values.
         <div
           aria-hidden="true"
           className={cn(
@@ -337,8 +358,8 @@ export function LineChart({
             tooltipOnLeft ? '-translate-x-full -ml-3' : 'ml-3',
           )}
           style={{
-            left: `${((margin.left + activeX) / WIDTH) * 100}%`,
-            top: `${(margin.top / HEIGHT) * 100}%`,
+            left: margin.left + activeX,
+            top: margin.top,
           }}
         >
           <p className="mb-1 font-medium">{formattedXLabels[active]}</p>

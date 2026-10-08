@@ -1,41 +1,13 @@
-import { act, render, renderHook, screen } from '@testing-library/react';
-import { afterEach, beforeEach, describe, it, expect, vi } from 'vitest';
+import { render, renderHook, screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+
+import {
+  FakeResizeObserver,
+  latestObserver,
+  mockElementWidth,
+} from '../test/resizeObserver';
 
 import { useElementWidth } from './useElementWidth';
-
-// jsdom has no ResizeObserver and no layout, so both are faked. Each observer
-// the hook creates is recorded so a test can report a new size through it.
-class FakeResizeObserver {
-  static instances: FakeResizeObserver[] = [];
-
-  callback: ResizeObserverCallback;
-  observe = vi.fn();
-  disconnect = vi.fn();
-  unobserve = vi.fn();
-
-  constructor(callback: ResizeObserverCallback) {
-    this.callback = callback;
-    FakeResizeObserver.instances.push(this);
-  }
-
-  /** Reports a new content-box width, the way the browser would. */
-  report(inlineSize?: number) {
-    const contentBoxSize =
-      inlineSize === undefined ? [] : [{ inlineSize, blockSize: 0 }];
-    act(() => {
-      this.callback(
-        [{ contentBoxSize } as unknown as ResizeObserverEntry],
-        this as unknown as ResizeObserver,
-      );
-    });
-  }
-}
-
-function latestObserver() {
-  const observer = FakeResizeObserver.instances.at(-1);
-  if (!observer) throw new Error('No ResizeObserver was created');
-  return observer;
-}
 
 function Measured({ show = true }: { show?: boolean }) {
   const { ref, width } = useElementWidth();
@@ -50,16 +22,7 @@ function Measured({ show = true }: { show?: boolean }) {
 const shownWidth = () => screen.getByRole('status').textContent;
 
 describe('useElementWidth', () => {
-  beforeEach(() => {
-    FakeResizeObserver.instances = [];
-    vi.stubGlobal('ResizeObserver', FakeResizeObserver);
-    vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(976);
-  });
-
-  afterEach(() => {
-    vi.unstubAllGlobals();
-    vi.restoreAllMocks();
-  });
+  mockElementWidth(976);
 
   it('is 0 while nothing is attached', () => {
     const { result } = renderHook(() => useElementWidth());
