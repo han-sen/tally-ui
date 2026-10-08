@@ -6,7 +6,7 @@ Tally UI is a small component library designed for building dashboards.
 
 **[Browse the live Storybook](https://han-sen.github.io/tally-ui/)**, which includes a [full dashboard built from the components](https://han-sen.github.io/tally-ui/?path=/story/foundations-dashboard-preview--attention-tracker) and a [roadmap](https://han-sen.github.io/tally-ui/?path=/story/project-roadmap--roadmap).
 
-[![A dashboard built with Tally UI: a header with an article search, a delayed-data alert, a date range picker, and stat cards with sparklines](docs/dashboard-preview.png)](https://han-sen.github.io/tally-ui/?path=/story/foundations-dashboard-preview--attention-tracker)
+[![A dashboard built with Tally UI: a header with an article search, a delayed-data alert, a date range picker, stat cards with sparklines, a bar chart, and a three-series line chart with its hover tooltip open](docs/dashboard-preview.png)](https://han-sen.github.io/tally-ui/?path=/story/foundations-dashboard-preview--attention-tracker)
 
 Built with React, TypeScript, Tailwind CSS v4, and class-variance-authority, documented and developed in Storybook. This is a work in progress: the generic components come first, then the dashboard-specific ones.
 
