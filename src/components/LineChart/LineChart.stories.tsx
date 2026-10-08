@@ -128,3 +128,25 @@ export const WithLegend: Story = {
     );
   },
 };
+
+/** A shorter chart for compact cards. The width still fills the container. */
+export const Height: Story = {
+  args: {
+    height: 160,
+  },
+};
+
+/**
+ * Drag the bottom-right corner to resize the container. The chart redraws at
+ * the new width, so the text stays the same size and the x labels thin out
+ * as space runs short.
+ */
+export const Resizable: Story = {
+  decorators: [
+    (Story) => (
+      <div className="w-[600px] max-w-full min-w-48 resize-x overflow-auto rounded-tally-panel border border-dashed border-tally-border p-2">
+        <Story />
+      </div>
+    ),
+  ],
+};

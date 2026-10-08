@@ -252,7 +252,6 @@ export const AttentionTracker: Story = {
               data={daily}
               label="Daily views for Toyota Camry over the last 30 days"
               formatValue={(v) => v.toLocaleString('en-US')}
-              className="w-full"
             />
           </Card.Content>
         </Card>

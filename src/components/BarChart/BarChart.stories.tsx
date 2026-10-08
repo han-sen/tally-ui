@@ -7,7 +7,7 @@ const meta: Meta<typeof BarChart> = {
   component: BarChart,
   tags: ['autodocs'],
   args: {
-    className: 'w-full max-w-2xl text-tally-primary',
+    className: 'max-w-2xl text-tally-primary',
   },
 };
 export default meta;
@@ -40,7 +40,13 @@ export const WithMissingValue: Story = {
   render: (args) => {
     const data = days(10);
     data[4] = { ...data[4]!, value: NaN };
-    return <BarChart {...args} data={data} label="Daily views with one missing day" />;
+    return (
+      <BarChart
+        {...args}
+        data={data}
+        label="Daily views with one missing day"
+      />
+    );
   },
 };
 
@@ -48,4 +54,32 @@ export const NoData: Story = {
   args: {
     data: [],
   },
+};
+
+/** A shorter chart for compact cards. The width still fills the container. */
+export const Height: Story = {
+  args: {
+    data: days(30),
+    label: 'Daily views over the last 30 days',
+    height: 160,
+  },
+};
+
+/**
+ * Drag the bottom-right corner to resize the container. The chart redraws at
+ * the new width: bars get narrower, text stays the same size, and x labels
+ * thin out as space runs short.
+ */
+export const Resizable: Story = {
+  args: {
+    data: days(30),
+    label: 'Daily views over the last 30 days',
+  },
+  decorators: [
+    (Story) => (
+      <div className="w-[600px] max-w-full min-w-48 resize-x overflow-auto rounded-tally-panel border border-dashed border-tally-border p-2">
+        <Story />
+      </div>
+    ),
+  ],
 };
