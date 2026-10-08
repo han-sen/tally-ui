@@ -155,7 +155,6 @@ export const Welcome: Story = {
                 <Sparkline
                   data={totalViewsTrend}
                   className="h-16 w-full text-tally-success-chart"
-                  glow
                 />
               }
             />
@@ -172,7 +171,6 @@ export const Welcome: Story = {
                 <Sparkline
                   data={dailyAverageTrend}
                   className="h-16 w-full text-tally-danger-chart"
-                  glow
                 />
               }
             />
@@ -189,7 +187,6 @@ export const Welcome: Story = {
                 <Sparkline
                   data={peakDayTrend}
                   className="h-16 w-full text-tally-info-chart"
-                  glow
                 />
               }
             />

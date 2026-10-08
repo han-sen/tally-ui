@@ -169,7 +169,6 @@ export const AttentionTracker: Story = {
               <Sparkline
                 data={totalViewsTrend}
                 className="h-20 w-full text-tally-success-chart"
-                glow
               />
             }
           />
@@ -196,7 +195,6 @@ export const AttentionTracker: Story = {
               <Sparkline
                 data={dailyAverageTrend}
                 className="h-20 w-full text-tally-danger-chart"
-                glow
               />
             }
           />
@@ -223,7 +221,6 @@ export const AttentionTracker: Story = {
               <Sparkline
                 data={peakDayTrend}
                 className="h-20 w-full text-tally-info-chart"
-                glow
               />
             }
           />

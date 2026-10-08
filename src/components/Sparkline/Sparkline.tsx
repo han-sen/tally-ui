@@ -21,11 +21,6 @@ export interface SparklineProps extends Omit<
    * decorative and hidden
    */
   label?: string;
-  /**
-   * Adds a soft shadow under the line in the line's own color, so it looks
-   * lifted off the surface. Off by default.
-   */
-  glow?: boolean;
 }
 
 const WIDTH = 100;
@@ -34,7 +29,8 @@ const HEIGHT = 32;
 // Opacity of the area fill at the line, fading to 0 at the baseline.
 const AREA_TOP_OPACITY = 0.15;
 
-// The glow is a thicker, blurred copy of the line drawn behind it and shifted
+// The glow is part of the design system's style, not an option: a thicker,
+// blurred copy of the line drawn behind it and shifted
 // down. Blur and offset are in viewBox units, which stretch horizontally when
 // the chart is wider than its 100x32 box (`preserveAspectRatio="none"`), so the
 // x blur is kept small and most of the softness is vertical.
@@ -42,7 +38,8 @@ const GLOW_STROKE_WIDTH = 5;
 const GLOW_BLUR_X = 0.6;
 const GLOW_BLUR_Y = 2;
 const GLOW_OFFSET_Y = 2.5;
-const GLOW_OPACITY = 0.45;
+// Used only when the tokens aren't loaded; --tally-chart-glow-opacity sets it.
+const GLOW_OPACITY_FALLBACK = 0.45;
 
 // The glow is clipped to the viewBox so it never spills out of the chart. To
 // keep it from being cut off at the edges, the line is inset by how far the
@@ -65,6 +62,11 @@ const GLOW_SPACE_TOP = Math.max(
  * (`h-8 w-full`); override with `className` (for example `h-16 w-48`) and
  * color it with a text color class, since the line and fill use `currentColor`.
  *
+ * The line has a soft glow in its own color, so it looks lifted off the
+ * surface. It's part of the library's style rather than a prop: its strength
+ * comes from the `--tally-chart-glow-opacity` token, and setting that to `0`
+ * turns it off.
+ *
  * @example
  * ```tsx
  * <Sparkline
@@ -77,7 +79,6 @@ const GLOW_SPACE_TOP = Math.max(
 export function Sparkline({
   data,
   label,
-  glow = false,
   className,
   ...props
 }: SparklineProps) {
@@ -107,7 +108,7 @@ export function Sparkline({
 
   const yScale = scaleLinear()
     .domain([Math.min(...values), Math.max(...values)])
-    .range(glow ? [HEIGHT - GLOW_SPACE_BOTTOM, GLOW_SPACE_TOP] : [HEIGHT, 0]);
+    .range([HEIGHT - GLOW_SPACE_BOTTOM, GLOW_SPACE_TOP]);
 
   const chartLine = line<number>()
     .defined(isDrawable)
@@ -146,39 +147,36 @@ export function Sparkline({
           />
           <stop offset="1" stopColor="currentColor" stopOpacity={0} />
         </linearGradient>
-        {glow && (
-          // The region is the viewBox in user space. The default region is
-          // based on the line's bounding box, which has no height for flat
-          // data and would clip the glow away entirely.
-          <filter
-            id={glowId}
-            filterUnits="userSpaceOnUse"
-            x={0}
-            y={0}
-            width={WIDTH}
-            height={HEIGHT}
-          >
-            <feGaussianBlur stdDeviation={`${GLOW_BLUR_X} ${GLOW_BLUR_Y}`} />
-            <feOffset dy={GLOW_OFFSET_Y} />
-          </filter>
-        )}
+        {/* The region is the viewBox in user space. The default region is
+            based on the line's bounding box, which has no height for flat
+            data and would clip the glow away entirely. */}
+        <filter
+          id={glowId}
+          filterUnits="userSpaceOnUse"
+          x={0}
+          y={0}
+          width={WIDTH}
+          height={HEIGHT}
+        >
+          <feGaussianBlur stdDeviation={`${GLOW_BLUR_X} ${GLOW_BLUR_Y}`} />
+          <feOffset dy={GLOW_OFFSET_Y} />
+        </filter>
       </defs>
       <path
         d={areaData ?? undefined}
         fill={`url(#${gradientId})`}
         stroke="none"
       />
-      {glow && (
-        <path
-          d={lineData ?? undefined}
-          strokeWidth={GLOW_STROKE_WIDTH}
-          strokeLinecap="round"
-          vectorEffect="non-scaling-stroke"
-          filter={`url(#${glowId})`}
-          opacity={GLOW_OPACITY}
-          data-sparkline-glow=""
-        />
-      )}
+      <path
+        d={lineData ?? undefined}
+        strokeWidth={GLOW_STROKE_WIDTH}
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+        filter={`url(#${glowId})`}
+        style={{
+          opacity: `var(--tally-chart-glow-opacity, ${GLOW_OPACITY_FALLBACK})`,
+        }}
+      />
       <path
         d={lineData ?? undefined}
         className="stroke-2"

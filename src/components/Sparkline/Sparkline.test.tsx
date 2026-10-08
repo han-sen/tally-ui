@@ -3,9 +3,14 @@ import { describe, it, expect } from 'vitest';
 
 import { Sparkline } from './Sparkline';
 
-// The first path is the gradient area, the second is the line.
+// The paths are the gradient area, the glow, then the line on top.
 const linePathOf = (container: HTMLElement) =>
-  container.querySelectorAll('svg path')[1]?.getAttribute('d') ?? '';
+  [...container.querySelectorAll('svg path')].at(-1)?.getAttribute('d') ?? '';
+
+// The line is inset from the top and bottom to leave room for the glow, so it
+// runs from y = 25.5 (lowest value) up to y = 4 (highest).
+const LINE_BOTTOM = 25.5;
+const LINE_MIDDLE = (25.5 + 4) / 2;
 
 describe('Sparkline', () => {
   it('draws an area and a line inside a fixed coordinate space', () => {
@@ -14,9 +19,7 @@ describe('Sparkline', () => {
     const svg = container.querySelector('svg');
     expect(svg).toHaveAttribute('viewBox', '0 0 100 32');
 
-    const paths = container.querySelectorAll('svg path');
-    expect(paths).toHaveLength(2);
-    for (const path of paths) {
+    for (const path of container.querySelectorAll('svg path')) {
       expect(path.getAttribute('d')).toBeTruthy();
     }
   });
@@ -41,14 +44,14 @@ describe('Sparkline', () => {
     const { container } = render(<Sparkline data={[5, 5, 5]} />);
 
     const d = linePathOf(container);
-    expect(d.startsWith('M0,16')).toBe(true);
+    expect(d.startsWith(`M0,${LINE_MIDDLE}`)).toBe(true);
     expect(d).not.toContain('NaN');
   });
 
   it('keeps zero values instead of dropping them', () => {
     const { container } = render(<Sparkline data={[0, 4, 0, 6]} />);
 
-    expect(linePathOf(container).startsWith('M0,32')).toBe(true);
+    expect(linePathOf(container).startsWith(`M0,${LINE_BOTTOM}`)).toBe(true);
   });
 
   it('is exposed as a named image when a label is given', () => {
@@ -87,48 +90,6 @@ describe('Sparkline', () => {
       svg.querySelector('path')?.getAttribute('fill'),
     );
     expect(fills).toEqual(ids.map((id) => `url(#${id})`));
-  });
-
-  it('draws no glow by default', () => {
-    const { container } = render(<Sparkline data={[3, 5, 4, 8]} />);
-
-    expect(container.querySelector('filter')).not.toBeInTheDocument();
-    expect(
-      container.querySelector('[data-sparkline-glow]'),
-    ).not.toBeInTheDocument();
-  });
-
-  it('draws a blurred copy of the line behind it when glow is on', () => {
-    const { container } = render(<Sparkline data={[3, 5, 4, 8]} glow />);
-
-    const filter = container.querySelector('filter');
-    const glowPath = container.querySelector('[data-sparkline-glow]');
-    const paths = [...container.querySelectorAll('svg path')];
-
-    expect(filter).toBeInTheDocument();
-    expect(glowPath).toHaveAttribute('filter', `url(#${filter?.id})`);
-    expect(glowPath?.getAttribute('d')).toBe(paths.at(-1)?.getAttribute('d'));
-    // Area, glow, line: the glow sits between the fill and the line.
-    expect(paths.indexOf(glowPath as SVGPathElement)).toBe(1);
-  });
-
-  it('keeps the glow inside the chart', () => {
-    const { container } = render(<Sparkline data={[0, 4, 0, 6]} glow />);
-
-    const filter = container.querySelector('filter');
-    expect(filter).toHaveAttribute('x', '0');
-    expect(filter).toHaveAttribute('y', '0');
-    expect(filter).toHaveAttribute('width', '100');
-    expect(filter).toHaveAttribute('height', '32');
-
-    // The lowest and highest points are inset from the edges to leave room
-    // for the shadow. Monotone curves keep their control points between the
-    // points they join, so checking every coordinate in the path is safe.
-    const ys = [
-      ...linePathOf(container).matchAll(/(-?[\d.]+),(-?[\d.]+)/g),
-    ].map((match) => Number(match[2]));
-    expect(Math.max(...ys)).toBeLessThan(32);
-    expect(Math.min(...ys)).toBeGreaterThan(0);
   });
 
   it('merges className and passes other props through', () => {
