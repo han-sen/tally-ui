@@ -9,7 +9,7 @@ export const tabsTriggerVariants = cva(
     variants: {
       active: {
         true: 'bg-tally-primary text-tally-primary-fg',
-        false: 'text-tally-secondary-fg hover:bg-tally-secondary-hover',
+        false: 'text-tally-secondary-fg hover:bg-tally-surface-fg/5',
       },
     },
   },

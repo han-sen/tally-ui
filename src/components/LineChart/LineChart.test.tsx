@@ -217,6 +217,16 @@ describe('LineChart', () => {
     expect(screen.queryByText('1,402')).not.toBeInTheDocument();
   });
 
+  it('does not announce points reached with the pointer', () => {
+    renderChart();
+    const svg = getChart();
+    mockChartRect(svg);
+
+    fireEvent.pointerMove(svg, { clientX: 300 });
+
+    expect(screen.getByRole('status')).toBeEmptyDOMElement();
+  });
+
   it('shows "no data" in the tooltip for a missing value', () => {
     renderChart({
       series: [{ name: 'Toyota Camry', values: [1, NaN, 3] }],

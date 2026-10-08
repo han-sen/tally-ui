@@ -117,7 +117,8 @@ function xLabelAnchor(
  * focusable: ArrowLeft and ArrowRight move between points (stopping at the
  * ends), Home and End jump to the first and last, and Escape clears it. Screen
  * readers hear `label` as the chart's name, and the active point is announced,
- * like "Aug 12: Toyota Camry 1,602, Honda Accord 1,410".
+ * like "Aug 12: Toyota Camry 1,602, Honda Accord 1,410", when it is
+ * reached with the keyboard.
  *
  * Series take the `tally-chart-1` to `tally-chart-4` colors in order, then
  * repeat. Pass `colorClassName` to pick a color, and use the same classes in a
@@ -147,6 +148,9 @@ export function LineChart({
   ...props
 }: LineChartProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  // Only keyboard moves are announced. Mousing across the chart
+  // would be too noisy for screen readers.
+  const [isKeyboardActive, setIsKeyboardActive] = useState(false);
 
   const hasData = series.some((d) => d.values.some(isDrawable));
   if (!hasData) {
@@ -186,7 +190,8 @@ export function LineChart({
       ? String(formatValue?.(value) ?? value)
       : 'no data';
 
-  // The index can outlive a shorter xLabels, so ignore one that's out of range.
+  // Prevent undefined tooltip by checking that
+  // active index is in range when new labels props are supplied
   const active =
     activeIndex !== null && activeIndex < xLabels.length ? activeIndex : null;
   const activeX = active === null ? 0 : xScale(active);
@@ -202,6 +207,7 @@ export function LineChart({
     const index = Math.round(xScale.invert(plotX));
 
     setActiveIndex(Math.min(Math.max(index, 0), xLabels.length - 1));
+    setIsKeyboardActive(false);
   };
 
   const handleKeyDown = (event: KeyboardEvent<SVGSVGElement>) => {
@@ -215,17 +221,17 @@ export function LineChart({
 
     event.preventDefault();
     setActiveIndex(getNextIndex(active ?? -1, move, xLabels.length));
+    setIsKeyboardActive(true);
   };
 
   const announcement =
-    active === null
+    active === null || !isKeyboardActive
       ? ''
       : `${formattedXLabels[active]}: ${series
           .map((s) => `${s.name} ${formatPointValue(s.values[active])}`)
           .join(', ')}`;
 
-  // Keep the tooltip inside the chart: right of the crosshair on the left
-  // half, left of it on the right half.
+  // Keep the tooltip positioned on the inside of the chart
   const tooltipOnLeft = activeX > innerWidth / 2;
 
   return (
