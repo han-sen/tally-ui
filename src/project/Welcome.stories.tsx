@@ -201,7 +201,6 @@ export const Welcome: Story = {
                 data={weekly}
                 label="Daily views for Toyota Camry this week"
                 formatValue={(v) => v.toLocaleString('en-US')}
-                className="w-full"
               />
             </Card.Content>
           </Card>

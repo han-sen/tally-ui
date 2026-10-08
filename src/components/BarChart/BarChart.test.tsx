@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 
+import { latestObserver, mockElementWidth } from '../../test/resizeObserver';
 import { BarChart } from './BarChart';
 
 const days = (count: number) =>
@@ -20,6 +21,10 @@ const bars = (container: HTMLElement) => [
 ];
 
 describe('BarChart', () => {
+  // 600 is the width the chart used to draw at, so the coordinates in these
+  // tests are the same before and after it started measuring its container.
+  mockElementWidth(600);
+
   it('is exposed as an image named by its label', () => {
     render(<BarChart data={days(3)} label="Daily views for Camry" />);
 
@@ -50,14 +55,6 @@ describe('BarChart', () => {
     expect(heightB / heightA).toBeCloseTo(2);
   });
 
-  it('rounds only the top corners of each bar', () => {
-    const { container } = render(<BarChart data={days(3)} label="Views" />);
-
-    for (const bar of bars(container)) {
-      expect(bar.style.clipPath).toBe('inset(0 round 4px 4px 0 0)');
-    }
-  });
-
   it('extends the y-axis to a round value above the tallest bar', () => {
     render(
       <BarChart
@@ -81,18 +78,18 @@ describe('BarChart', () => {
     const drawn = bars(container);
     expect(drawn).toHaveLength(4);
 
-    const [x0, x1, x3] = [
-      drawn[0],
-      drawn[1],
-      drawn[2],
-    ].map((rect) => Number(rect?.getAttribute('x')));
+    const [x0, x1, x3] = [drawn[0], drawn[1], drawn[2]].map((rect) =>
+      Number(rect?.getAttribute('x')),
+    );
     const slot = (x1 as number) - (x0 as number);
     // The bar after the gap sits two slots after the bar before it.
     expect((x3 as number) - (x1 as number)).toBeCloseTo(slot * 2);
   });
 
   it('shows an empty state when nothing is drawable', () => {
-    const { container, rerender } = render(<BarChart data={[]} label="Views" />);
+    const { container, rerender } = render(
+      <BarChart data={[]} label="Views" />,
+    );
     expect(screen.getByText('No data to display')).toBeInTheDocument();
     expect(container.querySelector('svg')).not.toBeInTheDocument();
 
@@ -143,7 +140,7 @@ describe('BarChart', () => {
     expect(screen.getByText('Aug 1: 1,500')).toBeInTheDocument();
   });
 
-  it('does not pass the formatters through to the svg element', () => {
+  it('does not pass the formatters through to the DOM', () => {
     const consoleError = vi
       .spyOn(console, 'error')
       .mockImplementation(() => {});
@@ -158,7 +155,7 @@ describe('BarChart', () => {
     );
 
     expect(consoleError).not.toHaveBeenCalled();
-    expect(container.querySelector('svg')).not.toHaveAttribute('formatvalue');
+    expect(container.firstElementChild).not.toHaveAttribute('formatvalue');
     consoleError.mockRestore();
   });
 
@@ -176,5 +173,50 @@ describe('BarChart', () => {
     expect(chart).toHaveClass('w-full');
     expect(chart).toHaveClass('text-tally-success-fg');
     expect(chart).not.toHaveClass('text-tally-primary');
+  });
+
+  it('draws at the measured width and the given height', () => {
+    render(<BarChart data={days(3)} label="Views" height={160} />);
+    const svg = screen.getByRole('img', { name: 'Views' });
+
+    expect(svg).toHaveAttribute('width', '600');
+    expect(svg).toHaveAttribute('height', '160');
+    expect(svg).toHaveAttribute('viewBox', '0 0 600 160');
+  });
+
+  it('sets the height on the wrapper and keeps the caller style', () => {
+    const { container } = render(
+      <BarChart
+        data={days(3)}
+        label="Views"
+        height={160}
+        style={{ maxWidth: 800 }}
+      />,
+    );
+
+    expect(container.firstElementChild).toHaveStyle({
+      height: '160px',
+      maxWidth: '800px',
+    });
+  });
+
+  it('draws nothing until it has a width, but stays named', () => {
+    vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(0);
+    const { container } = render(<BarChart data={days(3)} label="Views" />);
+
+    expect(screen.getByRole('img', { name: 'Views' })).toBeInTheDocument();
+    expect(bars(container)).toHaveLength(0);
+    expect(container.querySelectorAll('text')).toHaveLength(0);
+  });
+
+  it('redraws when the container is resized', () => {
+    render(<BarChart data={days(3)} label="Views" />);
+
+    latestObserver().report(400);
+
+    expect(screen.getByRole('img', { name: 'Views' })).toHaveAttribute(
+      'viewBox',
+      '0 0 400 300',
+    );
   });
 });

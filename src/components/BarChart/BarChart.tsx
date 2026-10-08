@@ -1,12 +1,15 @@
-import type { SVGAttributes } from 'react';
+'use client';
+
+import type { HTMLAttributes } from 'react';
 import { scaleLinear, scaleBand } from 'd3-scale';
+import { useElementWidth } from '../../hooks/useElementWidth';
 import { getLabelStep } from '../../lib/chart';
 import { cn, isDrawable } from '../../lib/utils';
 import { EmptyState } from '../EmptyState/EmptyState';
 
 export interface BarChartProps extends Omit<
-  SVGAttributes<SVGSVGElement>,
-  'children' | 'viewBox'
+  HTMLAttributes<HTMLDivElement>,
+  'children'
 > {
   /**
    * Bars to draw, left to right in the order given, one slot per item.
@@ -31,27 +34,31 @@ export interface BarChartProps extends Omit<
    * `(label) => label.replace('Aug ', '')`.
    */
   formatLabel?: (label: string) => string | number;
+  /**
+   * The chart's height in pixels. The width always fills the container, but
+   * the height comes from this prop, not from `className` (an `h-64` class
+   * won't size the chart).
+   * @default 300
+   */
+  height?: number;
 }
 
-const WIDTH = 600;
-const HEIGHT = 300;
 const margin = { top: 16, right: 16, bottom: 32, left: 40 };
 
-const innerWidth = WIDTH - margin.left - margin.right;
-const innerHeight = HEIGHT - margin.top - margin.bottom;
-
-// Radius of each bar's top corners, in drawing units. SVG's `rx` rounds all
-// four corners, so the bars are clipped with CSS instead, which rounds only the
-// top and shrinks the radius on bars too short to fit it.
+// Radius of each bar's top corners, in pixels. SVG's `rx` rounds all four
+// corners, so the bars are clipped with CSS instead, which rounds only the top
+// and shrinks the radius on bars too short to fit it.
 const BAR_RADIUS = 4;
 const barClipPath = `inset(0 round ${BAR_RADIUS}px ${BAR_RADIUS}px 0 0)`;
 
 /**
  * Vertical bar chart with a y-axis, gridlines, and thinned x labels.
  *
- * Size it with `className` (for example `w-full max-w-2xl`) and color the bars
- * with a text color class, since they use `currentColor`. It draws inside a
- * fixed 600 by 300 coordinate space, so text scales with the chart.
+ * The chart fills the width of its container and redraws as it resizes, so
+ * text stays the same size and x labels thin out when space runs short. Set
+ * the height with `height`. Color the bars with a text color class in
+ * `className`, since they use `currentColor`. Other props go to the wrapping
+ * `<div>`.
  *
  * The chart is exposed to assistive tech as an image named by `label`, so
  * describe what it shows. Each bar also has a tooltip for mouse users.
@@ -66,7 +73,8 @@ const barClipPath = `inset(0 round ${BAR_RADIUS}px ${BAR_RADIUS}px 0 0)`;
  *   ]}
  *   label="Daily views for Toyota Camry"
  *   formatValue={(v) => v.toLocaleString('en-US')}
- *   className="w-full max-w-2xl text-tally-primary"
+ *   height={240}
+ *   className="max-w-2xl text-tally-primary"
  * />
  * ```
  */
@@ -74,10 +82,17 @@ export function BarChart({
   data,
   label,
   className,
+  style,
   formatLabel,
   formatValue,
+  height = 300,
   ...props
 }: BarChartProps) {
+  const { ref, width } = useElementWidth();
+
+  const innerWidth = Math.max(0, width - margin.left - margin.right);
+  const innerHeight = Math.max(0, height - margin.top - margin.bottom);
+
   const values = data.filter((d) => isDrawable(d.value));
 
   if (values.length === 0) {
@@ -109,60 +124,75 @@ export function BarChart({
   );
 
   return (
-    <svg
+    // The bars use `currentColor`, and CSS color is inherited, so the color
+    // class on this wrapper reaches them inside the SVG.
+    <div
       {...props}
-      className={cn('text-tally-primary', className)}
-      viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-      role="img"
-      aria-label={label}
+      ref={ref}
+      className={cn('w-full min-w-0 text-tally-primary', className)}
+      // The height is set before measuring, so the page doesn't jump when
+      // the chart is drawn.
+      style={{ ...style, height }}
     >
-      {/* wrapper that incorporates margin settings */}
-      <g transform={`translate(${margin.left}, ${margin.top})`}>
-        {/* create y-axis */}
-        {yTicks.map((tick) => (
-          <g key={tick} transform={`translate(0, ${yScale(tick)})`}>
-            <line x2={innerWidth} className="stroke-tally-border" /> {/* gridline */}
-            <text
-              x={-8}
-              textAnchor="end"
-              dominantBaseline="middle"
-              className="fill-tally-muted-fg text-xs"
-            >
-              {formatValue?.(tick) ?? tick}
-            </text>
+      <svg
+        className="block"
+        width={width}
+        height={height}
+        viewBox={`0 0 ${width} ${height}`}
+        role="img"
+        aria-label={label}
+      >
+        {/* Nothing is drawn until the width is known: on the server, and
+            before the first measurement. The named, sized frame is enough. */}
+        {width > 0 && (
+          <g transform={`translate(${margin.left}, ${margin.top})`}>
+            {/* y-axis ticks and gridlines */}
+            {yTicks.map((tick) => (
+              <g key={tick} transform={`translate(0, ${yScale(tick)})`}>
+                <line x2={innerWidth} className="stroke-tally-border" />
+                <text
+                  x={-8}
+                  textAnchor="end"
+                  dominantBaseline="middle"
+                  className="fill-tally-muted-fg text-xs"
+                >
+                  {formatValue?.(tick) ?? tick}
+                </text>
+              </g>
+            ))}
+
+            {/* x labels, centered under their bars */}
+            {data.map((d, i) =>
+              i % step === 0 ? (
+                <text
+                  key={d.label}
+                  x={(xScale(d.label) ?? 0) + xScale.bandwidth() / 2}
+                  y={innerHeight + 16}
+                  textAnchor="middle"
+                  className="fill-tally-muted-fg text-xs"
+                >
+                  {formatLabel?.(d.label) ?? d.label}
+                </text>
+              ) : null,
+            )}
+
+            {/* bars */}
+            {values.map((d) => (
+              <rect
+                key={d.label}
+                className="fill-current"
+                style={{ clipPath: barClipPath }}
+                x={xScale(d.label)}
+                y={yScale(d.value)}
+                width={xScale.bandwidth()}
+                height={innerHeight - yScale(d.value)}
+              >
+                <title>{`${formatLabel?.(d.label) ?? d.label}: ${formatValue?.(d.value) ?? d.value}`}</title>
+              </rect>
+            ))}
           </g>
-        ))}
-
-        {/** create x-axis */}
-        {data.map((d, i) =>
-          i % step === 0 ? (
-            <text
-              key={d.label}
-              x={(xScale(d.label) ?? 0) + xScale.bandwidth() / 2} // center under the bar
-              y={innerHeight + 16}
-              textAnchor="middle"
-              className="fill-tally-muted-fg text-xs"
-            >
-              {formatLabel?.(d.label) ?? d.label}
-            </text>
-          ) : null,
         )}
-
-        {/** create bars */}
-        {values.map((d) => (
-          <rect
-            key={d.label}
-            className="fill-current"
-            style={{ clipPath: barClipPath }}
-            x={xScale(d.label)}
-            y={yScale(d.value)}
-            width={xScale.bandwidth()}
-            height={innerHeight - yScale(d.value)}
-          >
-            <title>{`${formatLabel?.(d.label) ?? d.label}: ${formatValue?.(d.value) ?? d.value}`}</title>
-          </rect>
-        ))}
-      </g>
-    </svg>
+      </svg>
+    </div>
   );
 }

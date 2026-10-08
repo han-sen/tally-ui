@@ -12,29 +12,29 @@ Built with React, TypeScript, Tailwind CSS v4, and class-variance-authority, doc
 
 ## Components
 
-| Component     | Notes                                                                                                                                                                         |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Button`      | `primary`, `secondary`, `ghost`, `danger` variants, three sizes, loading state, ref forwarding                                                                                |
-| `Tabs`        | Compound component (`Tabs.List`, `Tabs.Trigger`, `Tabs.Content`) with `tablist`/`tab`/`tabpanel` roles, linked tabs and panels, arrow-key navigation, and an `activationMode` |
-| `Badge`       | Status variants for short labels                                                                                                                                              |
-| `Alert`       | Compound component (`Alert.Title`, `Alert.Description`), status icon per variant, `alert` vs `status` role by severity                                                        |
-| `Card`        | Compound component (`Card.Header`, `Card.Title`, `Card.Description`, `Card.Content`, `Card.Footer`) on the surface tokens                                                     |
-| `StatCard`    | Headline number built on `Card` and `Badge`, with an optional change (`delta`) whose direction and sentiment are separate, and an `isLoading` state                           |
-| `Table`       | Semantic table parts (`Table.Header`, `Table.Body`, `Table.Row`, `Table.Head`, `Table.Cell`, `Table.Caption`) with a scrolling container and `numeric` alignment              |
-| `Skeleton`    | Single-shape loading placeholder sized with `className`, hidden from assistive tech, animated only when motion is allowed                                                     |
-| `EmptyState`  | Compound component (`EmptyState.Icon`, `.Title`, `.Description`, `.Actions`) for "no data" and "no results" views                                                             |
-| `Input`       | Styled native text field with a forwarded ref, styled from `disabled`, `readOnly`, and `aria-invalid` instead of variants                                                     |
-| `Sparkline`   | Tiny D3-scaled line chart with a gradient area fill, gaps for missing values, and an optional accessible `label`                                                              |
-| `BarChart`    | D3-scaled bar chart with a y-axis, gridlines, thinned x labels, optional `formatValue`/`formatLabel`, and an accessible `label`                                               |
-| `LineChart`   | Several series over shared x labels, with a crosshair and tooltip on hover, arrow-key navigation, announced values, gaps for missing data, and `showPoints`                   |
-| `Combobox`    | Generic searchable select (WAI-ARIA combobox pattern) with keyboard support, filtering or async results, loading and empty states, controlled or uncontrolled                 |
-| `RadioGroup`  | One choice from a set, built on native radios, with option values inferred as a typed union                                                                                   |
-| `Legend`      | Swatches and labels that key a chart's series, colored with the same text color class as the series, with an optional value per item                                          |
-| `ProgressBar` | Labelled `progressbar` for shares and goals, in the chart colors, with `hideLabel`                                                                                            |
-| `Text`        | Body text on the type scale and text color tokens                                                                                                                             |
-| `Heading`     | `h1`–`h6` with the heading level kept separate from its visual size                                                                                                           |
+| Component     | Notes                                                                                                                                                                                                        |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Button`      | `primary`, `secondary`, `ghost`, `danger` variants, three sizes, loading state, ref forwarding                                                                                                               |
+| `Tabs`        | Compound component (`Tabs.List`, `Tabs.Trigger`, `Tabs.Content`) with `tablist`/`tab`/`tabpanel` roles, linked tabs and panels, arrow-key navigation, and an `activationMode`                                |
+| `Badge`       | Status variants for short labels                                                                                                                                                                             |
+| `Alert`       | Compound component (`Alert.Title`, `Alert.Description`), status icon per variant, `alert` vs `status` role by severity                                                                                       |
+| `Card`        | Compound component (`Card.Header`, `Card.Title`, `Card.Description`, `Card.Content`, `Card.Footer`) on the surface tokens                                                                                    |
+| `StatCard`    | Headline number built on `Card` and `Badge`, with an optional change (`delta`) whose direction and sentiment are separate, and an `isLoading` state                                                          |
+| `Table`       | Semantic table parts (`Table.Header`, `Table.Body`, `Table.Row`, `Table.Head`, `Table.Cell`, `Table.Caption`) with a scrolling container and `numeric` alignment                                             |
+| `Skeleton`    | Single-shape loading placeholder sized with `className`, hidden from assistive tech, animated only when motion is allowed                                                                                    |
+| `EmptyState`  | Compound component (`EmptyState.Icon`, `.Title`, `.Description`, `.Actions`) for "no data" and "no results" views                                                                                            |
+| `Input`       | Styled native text field with a forwarded ref, styled from `disabled`, `readOnly`, and `aria-invalid` instead of variants                                                                                    |
+| `Sparkline`   | Tiny D3-scaled line chart with a gradient area fill, gaps for missing values, and an optional accessible `label`                                                                                             |
+| `BarChart`    | D3-scaled bar chart that fills its container's width, with a `height` prop, a y-axis, gridlines, thinned x labels, optional `formatValue`/`formatLabel`, and an accessible `label`                           |
+| `LineChart`   | Several series over shared x labels that fill the container's width, with a crosshair and tooltip on hover, arrow-key navigation, announced values, gaps for missing data, a `height` prop, and `showPoints` |
+| `Combobox`    | Generic searchable select (WAI-ARIA combobox pattern) with keyboard support, filtering or async results, loading and empty states, controlled or uncontrolled                                                |
+| `RadioGroup`  | One choice from a set, built on native radios, with option values inferred as a typed union                                                                                                                  |
+| `Legend`      | Swatches and labels that key a chart's series, colored with the same text color class as the series, with an optional value per item                                                                         |
+| `ProgressBar` | Labelled `progressbar` for shares and goals, in the chart colors, with `hideLabel`                                                                                                                           |
+| `Text`        | Body text on the type scale and text color tokens                                                                                                                                                            |
+| `Heading`     | `h1`–`h6` with the heading level kept separate from its visual size                                                                                                                                          |
 
-Planned: a data-driven `DataTable` built on the `Table` parts, and `DescriptionList`. See the [roadmap](https://han-sen.github.io/tally-ui/?path=/story/project-roadmap--roadmap) for the full list. The charts use D3 only for scales and shape math and render the SVG with React, so they need no client-side DOM access.
+Planned: a data-driven `DataTable` built on the `Table` parts, and `DescriptionList`. See the [roadmap](https://han-sen.github.io/tally-ui/?path=/story/project-roadmap--roadmap) for the full list. The charts use D3 only for scales and shape math and render the SVG with React.
 
 ## Using the library
 
@@ -67,7 +67,7 @@ Fonts are not bundled. The tokens use `Inter Variable` and `JetBrains Mono Varia
 import { Button, StatCard, BarChart } from '@han-sen/tally-ui';
 ```
 
-Components that use React state (`Tabs`, `Combobox`, and the `Card` actions menu) are marked `'use client'`, so they work in Next.js App Router pages.
+Components that use React state (`Tabs`, `Combobox`, the `Card` actions menu, `LineChart`, and `BarChart`) are marked `'use client'`, so they work in Next.js App Router pages. The two charts measure their container in the browser, so the server renders an empty frame at the right height and the chart is drawn once it has a width.
 
 ## Getting started
 
@@ -86,7 +86,9 @@ npm run build:lib   # library build: dist/ with JS, type declarations, and CSS
 
 **Prefixed tokens, so they never collide.** Every variable and theme key carries the `tally` prefix (`--tally-primary`, `bg-tally-primary`, `rounded-tally-control`). Generic names like `--primary` or `bg-primary` are what shadcn/ui and many apps define themselves, and sharing them would silently change one set of colors when both are loaded. `tokens.css` also leaves fonts alone, so importing it never replaces an app's own font. The fonts live in a separate `fonts.css` that only the prebuilt stylesheet and Storybook use.
 
-**Glow is a token, not a prop.** Charts use a soft glow to lift a line off the surface, and `Sparkline` has a `glow` prop for it. Other components leave it out, but you can opt in with the `shadow-tally-glow` token and a shadow color class: `<Button className="shadow-tally-glow shadow-tally-primary/45">`. Tinted fills look best with `shadow-current/35`, which uses the element's text color.
+**Glow is a style, not a prop.** Charts use a soft glow to lift a line off the surface. `Sparkline` always draws it, at a strength set by the `--tally-chart-glow-opacity` token, so an app that doesn't want it sets the token to `0` once instead of passing a prop to every chart. Other components leave it out, but you can opt in with the `shadow-tally-glow` token and a shadow color class: `<Button className="shadow-tally-glow shadow-tally-primary/45">`. Tinted fills look best with `shadow-current/35`, which uses the element's text color.
+
+**Charts draw at their real size.** `LineChart` and `BarChart` measure their container with a `ResizeObserver` (the internal `useElementWidth` hook) and draw at its actual pixel width, so one SVG unit is one screen pixel. Text stays at the type scale's size, margins and strokes stay put, and x labels are thinned based on the real space available. Scaling a fixed `viewBox` would be simpler and work without client JavaScript, but text would grow and shrink with the card. Height comes from a `height` prop rather than from the container, because a container with no set height would collapse to whatever the chart is. `Sparkline` is the exception: it has no text, so stretching to fill its box is what it should do.
 
 **Variants with CVA.** Each element with variant logic gets its own `cva()` definition, kept in a separate `*.variants.ts` file so React Fast Refresh keeps working. Variant prop types are inferred from the definition rather than written by hand.
 
@@ -111,7 +113,7 @@ npm run build:lib   # library build: dist/ with JS, type declarations, and CSS
 - `Table`'s horizontal scroll container isn't keyboard-focusable on its own, so a wide table with no focusable content inside it can't be scrolled by keyboard.
 - `Card.Title` renders a `div`, so it doesn't appear in the page outline unless the caller adds `role="heading"` and `aria-level`.
 - `BarChart` exposes only its `label` to assistive tech. The per-bar tooltips are for mouse users, so a hidden data table is still to do. It assumes non-negative values and unique labels.
-- `BarChart` draws in a fixed 600 by 300 coordinate space, so its text scales with the chart instead of measuring the container.
+- `LineChart` and `BarChart` are client components. Without JavaScript, or until the page hydrates, they show an empty frame of the right height with the chart's accessible name.
 - Dark mode isn't implemented yet, and the status colors are provisional until more components exist.
 
 ## Testing

@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
+import { latestObserver, mockElementWidth } from '../../test/resizeObserver';
 import { LineChart } from './LineChart';
 
 const xLabels = ['Aug 1', 'Aug 2', 'Aug 3'];
@@ -27,8 +28,9 @@ function getChart() {
   return screen.getByRole('img', { name: 'Daily views for two sedans' });
 }
 
-// jsdom has no layout, so give the SVG the 600-unit width of its viewBox.
-// The plot then starts at x = 40 and the three points sit at 40, 312 and 584.
+// jsdom has no layout, so place the SVG at the left edge of the page. At the
+// mocked 600px width, the plot starts at x = 40 and the three points sit at
+// 40, 312 and 584.
 function mockChartRect(svg: Element) {
   vi.spyOn(svg, 'getBoundingClientRect').mockReturnValue({
     left: 0,
@@ -37,6 +39,10 @@ function mockChartRect(svg: Element) {
 }
 
 describe('LineChart', () => {
+  // 600 is the width the chart used to draw at, so the coordinates in these
+  // tests are the same before and after it started measuring its container.
+  mockElementWidth(600);
+
   it('is an image named by its label', () => {
     render(
       <LineChart
@@ -179,6 +185,45 @@ describe('LineChart', () => {
 
     expect(wrapper).toHaveAttribute('id', 'views-chart');
     expect(wrapper).toHaveClass('relative', 'h-64');
+  });
+
+  // Sizing
+  it('draws at the measured width and the given height', () => {
+    renderChart({ height: 160 });
+    const svg = getChart();
+
+    expect(svg).toHaveAttribute('width', '600');
+    expect(svg).toHaveAttribute('height', '160');
+    expect(svg).toHaveAttribute('viewBox', '0 0 600 160');
+  });
+
+  it('sets the height on the wrapper and keeps the caller style', () => {
+    const { container } = renderChart({
+      height: 160,
+      style: { maxWidth: 800 },
+    });
+
+    expect(container.firstElementChild).toHaveStyle({
+      height: '160px',
+      maxWidth: '800px',
+    });
+  });
+
+  it('draws nothing until it has a width, but stays named', () => {
+    vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(0);
+    const { container } = renderChart();
+
+    expect(getChart()).toBeInTheDocument();
+    expect(container.querySelectorAll('path')).toHaveLength(0);
+    expect(container.querySelectorAll('text')).toHaveLength(0);
+  });
+
+  it('redraws when the container is resized', () => {
+    renderChart();
+
+    latestObserver().report(400);
+
+    expect(getChart()).toHaveAttribute('viewBox', '0 0 400 300');
   });
 
   // Step 2: crosshair and tooltip

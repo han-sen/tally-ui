@@ -124,4 +124,9 @@
   --tally-chart-2: #e86f3a;
   --tally-chart-3: #2e9e6b;
   --tally-chart-4: #8a90a6;
+
+  /* Strength of the soft glow under chart lines, in the line's own color.
+     Set it to 0 to turn the glow off everywhere. The line still keeps the
+     small inset that leaves room for the glow. */
+  --tally-chart-glow-opacity: 0.45;
 }
