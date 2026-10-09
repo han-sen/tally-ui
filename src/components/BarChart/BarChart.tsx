@@ -1,11 +1,12 @@
 'use client';
 
 import type { HTMLAttributes } from 'react';
-import { scaleLinear, scaleBand } from 'd3-scale';
+import { scaleBand } from 'd3-scale';
 import { useElementWidth } from '../../hooks/useElementWidth';
-import { getLabelStep } from '../../lib/chart';
+import { getLabelStep, getValueScale } from '../../lib/chart';
 import { cn, isDrawable } from '../../lib/utils';
 import { EmptyState } from '../EmptyState/EmptyState';
+import { YAxis } from '../charts/YAxis';
 
 export interface BarChartProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
@@ -110,12 +111,10 @@ export function BarChart({
     .range([0, innerWidth])
     .padding(0.2);
 
-  const yScale = scaleLinear()
-    .domain([0, Math.max(...values.map((d) => d.value))])
-    .range([innerHeight, 0])
-    .nice(5);
-
-  const yTicks = yScale.ticks(5);
+  const yScale = getValueScale(
+    values.map((d) => d.value),
+    innerHeight,
+  );
 
   // Show every nth x label so they never overlap.
   const step = getLabelStep(
@@ -147,19 +146,11 @@ export function BarChart({
         {width > 0 && (
           <g transform={`translate(${margin.left}, ${margin.top})`}>
             {/* y-axis ticks and gridlines */}
-            {yTicks.map((tick) => (
-              <g key={tick} transform={`translate(0, ${yScale(tick)})`}>
-                <line x2={innerWidth} className="stroke-tally-border" />
-                <text
-                  x={-8}
-                  textAnchor="end"
-                  dominantBaseline="middle"
-                  className="fill-tally-muted-fg text-xs"
-                >
-                  {formatValue?.(tick) ?? tick}
-                </text>
-              </g>
-            ))}
+            <YAxis
+              scale={yScale}
+              width={innerWidth}
+              formatValue={formatValue}
+            />
 
             {/* x labels, centered under their bars */}
             {data.map((d, i) =>

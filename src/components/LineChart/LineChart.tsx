@@ -2,13 +2,14 @@
 
 import type { HTMLAttributes, KeyboardEvent, PointerEvent } from 'react';
 import { useState } from 'react';
-import { getLabelStep } from '../../lib/chart';
+import { getLabelStep, getValueScale } from '../../lib/chart';
 import { getNextIndex, type NavigationMove } from '../../lib/navigation';
 import { cn, isDrawable } from '../../lib/utils';
 import { scaleLinear } from 'd3-scale';
 import { EmptyState } from '../EmptyState/EmptyState';
 import { line, curveMonotoneX } from 'd3-shape';
 import { useElementWidth } from '../../hooks/useElementWidth';
+import { YAxis } from '../charts/YAxis';
 
 export interface LineChartSeries {
   /**
@@ -178,18 +179,13 @@ export function LineChart({
   // Every drawable value from every series, so all lines share one y-axis.
   const allValues = series.flatMap((s) => s.values.filter(isDrawable));
 
-  const yScale = scaleLinear()
-    .domain([0, Math.max(...allValues)])
-    .range([innerHeight, 0])
-    .nice(5);
+  const yScale = getValueScale(allValues, innerHeight);
 
   const lineGenerator = line<number>()
     .defined(isDrawable)
     .x((_, idx) => xScale(idx))
     .y((d) => yScale(d))
     .curve(curveMonotoneX);
-
-  const yTicks = yScale.ticks(5);
 
   // Show every nth x label so they never overlap.
   const formattedXLabels = xLabels.map((x) => String(formatLabel?.(x) ?? x));
@@ -267,19 +263,11 @@ export function LineChart({
             before the first measurement. The named, sized frame is enough. */}
         {width > 0 && (
           <g transform={`translate(${margin.left}, ${margin.top})`}>
-            {yTicks.map((tick) => (
-              <g key={tick} transform={`translate(0, ${yScale(tick)})`}>
-                <line x2={innerWidth} className="stroke-tally-border" />
-                <text
-                  x={-8}
-                  textAnchor="end"
-                  dominantBaseline="middle"
-                  className="fill-tally-muted-fg text-xs"
-                >
-                  {formatValue?.(tick) ?? tick}
-                </text>
-              </g>
-            ))}
+            <YAxis
+              scale={yScale}
+              width={innerWidth}
+              formatValue={formatValue}
+            />
             {/* Each label sits under its point; there's no band to center in. */}
             {formattedXLabels.map((x, idx) =>
               idx % xLabelStep === 0 ? (
