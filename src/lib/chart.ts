@@ -46,3 +46,28 @@ export function getValueScale(values: number[], height: number) {
     .range([height, 0])
     .nice(Y_TICK_COUNT);
 }
+
+// The chart color classes, in order. Tailwind only generates classes it finds
+// written out in full, so these can't be built as `text-tally-chart-${n}`.
+const CHART_COLORS = [
+  'text-tally-chart-1',
+  'text-tally-chart-2',
+  'text-tally-chart-3',
+  'text-tally-chart-4',
+];
+
+/**
+ * The text color class for a chart's `index`-th series or slice: `override`
+ * when given, otherwise the chart color tokens in order, repeating after the
+ * fourth. Elements drawn with `currentColor` pick it up.
+ *
+ * @param index The series or slice's position, from 0.
+ * @param override A color class the consumer chose, like `text-tally-primary`.
+ */
+export function getChartColor(index: number, override?: string): string {
+  return (
+    override ??
+    CHART_COLORS[index % CHART_COLORS.length] ??
+    'text-tally-chart-1'
+  );
+}

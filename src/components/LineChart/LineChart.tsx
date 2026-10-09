@@ -2,7 +2,7 @@
 
 import type { HTMLAttributes, KeyboardEvent, PointerEvent } from 'react';
 import { useState } from 'react';
-import { getValueScale } from '../../lib/chart';
+import { getChartColor, getValueScale } from '../../lib/chart';
 import { getNextIndex, type NavigationMove } from '../../lib/navigation';
 import { cn, isDrawable } from '../../lib/utils';
 import { scaleLinear } from 'd3-scale';
@@ -73,15 +73,6 @@ export interface LineChartProps extends Omit<
   height?: number;
 }
 
-// Default series colors, in order. Tailwind only generates classes it finds
-// written out in full, so these can't be built as `text-tally-chart-${n}`.
-const DEFAULT_COLORS = [
-  'text-tally-chart-1',
-  'text-tally-chart-2',
-  'text-tally-chart-3',
-  'text-tally-chart-4',
-];
-
 // A time series stops at its ends rather than wrapping from the last day back
 // to the first.
 const KEY_MOVES: Partial<Record<string, NavigationMove>> = {
@@ -90,13 +81,6 @@ const KEY_MOVES: Partial<Record<string, NavigationMove>> = {
   Home: 'first',
   End: 'last',
 };
-
-function getSeriesColor(
-  series: LineChartSeries,
-  index: number,
-): string | undefined {
-  return series.colorClassName ?? DEFAULT_COLORS[index % DEFAULT_COLORS.length];
-}
 
 /**
  * Line chart for one or more series over the same x positions, with a y-axis,
@@ -274,11 +258,14 @@ export function LineChart({
                 fill="none"
                 stroke="currentColor"
                 strokeWidth={2}
-                className={getSeriesColor(s, idx)}
+                className={getChartColor(idx, s.colorClassName)}
               />
             ))}
             {series.map((s, seriesIdx) => (
-              <g key={s.name} className={getSeriesColor(s, seriesIdx)}>
+              <g
+                key={s.name}
+                className={getChartColor(seriesIdx, s.colorClassName)}
+              >
                 {s.values.map((value, i) => {
                   if (!isDrawable(value)) return null;
 
@@ -332,7 +319,7 @@ export function LineChart({
                 <span
                   className={cn(
                     'size-2 shrink-0 rounded-full bg-current',
-                    getSeriesColor(s, idx),
+                    getChartColor(idx, s.colorClassName),
                   )}
                 />
                 <span className="text-tally-muted-fg">{s.name}</span>
