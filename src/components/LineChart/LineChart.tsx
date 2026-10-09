@@ -2,13 +2,14 @@
 
 import type { HTMLAttributes, KeyboardEvent, PointerEvent } from 'react';
 import { useState } from 'react';
-import { getLabelStep, getValueScale } from '../../lib/chart';
+import { getValueScale } from '../../lib/chart';
 import { getNextIndex, type NavigationMove } from '../../lib/navigation';
 import { cn, isDrawable } from '../../lib/utils';
 import { scaleLinear } from 'd3-scale';
 import { EmptyState } from '../EmptyState/EmptyState';
 import { line, curveMonotoneX } from 'd3-shape';
 import { useElementWidth } from '../../hooks/useElementWidth';
+import { XAxis } from '../charts/XAxis';
 import { YAxis } from '../charts/YAxis';
 
 export interface LineChartSeries {
@@ -99,19 +100,6 @@ function getSeriesColor(
   return series.colorClassName ?? DEFAULT_COLORS[index % DEFAULT_COLORS.length];
 }
 
-// The first and last points sit on the edges of the plot, so a centered label
-// there would hang half outside it (the right margin is too narrow to hold
-// it). Anchor those labels to their inner side instead.
-function xLabelAnchor(
-  index: number,
-  count: number,
-): 'start' | 'middle' | 'end' {
-  if (count === 1) return 'middle';
-  if (index === 0) return 'start';
-  if (index === count - 1) return 'end';
-  return 'middle';
-}
-
 /**
  * Line chart for one or more series over the same x positions, with a y-axis,
  * gridlines, and thinned x labels.
@@ -187,9 +175,7 @@ export function LineChart({
     .y((d) => yScale(d))
     .curve(curveMonotoneX);
 
-  // Show every nth x label so they never overlap.
   const formattedXLabels = xLabels.map((x) => String(formatLabel?.(x) ?? x));
-  const xLabelStep = getLabelStep(formattedXLabels, innerWidth);
 
   const formatPointValue = (value: number | undefined) =>
     value !== undefined && isDrawable(value)
@@ -269,19 +255,13 @@ export function LineChart({
               formatValue={formatValue}
             />
             {/* Each label sits under its point; there's no band to center in. */}
-            {formattedXLabels.map((x, idx) =>
-              idx % xLabelStep === 0 ? (
-                <text
-                  key={idx}
-                  x={xScale(idx)}
-                  y={innerHeight + 16}
-                  textAnchor={xLabelAnchor(idx, formattedXLabels.length)}
-                  className="fill-tally-muted-fg text-xs"
-                >
-                  {x}
-                </text>
-              ) : null,
-            )}
+            <XAxis
+              labels={formattedXLabels}
+              getX={(i) => xScale(i)}
+              width={innerWidth}
+              height={innerHeight}
+              edgeAnchored
+            />
             {active !== null && (
               <line
                 data-testid="crosshair"

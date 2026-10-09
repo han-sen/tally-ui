@@ -3,9 +3,10 @@
 import type { HTMLAttributes } from 'react';
 import { scaleBand } from 'd3-scale';
 import { useElementWidth } from '../../hooks/useElementWidth';
-import { getLabelStep, getValueScale } from '../../lib/chart';
+import { getValueScale } from '../../lib/chart';
 import { cn, isDrawable } from '../../lib/utils';
 import { EmptyState } from '../EmptyState/EmptyState';
+import { XAxis } from '../charts/XAxis';
 import { YAxis } from '../charts/YAxis';
 
 export interface BarChartProps extends Omit<
@@ -104,22 +105,18 @@ export function BarChart({
     );
   }
 
+  // The scale uses the raw labels, since they're unique. The axis shows the
+  // formatted ones.
+  const labels = data.map((d) => d.label);
+  const formattedLabels = labels.map((l) => String(formatLabel?.(l) ?? l));
+
   // Every label gets a slot, including ones whose value is missing, so a
   // missing day shows as an empty gap instead of the bars closing up around it.
-  const xScale = scaleBand()
-    .domain(data.map((d) => d.label))
-    .range([0, innerWidth])
-    .padding(0.2);
+  const xScale = scaleBand().domain(labels).range([0, innerWidth]).padding(0.2);
 
   const yScale = getValueScale(
     values.map((d) => d.value),
     innerHeight,
-  );
-
-  // Show every nth x label so they never overlap.
-  const step = getLabelStep(
-    data.map((d) => String(formatLabel?.(d.label) ?? d.label)),
-    innerWidth,
   );
 
   return (
@@ -153,19 +150,14 @@ export function BarChart({
             />
 
             {/* x labels, centered under their bars */}
-            {data.map((d, i) =>
-              i % step === 0 ? (
-                <text
-                  key={d.label}
-                  x={(xScale(d.label) ?? 0) + xScale.bandwidth() / 2}
-                  y={innerHeight + 16}
-                  textAnchor="middle"
-                  className="fill-tally-muted-fg text-xs"
-                >
-                  {formatLabel?.(d.label) ?? d.label}
-                </text>
-              ) : null,
-            )}
+            <XAxis
+              labels={formattedLabels}
+              getX={(i) =>
+                (xScale(labels[i] ?? '') ?? 0) + xScale.bandwidth() / 2
+              }
+              width={innerWidth}
+              height={innerHeight}
+            />
 
             {/* bars */}
             {values.map((d) => (
