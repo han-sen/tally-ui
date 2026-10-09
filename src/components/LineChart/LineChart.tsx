@@ -2,13 +2,15 @@
 
 import type { HTMLAttributes, KeyboardEvent, PointerEvent } from 'react';
 import { useState } from 'react';
-import { getLabelStep } from '../../lib/chart';
+import { getChartColor, getValueScale } from '../../lib/chart';
 import { getNextIndex, type NavigationMove } from '../../lib/navigation';
 import { cn, isDrawable } from '../../lib/utils';
 import { scaleLinear } from 'd3-scale';
 import { EmptyState } from '../EmptyState/EmptyState';
 import { line, curveMonotoneX } from 'd3-shape';
-import { useElementWidth } from '../../hooks/useElementWidth';
+import { useChartSize } from '../../hooks/useChartSize';
+import { XAxis } from '../charts/XAxis';
+import { YAxis } from '../charts/YAxis';
 
 export interface LineChartSeries {
   /**
@@ -71,17 +73,6 @@ export interface LineChartProps extends Omit<
   height?: number;
 }
 
-const margin = { top: 16, right: 16, bottom: 32, left: 40 };
-
-// Default series colors, in order. Tailwind only generates classes it finds
-// written out in full, so these can't be built as `text-tally-chart-${n}`.
-const DEFAULT_COLORS = [
-  'text-tally-chart-1',
-  'text-tally-chart-2',
-  'text-tally-chart-3',
-  'text-tally-chart-4',
-];
-
 // A time series stops at its ends rather than wrapping from the last day back
 // to the first.
 const KEY_MOVES: Partial<Record<string, NavigationMove>> = {
@@ -90,26 +81,6 @@ const KEY_MOVES: Partial<Record<string, NavigationMove>> = {
   Home: 'first',
   End: 'last',
 };
-
-function getSeriesColor(
-  series: LineChartSeries,
-  index: number,
-): string | undefined {
-  return series.colorClassName ?? DEFAULT_COLORS[index % DEFAULT_COLORS.length];
-}
-
-// The first and last points sit on the edges of the plot, so a centered label
-// there would hang half outside it (the right margin is too narrow to hold
-// it). Anchor those labels to their inner side instead.
-function xLabelAnchor(
-  index: number,
-  count: number,
-): 'start' | 'middle' | 'end' {
-  if (count === 1) return 'middle';
-  if (index === 0) return 'start';
-  if (index === count - 1) return 'end';
-  return 'middle';
-}
 
 /**
  * Line chart for one or more series over the same x positions, with a y-axis,
@@ -157,10 +128,7 @@ export function LineChart({
   // would be too noisy for screen readers.
   const [isKeyboardActive, setIsKeyboardActive] = useState(false);
 
-  const { ref, width } = useElementWidth();
-
-  const innerWidth = Math.max(0, width - margin.left - margin.right);
-  const innerHeight = Math.max(0, height - margin.top - margin.bottom);
+  const { ref, width, innerWidth, innerHeight, margin } = useChartSize(height);
 
   const hasData = series.some((d) => d.values.some(isDrawable));
   if (!hasData) {
@@ -178,10 +146,7 @@ export function LineChart({
   // Every drawable value from every series, so all lines share one y-axis.
   const allValues = series.flatMap((s) => s.values.filter(isDrawable));
 
-  const yScale = scaleLinear()
-    .domain([0, Math.max(...allValues)])
-    .range([innerHeight, 0])
-    .nice(5);
+  const yScale = getValueScale(allValues, innerHeight);
 
   const lineGenerator = line<number>()
     .defined(isDrawable)
@@ -189,11 +154,7 @@ export function LineChart({
     .y((d) => yScale(d))
     .curve(curveMonotoneX);
 
-  const yTicks = yScale.ticks(5);
-
-  // Show every nth x label so they never overlap.
   const formattedXLabels = xLabels.map((x) => String(formatLabel?.(x) ?? x));
-  const xLabelStep = getLabelStep(formattedXLabels, innerWidth);
 
   const formatPointValue = (value: number | undefined) =>
     value !== undefined && isDrawable(value)
@@ -267,33 +228,19 @@ export function LineChart({
             before the first measurement. The named, sized frame is enough. */}
         {width > 0 && (
           <g transform={`translate(${margin.left}, ${margin.top})`}>
-            {yTicks.map((tick) => (
-              <g key={tick} transform={`translate(0, ${yScale(tick)})`}>
-                <line x2={innerWidth} className="stroke-tally-border" />
-                <text
-                  x={-8}
-                  textAnchor="end"
-                  dominantBaseline="middle"
-                  className="fill-tally-muted-fg text-xs"
-                >
-                  {formatValue?.(tick) ?? tick}
-                </text>
-              </g>
-            ))}
+            <YAxis
+              scale={yScale}
+              width={innerWidth}
+              formatValue={formatValue}
+            />
             {/* Each label sits under its point; there's no band to center in. */}
-            {formattedXLabels.map((x, idx) =>
-              idx % xLabelStep === 0 ? (
-                <text
-                  key={idx}
-                  x={xScale(idx)}
-                  y={innerHeight + 16}
-                  textAnchor={xLabelAnchor(idx, formattedXLabels.length)}
-                  className="fill-tally-muted-fg text-xs"
-                >
-                  {x}
-                </text>
-              ) : null,
-            )}
+            <XAxis
+              labels={formattedXLabels}
+              getX={(i) => xScale(i)}
+              width={innerWidth}
+              height={innerHeight}
+              edgeAnchored
+            />
             {active !== null && (
               <line
                 data-testid="crosshair"
@@ -311,11 +258,14 @@ export function LineChart({
                 fill="none"
                 stroke="currentColor"
                 strokeWidth={2}
-                className={getSeriesColor(s, idx)}
+                className={getChartColor(idx, s.colorClassName)}
               />
             ))}
             {series.map((s, seriesIdx) => (
-              <g key={s.name} className={getSeriesColor(s, seriesIdx)}>
+              <g
+                key={s.name}
+                className={getChartColor(seriesIdx, s.colorClassName)}
+              >
                 {s.values.map((value, i) => {
                   if (!isDrawable(value)) return null;
 
@@ -369,7 +319,7 @@ export function LineChart({
                 <span
                   className={cn(
                     'size-2 shrink-0 rounded-full bg-current',
-                    getSeriesColor(s, idx),
+                    getChartColor(idx, s.colorClassName),
                   )}
                 />
                 <span className="text-tally-muted-fg">{s.name}</span>

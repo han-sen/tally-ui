@@ -1,11 +1,13 @@
 'use client';
 
 import type { HTMLAttributes } from 'react';
-import { scaleLinear, scaleBand } from 'd3-scale';
-import { useElementWidth } from '../../hooks/useElementWidth';
-import { getLabelStep } from '../../lib/chart';
+import { scaleBand } from 'd3-scale';
+import { useChartSize } from '../../hooks/useChartSize';
+import { getValueScale } from '../../lib/chart';
 import { cn, isDrawable } from '../../lib/utils';
 import { EmptyState } from '../EmptyState/EmptyState';
+import { XAxis } from '../charts/XAxis';
+import { YAxis } from '../charts/YAxis';
 
 export interface BarChartProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
@@ -42,8 +44,6 @@ export interface BarChartProps extends Omit<
    */
   height?: number;
 }
-
-const margin = { top: 16, right: 16, bottom: 32, left: 40 };
 
 // Radius of each bar's top corners, in pixels. SVG's `rx` rounds all four
 // corners, so the bars are clipped with CSS instead, which rounds only the top
@@ -88,10 +88,7 @@ export function BarChart({
   height = 300,
   ...props
 }: BarChartProps) {
-  const { ref, width } = useElementWidth();
-
-  const innerWidth = Math.max(0, width - margin.left - margin.right);
-  const innerHeight = Math.max(0, height - margin.top - margin.bottom);
+  const { ref, width, innerWidth, innerHeight, margin } = useChartSize(height);
 
   const values = data.filter((d) => isDrawable(d.value));
 
@@ -103,24 +100,18 @@ export function BarChart({
     );
   }
 
+  // The scale uses the raw labels, since they're unique. The axis shows the
+  // formatted ones.
+  const labels = data.map((d) => d.label);
+  const formattedLabels = labels.map((l) => String(formatLabel?.(l) ?? l));
+
   // Every label gets a slot, including ones whose value is missing, so a
   // missing day shows as an empty gap instead of the bars closing up around it.
-  const xScale = scaleBand()
-    .domain(data.map((d) => d.label))
-    .range([0, innerWidth])
-    .padding(0.2);
+  const xScale = scaleBand().domain(labels).range([0, innerWidth]).padding(0.2);
 
-  const yScale = scaleLinear()
-    .domain([0, Math.max(...values.map((d) => d.value))])
-    .range([innerHeight, 0])
-    .nice(5);
-
-  const yTicks = yScale.ticks(5);
-
-  // Show every nth x label so they never overlap.
-  const step = getLabelStep(
-    data.map((d) => String(formatLabel?.(d.label) ?? d.label)),
-    innerWidth,
+  const yScale = getValueScale(
+    values.map((d) => d.value),
+    innerHeight,
   );
 
   return (
@@ -147,34 +138,21 @@ export function BarChart({
         {width > 0 && (
           <g transform={`translate(${margin.left}, ${margin.top})`}>
             {/* y-axis ticks and gridlines */}
-            {yTicks.map((tick) => (
-              <g key={tick} transform={`translate(0, ${yScale(tick)})`}>
-                <line x2={innerWidth} className="stroke-tally-border" />
-                <text
-                  x={-8}
-                  textAnchor="end"
-                  dominantBaseline="middle"
-                  className="fill-tally-muted-fg text-xs"
-                >
-                  {formatValue?.(tick) ?? tick}
-                </text>
-              </g>
-            ))}
+            <YAxis
+              scale={yScale}
+              width={innerWidth}
+              formatValue={formatValue}
+            />
 
             {/* x labels, centered under their bars */}
-            {data.map((d, i) =>
-              i % step === 0 ? (
-                <text
-                  key={d.label}
-                  x={(xScale(d.label) ?? 0) + xScale.bandwidth() / 2}
-                  y={innerHeight + 16}
-                  textAnchor="middle"
-                  className="fill-tally-muted-fg text-xs"
-                >
-                  {formatLabel?.(d.label) ?? d.label}
-                </text>
-              ) : null,
-            )}
+            <XAxis
+              labels={formattedLabels}
+              getX={(i) =>
+                (xScale(labels[i] ?? '') ?? 0) + xScale.bandwidth() / 2
+              }
+              width={innerWidth}
+              height={innerHeight}
+            />
 
             {/* bars */}
             {values.map((d) => (
