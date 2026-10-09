@@ -2,7 +2,7 @@
 
 import type { HTMLAttributes } from 'react';
 import { scaleBand } from 'd3-scale';
-import { useElementWidth } from '../../hooks/useElementWidth';
+import { useChartSize } from '../../hooks/useChartSize';
 import { getValueScale } from '../../lib/chart';
 import { cn, isDrawable } from '../../lib/utils';
 import { EmptyState } from '../EmptyState/EmptyState';
@@ -44,8 +44,6 @@ export interface BarChartProps extends Omit<
    */
   height?: number;
 }
-
-const margin = { top: 16, right: 16, bottom: 32, left: 40 };
 
 // Radius of each bar's top corners, in pixels. SVG's `rx` rounds all four
 // corners, so the bars are clipped with CSS instead, which rounds only the top
@@ -90,10 +88,7 @@ export function BarChart({
   height = 300,
   ...props
 }: BarChartProps) {
-  const { ref, width } = useElementWidth();
-
-  const innerWidth = Math.max(0, width - margin.left - margin.right);
-  const innerHeight = Math.max(0, height - margin.top - margin.bottom);
+  const { ref, width, innerWidth, innerHeight, margin } = useChartSize(height);
 
   const values = data.filter((d) => isDrawable(d.value));
 

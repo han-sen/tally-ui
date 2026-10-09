@@ -8,7 +8,7 @@ import { cn, isDrawable } from '../../lib/utils';
 import { scaleLinear } from 'd3-scale';
 import { EmptyState } from '../EmptyState/EmptyState';
 import { line, curveMonotoneX } from 'd3-shape';
-import { useElementWidth } from '../../hooks/useElementWidth';
+import { useChartSize } from '../../hooks/useChartSize';
 import { XAxis } from '../charts/XAxis';
 import { YAxis } from '../charts/YAxis';
 
@@ -72,8 +72,6 @@ export interface LineChartProps extends Omit<
    */
   height?: number;
 }
-
-const margin = { top: 16, right: 16, bottom: 32, left: 40 };
 
 // Default series colors, in order. Tailwind only generates classes it finds
 // written out in full, so these can't be built as `text-tally-chart-${n}`.
@@ -146,10 +144,7 @@ export function LineChart({
   // would be too noisy for screen readers.
   const [isKeyboardActive, setIsKeyboardActive] = useState(false);
 
-  const { ref, width } = useElementWidth();
-
-  const innerWidth = Math.max(0, width - margin.left - margin.right);
-  const innerHeight = Math.max(0, height - margin.top - margin.bottom);
+  const { ref, width, innerWidth, innerHeight, margin } = useChartSize(height);
 
   const hasData = series.some((d) => d.values.some(isDrawable));
   if (!hasData) {
