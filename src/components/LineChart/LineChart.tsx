@@ -1,14 +1,13 @@
 'use client';
 
-import type { HTMLAttributes, KeyboardEvent, PointerEvent } from 'react';
-import { useState } from 'react';
+import type { HTMLAttributes, PointerEvent } from 'react';
 import { getChartColor, getValueScale } from '../../lib/chart';
-import { getNextIndex, type NavigationMove } from '../../lib/navigation';
 import { cn, isDrawable } from '../../lib/utils';
 import { scaleLinear } from 'd3-scale';
 import { EmptyState } from '../EmptyState/EmptyState';
 import { line, curveMonotoneX } from 'd3-shape';
 import { useChartSize } from '../../hooks/useChartSize';
+import { useChartNavigation } from '../../hooks/useChartNavigation';
 import { XAxis } from '../charts/XAxis';
 import { YAxis } from '../charts/YAxis';
 
@@ -73,15 +72,6 @@ export interface LineChartProps extends Omit<
   height?: number;
 }
 
-// A time series stops at its ends rather than wrapping from the last day back
-// to the first.
-const KEY_MOVES: Partial<Record<string, NavigationMove>> = {
-  ArrowRight: 'next',
-  ArrowLeft: 'previous',
-  Home: 'first',
-  End: 'last',
-};
-
 /**
  * Line chart for one or more series over the same x positions, with a y-axis,
  * gridlines, and thinned x labels.
@@ -123,10 +113,28 @@ export function LineChart({
   height = 300,
   ...props
 }: LineChartProps) {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  // Only keyboard moves are announced. Mousing across the chart
-  // would be too noisy for screen readers.
-  const [isKeyboardActive, setIsKeyboardActive] = useState(false);
+  const formattedXLabels = xLabels.map((x) => String(formatLabel?.(x) ?? x));
+
+  const formatPointValue = (value: number | undefined) =>
+    value !== undefined && isDrawable(value)
+      ? String(formatValue?.(value) ?? value)
+      : 'no data';
+
+  // `wrap` stays off: a time series stops at its ends rather than wrapping
+  // from the last day back to the first.
+  const {
+    activeIndex,
+    announcement,
+    activateFromPointer,
+    clear,
+    handleKeyDown,
+  } = useChartNavigation({
+    count: formattedXLabels.length,
+    describe: (index) =>
+      `${formattedXLabels[index]}: ${series
+        .map((s) => `${s.name} ${formatPointValue(s.values[index])}`)
+        .join(', ')}`,
+  });
 
   const { ref, width, innerWidth, innerHeight, margin } = useChartSize(height);
 
@@ -154,18 +162,7 @@ export function LineChart({
     .y((d) => yScale(d))
     .curve(curveMonotoneX);
 
-  const formattedXLabels = xLabels.map((x) => String(formatLabel?.(x) ?? x));
-
-  const formatPointValue = (value: number | undefined) =>
-    value !== undefined && isDrawable(value)
-      ? String(formatValue?.(value) ?? value)
-      : 'no data';
-
-  // Prevent undefined tooltip by checking that
-  // active index is in range when new labels props are supplied
-  const active =
-    activeIndex !== null && activeIndex < xLabels.length ? activeIndex : null;
-  const activeX = active === null ? 0 : xScale(active);
+  const activeX = activeIndex === null ? 0 : xScale(activeIndex);
 
   const handlePointerMove = (event: PointerEvent<SVGSVGElement>) => {
     // The SVG is drawn at its real size, so one unit is one screen pixel.
@@ -174,30 +171,8 @@ export function LineChart({
     const plotX = event.clientX - rect.left - margin.left;
     const index = Math.round(xScale.invert(plotX));
 
-    setActiveIndex(Math.min(Math.max(index, 0), xLabels.length - 1));
-    setIsKeyboardActive(false);
+    activateFromPointer(index);
   };
-
-  const handleKeyDown = (event: KeyboardEvent<SVGSVGElement>) => {
-    if (event.key === 'Escape') {
-      setActiveIndex(null);
-      return;
-    }
-
-    const move = KEY_MOVES[event.key];
-    if (!move) return;
-
-    event.preventDefault();
-    setActiveIndex(getNextIndex(active ?? -1, move, xLabels.length));
-    setIsKeyboardActive(true);
-  };
-
-  const announcement =
-    active === null || !isKeyboardActive
-      ? ''
-      : `${formattedXLabels[active]}: ${series
-          .map((s) => `${s.name} ${formatPointValue(s.values[active])}`)
-          .join(', ')}`;
 
   // Keep the tooltip positioned on the inside of the chart
   const tooltipOnLeft = activeX > innerWidth / 2;
@@ -220,9 +195,9 @@ export function LineChart({
         aria-label={label}
         tabIndex={0}
         onPointerMove={handlePointerMove}
-        onPointerLeave={() => setActiveIndex(null)}
+        onPointerLeave={clear}
         onKeyDown={handleKeyDown}
-        onBlur={() => setActiveIndex(null)}
+        onBlur={clear}
       >
         {/* Nothing is drawn until the width is known: on the server, and
             before the first measurement. The named, sized frame is enough. */}
@@ -241,7 +216,7 @@ export function LineChart({
               height={innerHeight}
               edgeAnchored
             />
-            {active !== null && (
+            {activeIndex !== null && (
               <line
                 data-testid="crosshair"
                 x1={activeX}
@@ -274,7 +249,7 @@ export function LineChart({
                   const isIsolated =
                     !isDrawable(s.values[i - 1]) &&
                     !isDrawable(s.values[i + 1]);
-                  const isActive = i === active;
+                  const isActive = i === activeIndex;
 
                   if (!showPoints && !isIsolated && !isActive) return null;
 
@@ -298,7 +273,7 @@ export function LineChart({
         )}
       </svg>
 
-      {active !== null && (
+      {activeIndex !== null && (
         // Hidden from screen readers; the live region below reads the same
         // values.
         <div
@@ -312,7 +287,7 @@ export function LineChart({
             top: margin.top,
           }}
         >
-          <p className="mb-1 font-medium">{formattedXLabels[active]}</p>
+          <p className="mb-1 font-medium">{formattedXLabels[activeIndex]}</p>
           <ul className="flex flex-col gap-1">
             {series.map((s, idx) => (
               <li key={s.name} className="flex items-center gap-2">
@@ -324,7 +299,7 @@ export function LineChart({
                 />
                 <span className="text-tally-muted-fg">{s.name}</span>
                 <span className="ml-auto pl-3 font-mono tabular-nums">
-                  {formatPointValue(s.values[active])}
+                  {formatPointValue(s.values[activeIndex])}
                 </span>
               </li>
             ))}
