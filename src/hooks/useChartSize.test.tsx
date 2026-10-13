@@ -3,11 +3,9 @@ import { describe, it, expect } from 'vitest';
 
 import { latestObserver, mockElementWidth } from '../test/resizeObserver';
 
-import {
-  CARTESIAN_MARGIN,
-  useChartSize,
-  type ChartMargin,
-} from './useChartSize';
+import type { ChartMargin } from '../lib/chart';
+
+import { CARTESIAN_MARGIN, useChartSize } from './useChartSize';
 
 function Sized({ height, margin }: { height: number; margin?: ChartMargin }) {
   const { ref, width, innerWidth, innerHeight } = useChartSize(height, margin);

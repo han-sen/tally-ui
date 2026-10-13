@@ -24,6 +24,6 @@ export function cn(...inputs: ClassValue[]) {
  * Filter a flat array of data for null, undefined, or NaN values
  * so they can rendered by chart components
  */
-export function isDrawable(d: number | undefined): boolean {
+export function isDrawable(d: number | undefined): d is number {
   return Number.isFinite(d);
 }
