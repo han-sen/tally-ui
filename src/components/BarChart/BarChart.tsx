@@ -66,9 +66,14 @@ const barClipPath = `inset(0 round ${BAR_RADIUS}px ${BAR_RADIUS}px 0 0)`;
  * `className`, since they use `currentColor`. Other props go to the wrapping
  * `<div>`.
  *
- * The chart is exposed to assistive tech as an image named by `label`, so
- * describe what it shows. Each bar also has a tooltip for mouse users.
- * With no drawable values it renders an `EmptyState` instead.
+ * Hovering highlights the nearest bar and shows a tooltip with its label and
+ * value. The chart is also focusable: ArrowLeft and ArrowRight move between
+ * bars (stopping at the ends), Home and End jump to the first and last, and
+ * Escape clears it. Screen readers hear `label` as the chart's name, so
+ * describe what it shows, and the active bar is announced, like
+ * "Aug 12: 1,602", when it is reached with the keyboard. A missing value is
+ * still a stop, announced as "no data". With no drawable values it renders an
+ * `EmptyState` instead.
  *
  * @example
  * ```tsx

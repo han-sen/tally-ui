@@ -25,7 +25,7 @@ Built with React, TypeScript, Tailwind CSS v4, and class-variance-authority, doc
 | `EmptyState`  | Compound component (`EmptyState.Icon`, `.Title`, `.Description`, `.Actions`) for "no data" and "no results" views                                                                                            |
 | `Input`       | Styled native text field with a forwarded ref, styled from `disabled`, `readOnly`, and `aria-invalid` instead of variants                                                                                    |
 | `Sparkline`   | Tiny D3-scaled line chart with a gradient area fill, gaps for missing values, and an optional accessible `label`                                                                                             |
-| `BarChart`    | D3-scaled bar chart that fills its container's width, with a `height` prop, a y-axis, gridlines, thinned x labels, optional `formatValue`/`formatLabel`, and an accessible `label`                           |
+| `BarChart`    | D3-scaled bar chart that fills its container's width, with a highlight and tooltip on hover, arrow-key navigation, announced values, a `height` prop, and optional `formatValue`/`formatLabel`               |
 | `LineChart`   | Several series over shared x labels that fill the container's width, with a crosshair and tooltip on hover, arrow-key navigation, announced values, gaps for missing data, a `height` prop, and `showPoints` |
 | `Combobox`    | Generic searchable select (WAI-ARIA combobox pattern) with keyboard support, filtering or async results, loading and empty states, controlled or uncontrolled                                                |
 | `RadioGroup`  | One choice from a set, built on native radios, with option values inferred as a typed union                                                                                                                  |
@@ -90,6 +90,8 @@ npm run build:lib   # library build: dist/ with JS, type declarations, and CSS
 
 **Charts draw at their real size.** `LineChart` and `BarChart` measure their container with a `ResizeObserver` (the internal `useElementWidth` hook) and draw at its actual pixel width, so one SVG unit is one screen pixel. Text stays at the type scale's size, margins and strokes stay put, and x labels are thinned based on the real space available. Scaling a fixed `viewBox` would be simpler and work without client JavaScript, but text would grow and shrink with the card. Height comes from a `height` prop rather than from the container, because a container with no set height would collapse to whatever the chart is. `Sparkline` is the exception: it has no text, so stretching to fill its box is what it should do.
 
+**Charts share their building blocks.** `BarChart` and `LineChart` are assembled from internal pieces instead of each drawing everything itself: `YAxis` and `XAxis` for ticks, gridlines, and thinned labels, `useChartSize` for the plot size inside the margins, `useChartNavigation` for the active point, keyboard movement, and announcements, and `ChartTooltip` for the floating box. The shared parts don't assume axes where they don't need to. Navigation works on indexes and leaves turning a pointer into an index to each chart, and the tooltip takes any position, so a chart without axes, such as a planned donut, can use them too. Each chart keeps only what is specific to it: its scale, its pointer math, and what it says about a point.
+
 **Variants with CVA.** Each element with variant logic gets its own `cva()` definition, kept in a separate `*.variants.ts` file so React Fast Refresh keeps working. Variant prop types are inferred from the definition rather than written by hand.
 
 **Variants are visible in the DOM.** Components with a `variant` prop (`Button`, `Badge`, `Alert`) expose the resolved variant as `data-variant`, including the default when none is passed. Tests, consumer CSS, and debugging can rely on one predictable attribute instead of matching class names, and it isn't a test-only hook.
@@ -112,7 +114,7 @@ npm run build:lib   # library build: dist/ with JS, type declarations, and CSS
 - `Tabs` lists are horizontal only: there's no vertical orientation with ArrowUp and ArrowDown yet. Disabled tabs are skipped by the arrow keys rather than kept focusable.
 - `Table`'s horizontal scroll container isn't keyboard-focusable on its own, so a wide table with no focusable content inside it can't be scrolled by keyboard.
 - `Card.Title` renders a `div`, so it doesn't appear in the page outline unless the caller adds `role="heading"` and `aria-level`.
-- `BarChart` exposes only its `label` to assistive tech. The per-bar tooltips are for mouse users, so a hidden data table is still to do. It assumes non-negative values and unique labels.
+- Screen reader users can step through `BarChart` and `LineChart` one point at a time, but neither offers the whole dataset as a table yet. `BarChart` assumes non-negative values and unique labels.
 - `LineChart` and `BarChart` are client components. Without JavaScript, or until the page hydrates, they show an empty frame of the right height with the chart's accessible name.
 - Dark mode isn't implemented yet, and the status colors are provisional until more components exist.
 

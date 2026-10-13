@@ -51,6 +51,11 @@ const sections: RoadmapSection[] = [
         name: 'DescriptionList',
         description: 'Label and value pairs for detail panels.',
       },
+      {
+        name: 'DonutChart',
+        description:
+          "Shares of a whole, like each article's part of total views, with the same hover, keyboard, and tooltip behavior as the other charts.",
+      },
     ],
   },
   {
@@ -109,6 +114,11 @@ const sections: RoadmapSection[] = [
       'Each has stories, tests, and JSDoc. See them under Components.',
     items: [
       {
+        name: 'BarChart',
+        description:
+          'Bars that highlight with a tooltip on hover and can be stepped through with the arrow keys.',
+      },
+      {
         name: 'LineChart',
         description:
           'Several series over time, with a hover crosshair and tooltip that are also reachable by keyboard.',
@@ -139,8 +149,9 @@ const sections: RoadmapSection[] = [
           'A labelled bar for shares and goals, in the bright chart colors.',
       },
       {
-        name: 'BarChart and Sparkline',
-        description: 'D3 scales rendered as React SVG.',
+        name: 'Sparkline',
+        description:
+          'A small trend line for stat cards, drawn with D3 as React SVG.',
       },
       {
         name: 'StatCard',
