@@ -1,5 +1,13 @@
 import { scaleLinear } from 'd3-scale';
 
+/** Space around a chart's plot for axis labels, in pixels. */
+export interface ChartMargin {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+}
+
 // Rough width of one character at text-xs (12px) and the space left between
 // labels, both in drawing units. Used to decide how many x labels fit.
 const CHAR_WIDTH = 6.5;
@@ -70,4 +78,28 @@ export function getChartColor(index: number, override?: string): string {
     CHART_COLORS[index % CHART_COLORS.length] ??
     'text-tally-chart-1'
   );
+}
+
+export const EMPTY_DATA_MESSAGE = 'no data' as const;
+
+/**
+ * Where to put the tooltip for a cartesian chart (BarChart, LineChart): at the
+ * active point's x, level with the top of the plot, opening toward the middle
+ * so it stays inside the chart near either edge. Spread the result onto
+ * `ChartTooltip`.
+ *
+ * @param x The active point's x position within the plot.
+ * @param innerWidth The plot's width.
+ * @param margin The chart's margin, to turn plot positions into chart ones.
+ */
+export function getCartesianTooltipPosition(
+  x: number,
+  innerWidth: number,
+  margin: ChartMargin,
+) {
+  return {
+    left: margin.left + x,
+    top: margin.top,
+    side: x > innerWidth / 2 ? 'left' : 'right',
+  } as const;
 }

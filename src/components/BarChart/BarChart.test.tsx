@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
 import { latestObserver, mockElementWidth } from '../../test/resizeObserver';
@@ -15,6 +16,33 @@ const xLabelsOf = (container: HTMLElement) =>
   [...container.querySelectorAll('svg text[y="268"]')].map(
     (text) => text.textContent,
   );
+
+const threeDays = [
+  { label: 'Aug 1', value: 1500 },
+  { label: 'Aug 2', value: 1800 },
+  { label: 'Aug 3', value: 1200 },
+];
+
+const renderThreeDays = (data = threeDays) =>
+  render(
+    <BarChart
+      data={data}
+      label="Views"
+      formatValue={(v) => v.toLocaleString('en-US')}
+    />,
+  );
+
+const getChart = () => screen.getByRole('img', { name: 'Views' });
+
+// jsdom has no layout, so place the SVG at the left edge of the page. At the
+// mocked 600px width, three bars are 170px apart with centers at x = 142, 312
+// and 482, and the first gap runs from 210 to 244.
+function mockChartRect(svg: Element) {
+  vi.spyOn(svg, 'getBoundingClientRect').mockReturnValue({
+    left: 0,
+    width: 600,
+  } as DOMRect);
+}
 
 const bars = (container: HTMLElement) => [
   ...container.querySelectorAll<SVGRectElement>('svg rect'),
@@ -125,19 +153,110 @@ describe('BarChart', () => {
     expect(xLabelsOf(container)).toEqual(['Day 1', 'Day 2', 'Day 3']);
   });
 
-  it('describes each bar in a tooltip using the formatters', () => {
-    render(
-      <BarChart
-        data={[
-          { label: 'Aug 1', value: 1500 },
-          { label: 'Aug 2', value: 1800 },
-        ]}
-        label="Views"
-        formatValue={(v) => v.toLocaleString('en-US')}
-      />,
-    );
+  it('shows a tooltip for the bar under the pointer', () => {
+    renderThreeDays();
+    const svg = getChart();
+    mockChartRect(svg);
 
-    expect(screen.getByText('Aug 1: 1,500')).toBeInTheDocument();
+    fireEvent.pointerMove(svg, { clientX: 312 });
+
+    expect(screen.getByText('Aug 2', { selector: 'p' })).toBeInTheDocument();
+    expect(screen.getByText('1,800', { selector: 'p' })).toBeInTheDocument();
+  });
+
+  it('picks the nearer bar when the pointer is in a gap', () => {
+    renderThreeDays();
+    const svg = getChart();
+    mockChartRect(svg);
+
+    // The gap between the first two bars is split at its middle, 227.
+    fireEvent.pointerMove(svg, { clientX: 220 });
+    expect(screen.getByText('1,500', { selector: 'p' })).toBeInTheDocument();
+
+    fireEvent.pointerMove(svg, { clientX: 235 });
+    expect(screen.getByText('1,800', { selector: 'p' })).toBeInTheDocument();
+  });
+
+  it('snaps to the nearest end when the pointer is in a margin', () => {
+    renderThreeDays();
+    const svg = getChart();
+    mockChartRect(svg);
+
+    fireEvent.pointerMove(svg, { clientX: 5 });
+    expect(screen.getByText('1,500', { selector: 'p' })).toBeInTheDocument();
+
+    fireEvent.pointerMove(svg, { clientX: 595 });
+    expect(screen.getByText('1,200', { selector: 'p' })).toBeInTheDocument();
+  });
+
+  it('hides the tooltip when the pointer leaves', () => {
+    renderThreeDays();
+    const svg = getChart();
+    mockChartRect(svg);
+
+    fireEvent.pointerMove(svg, { clientX: 312 });
+    fireEvent.pointerLeave(svg);
+
+    expect(
+      screen.queryByText('1,800', { selector: 'p' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('does not announce bars reached with the pointer', () => {
+    renderThreeDays();
+    const svg = getChart();
+    mockChartRect(svg);
+
+    fireEvent.pointerMove(svg, { clientX: 312 });
+
+    expect(screen.getByRole('status')).toBeEmptyDOMElement();
+  });
+
+  it('moves between bars with the arrow keys, Home and End', async () => {
+    const user = userEvent.setup();
+    renderThreeDays();
+
+    await user.tab();
+    expect(getChart()).toHaveFocus();
+
+    await user.keyboard('{ArrowRight}');
+    expect(screen.getByRole('status')).toHaveTextContent('Aug 1: 1,500');
+
+    await user.keyboard('{End}');
+    expect(screen.getByRole('status')).toHaveTextContent('Aug 3: 1,200');
+
+    await user.keyboard('{ArrowLeft}');
+    expect(screen.getByRole('status')).toHaveTextContent('Aug 2: 1,800');
+
+    await user.keyboard('{Home}');
+    expect(screen.getByRole('status')).toHaveTextContent('Aug 1: 1,500');
+  });
+
+  it('stops on a missing value and announces it as no data', async () => {
+    const user = userEvent.setup();
+    renderThreeDays([
+      { label: 'Aug 1', value: 1500 },
+      { label: 'Aug 2', value: NaN },
+      { label: 'Aug 3', value: 1200 },
+    ]);
+
+    await user.tab();
+    await user.keyboard('{ArrowRight}{ArrowRight}');
+
+    expect(screen.getByRole('status')).toHaveTextContent('Aug 2: no data');
+  });
+
+  it('clears the active bar with Escape and on blur', async () => {
+    const user = userEvent.setup();
+    renderThreeDays();
+
+    await user.tab();
+    await user.keyboard('{ArrowRight}{Escape}');
+    expect(screen.getByRole('status')).toBeEmptyDOMElement();
+
+    await user.keyboard('{ArrowRight}');
+    await user.tab();
+    expect(screen.getByRole('status')).toBeEmptyDOMElement();
   });
 
   it('does not pass the formatters through to the DOM', () => {

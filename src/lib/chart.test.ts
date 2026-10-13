@@ -1,6 +1,11 @@
 import { describe, it, expect } from 'vitest';
 
-import { getChartColor, getLabelStep, getValueScale } from './chart';
+import {
+  getCartesianTooltipPosition,
+  getChartColor,
+  getLabelStep,
+  getValueScale,
+} from './chart';
 
 describe('getLabelStep', () => {
   it('shows every label when they all fit', () => {
@@ -51,5 +56,21 @@ describe('getChartColor', () => {
 
   it('prefers an override', () => {
     expect(getChartColor(0, 'text-tally-primary')).toBe('text-tally-primary');
+  });
+});
+
+describe('getCartesianTooltipPosition', () => {
+  const margin = { top: 16, right: 16, bottom: 32, left: 40 };
+
+  it('places the tooltip at x, offset by the margin', () => {
+    expect(getCartesianTooltipPosition(100, 544, margin)).toMatchObject({
+      left: 140,
+      top: 16,
+    });
+  });
+
+  it('opens toward the middle of the plot', () => {
+    expect(getCartesianTooltipPosition(100, 544, margin).side).toBe('right');
+    expect(getCartesianTooltipPosition(400, 544, margin).side).toBe('left');
   });
 });

@@ -1,12 +1,5 @@
+import type { ChartMargin } from '../lib/chart';
 import { useElementWidth } from './useElementWidth';
-
-/** Space around a chart's plot for axis labels, in pixels. */
-export interface ChartMargin {
-  top: number;
-  right: number;
-  bottom: number;
-  left: number;
-}
 
 /**
  * The margin BarChart and LineChart share: room on the left for y tick labels

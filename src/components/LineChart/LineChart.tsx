@@ -1,7 +1,12 @@
 'use client';
 
 import type { HTMLAttributes, PointerEvent } from 'react';
-import { getChartColor, getValueScale } from '../../lib/chart';
+import {
+  getCartesianTooltipPosition,
+  getChartColor,
+  getValueScale,
+  EMPTY_DATA_MESSAGE,
+} from '../../lib/chart';
 import { cn, isDrawable } from '../../lib/utils';
 import { scaleLinear } from 'd3-scale';
 import { EmptyState } from '../EmptyState/EmptyState';
@@ -9,6 +14,7 @@ import { line, curveMonotoneX } from 'd3-shape';
 import { useChartSize } from '../../hooks/useChartSize';
 import { useChartNavigation } from '../../hooks/useChartNavigation';
 import { XAxis } from '../charts/XAxis';
+import { ChartTooltip } from '../charts/ChartTooltip';
 import { YAxis } from '../charts/YAxis';
 
 export interface LineChartSeries {
@@ -118,7 +124,7 @@ export function LineChart({
   const formatPointValue = (value: number | undefined) =>
     value !== undefined && isDrawable(value)
       ? String(formatValue?.(value) ?? value)
-      : 'no data';
+      : EMPTY_DATA_MESSAGE;
 
   // `wrap` stays off: a time series stops at its ends rather than wrapping
   // from the last day back to the first.
@@ -173,9 +179,6 @@ export function LineChart({
 
     activateFromPointer(index);
   };
-
-  // Keep the tooltip positioned on the inside of the chart
-  const tooltipOnLeft = activeX > innerWidth / 2;
 
   return (
     <div
@@ -274,18 +277,9 @@ export function LineChart({
       </svg>
 
       {activeIndex !== null && (
-        // Hidden from screen readers; the live region below reads the same
-        // values.
-        <div
-          aria-hidden="true"
-          className={cn(
-            'pointer-events-none absolute min-w-36 rounded-tally-panel bg-tally-surface px-3 py-2 text-xs text-tally-surface-fg shadow-tally-card',
-            tooltipOnLeft ? '-translate-x-full -ml-3' : 'ml-3',
-          )}
-          style={{
-            left: margin.left + activeX,
-            top: margin.top,
-          }}
+        <ChartTooltip
+          className="min-w-36"
+          {...getCartesianTooltipPosition(activeX, innerWidth, margin)}
         >
           <p className="mb-1 font-medium">{formattedXLabels[activeIndex]}</p>
           <ul className="flex flex-col gap-1">
@@ -304,7 +298,7 @@ export function LineChart({
               </li>
             ))}
           </ul>
-        </div>
+        </ChartTooltip>
       )}
 
       <span role="status" className="sr-only">
