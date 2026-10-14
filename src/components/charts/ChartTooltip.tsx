@@ -19,7 +19,8 @@ export interface ChartTooltipProps extends HTMLAttributes<HTMLDivElement> {
  * charts. Internal: not exported from the package.
  *
  * The chart decides where it goes and what it says; this supplies the box,
- * its position, and the gap from the point. Render it inside the chart's
+ * its position, and the gap from the point. Lines don't wrap, so a tooltip
+ * near the chart's edge keeps its width instead of being squeezed. Render it inside the chart's
  * `relative` wrapper, after the `<svg>`. It's hidden from assistive tech,
  * since the chart's live region reads the same values.
  *
@@ -50,7 +51,7 @@ export function ChartTooltip({
     <div
       {...props}
       className={cn(
-        'pointer-events-none absolute rounded-tally-panel bg-tally-surface px-3 py-2 text-xs text-tally-surface-fg shadow-tally-card',
+        'pointer-events-none absolute whitespace-nowrap rounded-tally-panel bg-tally-surface px-3 py-2 text-xs text-tally-surface-fg shadow-tally-card',
         side === 'left' ? '-ml-3 -translate-x-full' : 'ml-3',
         className,
       )}
