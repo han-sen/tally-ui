@@ -51,11 +51,6 @@ const sections: RoadmapSection[] = [
         name: 'DescriptionList',
         description: 'Label and value pairs for detail panels.',
       },
-      {
-        name: 'DonutChart',
-        description:
-          "Shares of a whole, like each article's part of total views, with the same hover, keyboard, and tooltip behavior as the other charts.",
-      },
     ],
   },
   {
@@ -113,6 +108,11 @@ const sections: RoadmapSection[] = [
     description:
       'Each has stories, tests, and JSDoc. See them under Components.',
     items: [
+      {
+        name: 'DonutChart',
+        description:
+          "Shares of a whole, like each carrier's part of all shipments, with hover, keyboard, and tooltip support like the other charts.",
+      },
       {
         name: 'BarChart',
         description:

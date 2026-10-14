@@ -25,6 +25,11 @@ export {
 } from './components/Card/Card';
 export { Combobox, type ComboboxProps } from './components/Combobox/Combobox';
 export {
+  DonutChart,
+  type DonutChartProps,
+  type DonutChartSlice,
+} from './components/DonutChart/DonutChart';
+export {
   EmptyState,
   EmptyStateIcon,
   EmptyStateTitle,
