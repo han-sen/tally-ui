@@ -8,8 +8,8 @@ import { LineChart } from './LineChart';
 const xLabels = ['Aug 1', 'Aug 2', 'Aug 3'];
 
 const twoSeries = [
-  { name: 'Toyota Camry', values: [1364, 1402, 1388] },
-  { name: 'Honda Accord', values: [1210, 1198, 1250] },
+  { name: 'Northline', values: [1364, 1402, 1388] },
+  { name: 'Coastal Freight', values: [1210, 1198, 1250] },
 ];
 
 function renderChart(props: Partial<Parameters<typeof LineChart>[0]> = {}) {
@@ -17,7 +17,7 @@ function renderChart(props: Partial<Parameters<typeof LineChart>[0]> = {}) {
     <LineChart
       xLabels={xLabels}
       series={twoSeries}
-      label="Daily views for two sedans"
+      label="Daily shipments for two carriers"
       formatValue={(v) => v.toLocaleString('en-US')}
       {...props}
     />,
@@ -25,7 +25,7 @@ function renderChart(props: Partial<Parameters<typeof LineChart>[0]> = {}) {
 }
 
 function getChart() {
-  return screen.getByRole('img', { name: 'Daily views for two sedans' });
+  return screen.getByRole('img', { name: 'Daily shipments for two carriers' });
 }
 
 // jsdom has no layout, so place the SVG at the left edge of the page. At the
@@ -47,13 +47,13 @@ describe('LineChart', () => {
     render(
       <LineChart
         xLabels={xLabels}
-        series={[{ name: 'Toyota Camry', values: [1, 2, 3] }]}
-        label="Daily views for Toyota Camry"
+        series={[{ name: 'Northline', values: [1, 2, 3] }]}
+        label="Daily shipments for Northline"
       />,
     );
 
     expect(
-      screen.getByRole('img', { name: 'Daily views for Toyota Camry' }),
+      screen.getByRole('img', { name: 'Daily shipments for Northline' }),
     ).toBeInTheDocument();
   });
 
@@ -62,8 +62,8 @@ describe('LineChart', () => {
     render(
       <LineChart
         xLabels={xLabels}
-        series={[{ name: 'Toyota Camry', values: [1, 2, 3] }]}
-        label="Daily views for Toyota Camry"
+        series={[{ name: 'Northline', values: [1, 2, 3] }]}
+        label="Daily shipments for Northline"
       />,
     );
 
@@ -95,7 +95,7 @@ describe('LineChart', () => {
   it('uses a series colorClassName over the default color', () => {
     const { container } = renderChart({
       series: [
-        { name: 'Toyota Camry', values: [1, 2, 3], colorClassName: 'text-x' },
+        { name: 'Northline', values: [1, 2, 3], colorClassName: 'text-x' },
       ],
     });
     const path = container.querySelector('path');
@@ -107,7 +107,7 @@ describe('LineChart', () => {
   it('leaves a gap for a NaN value', () => {
     const { container } = renderChart({
       xLabels: ['Aug 1', 'Aug 2', 'Aug 3', 'Aug 4', 'Aug 5'],
-      series: [{ name: 'Toyota Camry', values: [1, 2, NaN, 4, 5] }],
+      series: [{ name: 'Northline', values: [1, 2, NaN, 4, 5] }],
     });
     const d = container.querySelector('path')?.getAttribute('d') ?? '';
 
@@ -122,7 +122,7 @@ describe('LineChart', () => {
   ])('draws a circle for %s', (_, labels, values) => {
     const { container } = renderChart({
       xLabels: labels,
-      series: [{ name: 'Toyota Camry', values }],
+      series: [{ name: 'Northline', values }],
     });
 
     expect(container.querySelectorAll('circle').length).toBeGreaterThan(0);
@@ -137,7 +137,7 @@ describe('LineChart', () => {
   it('draws a circle on every drawable point with showPoints', () => {
     const { container } = renderChart({
       showPoints: true,
-      series: [{ name: 'Toyota Camry', values: [1, NaN, 3] }],
+      series: [{ name: 'Northline', values: [1, NaN, 3] }],
     });
 
     expect(container.querySelectorAll('circle')).toHaveLength(2);
@@ -146,8 +146,8 @@ describe('LineChart', () => {
   it('scales the y-axis to the largest value across all series', () => {
     renderChart({
       series: [
-        { name: 'Toyota Camry', values: [10, 20, 30] },
-        { name: 'Honda Accord', values: [40, 90, 60] },
+        { name: 'Northline', values: [10, 20, 30] },
+        { name: 'Coastal Freight', values: [40, 90, 60] },
       ],
     });
 
@@ -170,7 +170,7 @@ describe('LineChart', () => {
   });
 
   it('shows an empty state when no series has a drawable value', () => {
-    renderChart({ series: [{ name: 'Toyota Camry', values: [NaN, NaN] }] });
+    renderChart({ series: [{ name: 'Northline', values: [NaN, NaN] }] });
 
     expect(screen.getByText('No data to display')).toBeInTheDocument();
     expect(screen.queryByRole('img')).not.toBeInTheDocument();
@@ -179,11 +179,11 @@ describe('LineChart', () => {
   it('passes other props to the wrapper and merges className', () => {
     const { container } = renderChart({
       className: 'h-64',
-      id: 'views-chart',
+      id: 'shipments-chart',
     });
     const wrapper = container.firstElementChild;
 
-    expect(wrapper).toHaveAttribute('id', 'views-chart');
+    expect(wrapper).toHaveAttribute('id', 'shipments-chart');
     expect(wrapper).toHaveClass('relative', 'h-64');
   });
 
@@ -274,7 +274,7 @@ describe('LineChart', () => {
 
   it('shows "no data" in the tooltip for a missing value', () => {
     renderChart({
-      series: [{ name: 'Toyota Camry', values: [1, NaN, 3] }],
+      series: [{ name: 'Northline', values: [1, NaN, 3] }],
     });
     const svg = getChart();
     mockChartRect(svg);
@@ -335,7 +335,7 @@ describe('LineChart', () => {
     await user.keyboard('{ArrowRight}');
 
     expect(screen.getByRole('status')).toHaveTextContent(
-      'Aug 1: Toyota Camry 1,364, Honda Accord 1,210',
+      'Aug 1: Northline 1,364, Coastal Freight 1,210',
     );
   });
 });

@@ -9,24 +9,26 @@ describe('Input', () => {
   it('renders a text field named by its label', () => {
     render(
       <>
-        <label htmlFor="article">Article</label>
-        <Input id="article" />
+        <label htmlFor="tracking-number">Tracking number</label>
+        <Input id="tracking-number" />
       </>,
     );
 
-    const input = screen.getByRole('textbox', { name: 'Article' });
+    const input = screen.getByRole('textbox', { name: 'Tracking number' });
     expect(input).toHaveAttribute('type', 'text');
   });
 
   it('lets a consumer change the type', () => {
     render(<Input type="search" aria-label="Search" />);
-    expect(screen.getByRole('searchbox', { name: 'Search' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('searchbox', { name: 'Search' }),
+    ).toBeInTheDocument();
   });
 
   it('calls onChange as the user types', async () => {
     const onChange = vi.fn();
     const user = userEvent.setup();
-    render(<Input aria-label="Article" onChange={onChange} />);
+    render(<Input aria-label="Tracking number" onChange={onChange} />);
 
     await user.type(screen.getByRole('textbox'), 'abc');
 
@@ -35,18 +37,18 @@ describe('Input', () => {
   });
 
   it('works uncontrolled with a default value', () => {
-    render(<Input aria-label="Article" defaultValue="Honda Accord" />);
-    expect(screen.getByRole('textbox')).toHaveValue('Honda Accord');
+    render(<Input aria-label="Tracking number" defaultValue="SHP-20931" />);
+    expect(screen.getByRole('textbox')).toHaveValue('SHP-20931');
   });
 
   it('passes the placeholder through', () => {
-    render(<Input aria-label="Article" placeholder="Toyota Camry" />);
-    expect(screen.getByPlaceholderText('Toyota Camry')).toBeInTheDocument();
+    render(<Input aria-label="Tracking number" placeholder="SHP-10482" />);
+    expect(screen.getByPlaceholderText('SHP-10482')).toBeInTheDocument();
   });
 
   it('is disabled and ignores typing when disabled', async () => {
     const user = userEvent.setup();
-    render(<Input aria-label="Article" disabled />);
+    render(<Input aria-label="Tracking number" disabled />);
 
     const input = screen.getByRole('textbox');
     expect(input).toBeDisabled();
@@ -56,18 +58,20 @@ describe('Input', () => {
   });
 
   it('is marked invalid through aria-invalid', () => {
-    render(<Input aria-label="Article" aria-invalid="true" />);
+    render(<Input aria-label="Tracking number" aria-invalid="true" />);
     expect(screen.getByRole('textbox')).toBeInvalid();
   });
 
   it('forwards a ref to the underlying input element', () => {
     const ref = createRef<HTMLInputElement>();
-    render(<Input aria-label="Article" ref={ref} />);
+    render(<Input aria-label="Tracking number" ref={ref} />);
     expect(ref.current).toBeInstanceOf(HTMLInputElement);
   });
 
   it('merges a consumer className so it can override defaults', () => {
-    render(<Input aria-label="Article" className="w-64 custom-class" />);
+    render(
+      <Input aria-label="Tracking number" className="w-64 custom-class" />,
+    );
 
     const input = screen.getByRole('textbox');
     expect(input).toHaveClass('custom-class');

@@ -8,7 +8,7 @@ const meta: Meta<typeof Heading> = {
   tags: ['autodocs'],
   args: {
     level: 2,
-    children: 'Compared articles',
+    children: 'Carrier performance',
   },
 };
 export default meta;

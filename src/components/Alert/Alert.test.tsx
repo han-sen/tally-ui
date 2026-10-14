@@ -86,14 +86,14 @@ describe('Alert.Title and Alert.Description', () => {
   it('render their content inside the alert', () => {
     render(
       <Alert variant="danger">
-        <Alert.Title>Open recall</Alert.Title>
-        <Alert.Description>Contact your dealer.</Alert.Description>
+        <Alert.Title>Shipment delayed</Alert.Title>
+        <Alert.Description>Arriving a day late.</Alert.Description>
       </Alert>,
     );
 
     const alert = screen.getByRole('alert');
-    expect(within(alert).getByText('Open recall')).toBeInTheDocument();
-    expect(within(alert).getByText('Contact your dealer.')).toBeInTheDocument();
+    expect(within(alert).getByText('Shipment delayed')).toBeInTheDocument();
+    expect(within(alert).getByText('Arriving a day late.')).toBeInTheDocument();
   });
 
   it('merge a consumer className and pass other props through', () => {

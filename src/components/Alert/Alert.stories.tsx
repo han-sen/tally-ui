@@ -51,9 +51,9 @@ export const WithTitleAndDescription: Story = {
   },
   render: (args) => (
     <Alert {...args}>
-      <Alert.Title>Open recall</Alert.Title>
+      <Alert.Title>Shipment delayed</Alert.Title>
       <Alert.Description>
-        Contact your dealer to schedule a free repair.
+        SHP-10482 missed its pickup window and will arrive a day late.
       </Alert.Description>
     </Alert>
   ),

@@ -98,7 +98,7 @@ const sections: RoadmapSection[] = [
       {
         name: 'The experiment',
         description:
-          'A fresh agent builds the Attention Tracker app from the installed package alone. Invented props, type errors, and accessibility results are measured against a baseline, and the write-up is published here.',
+          'A fresh agent builds a real dashboard app from the installed package alone. Invented props, type errors, and accessibility results are measured against a baseline, and the write-up is published here.',
       },
     ],
   },

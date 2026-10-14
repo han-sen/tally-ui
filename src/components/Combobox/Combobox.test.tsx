@@ -80,10 +80,10 @@ describe('Combobox', () => {
       const user = userEvent.setup();
       render(
         <Combobox
-          label="Article"
-          items={['Toyota Camry', 'C++ (programming language)']}
-          getLabel={(title) => title}
-          getKey={(title) => title}
+          label="Warehouse"
+          items={['Reno, NV', 'Ontario, CA (Building #2)']}
+          getLabel={(name) => name}
+          getKey={(name) => name}
         />,
       );
 

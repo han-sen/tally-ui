@@ -102,7 +102,7 @@ export interface ComboboxProps<T> extends Omit<
   isLoading?: boolean;
   /**
    * Content shown in the panel when the list is open and nothing matches, for
-   * example `"No articles found"`.
+   * example `"No warehouses found"`.
    */
   emptyMessage?: ReactNode;
   /**
@@ -161,18 +161,18 @@ export interface ComboboxProps<T> extends Omit<
  * Async search: you own the text, fetch results, and skip local filtering:
  * ```tsx
  * const [query, setQuery] = useState('');
- * const { results, isFetching } = useArticleSearch(query);
+ * const { results, isFetching } = useWarehouseSearch(query);
  *
  * <Combobox
- *   label="Article"
+ *   label="Warehouse"
  *   items={results}
- *   getLabel={(article) => article.title}
- *   getKey={(article) => article.id}
+ *   getLabel={(warehouse) => warehouse.name}
+ *   getKey={(warehouse) => warehouse.id}
  *   inputValue={query}
  *   onInputValueChange={setQuery}
  *   filter={null}
  *   isLoading={isFetching}
- *   emptyMessage="No articles found"
+ *   emptyMessage="No warehouses found"
  * />
  * ```
  *
@@ -182,13 +182,13 @@ export interface ComboboxProps<T> extends Omit<
  * const [query, setQuery] = useState('');
  *
  * <Combobox
- *   label="Add article"
- *   items={articles}
- *   getLabel={(article) => article.title}
- *   getKey={(article) => article.id}
+ *   label="Add warehouse"
+ *   items={warehouses}
+ *   getLabel={(warehouse) => warehouse.name}
+ *   getKey={(warehouse) => warehouse.id}
  *   value={null}
- *   onValueChange={(article) => {
- *     if (article) addToComparison(article);
+ *   onValueChange={(warehouse) => {
+ *     if (warehouse) addToComparison(warehouse);
  *     setQuery('');
  *   }}
  *   inputValue={query}

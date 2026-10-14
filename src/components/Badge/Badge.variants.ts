@@ -5,14 +5,10 @@ export const badgeVariants = cva(
   {
     variants: {
       variant: {
-        primary:
-          'bg-tally-primary text-tally-primary-fg',
-        success:
-          'bg-tally-success text-tally-success-fg',
-        danger:
-          'bg-tally-danger text-tally-danger-fg',
-        warning:
-          'bg-tally-warning text-tally-warning-fg',
+        primary: 'bg-tally-primary text-tally-primary-fg',
+        success: 'bg-tally-success text-tally-success-fg',
+        danger: 'bg-tally-danger text-tally-danger-fg',
+        warning: 'bg-tally-warning text-tally-warning-fg',
         info: 'bg-tally-info text-tally-info-fg',
       },
     },

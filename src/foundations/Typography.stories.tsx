@@ -17,10 +17,12 @@ export const Specimen: Story = {
         <h2 className="text-xs font-semibold tracking-wide text-tally-muted-fg uppercase">
           Sans (font-sans)
         </h2>
-        <p className="text-2xl font-semibold">Median price, last 30 days</p>
+        <p className="text-2xl font-semibold">
+          Average delivery time, last 30 days
+        </p>
         <p className="text-base">
-          Open recalls rose by three compared with last month. Contact your
-          dealer to schedule a free repair.
+          Delayed shipments fell by three compared with last month, and every
+          warehouse is below 90% capacity.
         </p>
         <p className="text-sm text-tally-muted-fg">
           Small supporting text, 0123456789.

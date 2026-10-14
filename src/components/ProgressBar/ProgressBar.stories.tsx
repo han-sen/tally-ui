@@ -14,7 +14,7 @@ const meta: Meta<typeof ProgressBar> = {
     ),
   ],
   args: {
-    label: 'Share of views',
+    label: 'Warehouse capacity',
     value: 62,
   },
 };
@@ -61,7 +61,7 @@ export const Sizes: Story = {
 /** A count out of a total, read and shown as a percentage. */
 export const CustomMax: Story = {
   args: {
-    label: 'Articles loaded',
+    label: 'Pallets loaded',
     value: 3,
     max: 5,
   },

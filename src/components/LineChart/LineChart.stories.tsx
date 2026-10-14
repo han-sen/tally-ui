@@ -3,18 +3,18 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Legend } from '../Legend/Legend';
 import { LineChart } from './LineChart';
 
-// Deterministic fixtures shaped like Wikimedia daily pageviews.
+// Deterministic fixtures shaped like daily shipment counts.
 const xLabels = Array.from({ length: 30 }, (_, i) => `Aug ${i + 1}`);
 
-function views(base: number, swing: number, trend: number, phase: number) {
+function shipments(base: number, swing: number, trend: number, phase: number) {
   return xLabels.map((_, i) =>
     Math.round(base + swing * Math.sin(i / 4 + phase) + i * trend),
   );
 }
 
-const camry = views(1400, 300, 12, 0);
-const accord = views(1200, 200, 6, 1.5);
-const f150 = views(900, 150, -4, 3);
+const northline = shipments(1400, 300, 12, 0);
+const coastal = shipments(1200, 200, 6, 1.5);
+const summit = shipments(900, 150, -4, 3);
 
 const meta: Meta<typeof LineChart> = {
   title: 'Components/LineChart',
@@ -28,12 +28,12 @@ const meta: Meta<typeof LineChart> = {
     ),
   ],
   args: {
-    label: 'Daily views for three vehicles over the last 30 days',
+    label: 'Daily shipments by carrier over the last 30 days',
     xLabels,
     series: [
-      { name: 'Toyota Camry', values: camry },
-      { name: 'Honda Accord', values: accord },
-      { name: 'Ford F-150', values: f150 },
+      { name: 'Northline', values: northline },
+      { name: 'Coastal Freight', values: coastal },
+      { name: 'Summit Express', values: summit },
     ],
     formatValue: (v) => v.toLocaleString('en-US'),
   },
@@ -46,8 +46,8 @@ export const Default: Story = {};
 
 export const SingleSeries: Story = {
   args: {
-    label: 'Daily views for Toyota Camry over the last 30 days',
-    series: [{ name: 'Toyota Camry', values: camry }],
+    label: 'Daily shipments for Northline over the last 30 days',
+    series: [{ name: 'Northline', values: northline }],
   },
 };
 
@@ -56,10 +56,10 @@ export const WithGaps: Story = {
   args: {
     series: [
       {
-        name: 'Toyota Camry',
-        values: camry.map((v, i) => (i >= 12 && i <= 15 ? NaN : v)),
+        name: 'Northline',
+        values: northline.map((v, i) => (i >= 12 && i <= 15 ? NaN : v)),
       },
-      { name: 'Honda Accord', values: accord },
+      { name: 'Coastal Freight', values: coastal },
     ],
   },
 };
@@ -73,11 +73,11 @@ export const Empty: Story = {
 /** A circle on every point, for short series where each value matters. */
 export const ShowPoints: Story = {
   args: {
-    label: 'Daily views for two sedans over the last 7 days',
+    label: 'Daily shipments for two carriers over the last 7 days',
     xLabels: xLabels.slice(0, 7),
     series: [
-      { name: 'Toyota Camry', values: camry.slice(0, 7) },
-      { name: 'Honda Accord', values: accord.slice(0, 7) },
+      { name: 'Northline', values: northline.slice(0, 7) },
+      { name: 'Coastal Freight', values: coastal.slice(0, 7) },
     ],
     showPoints: true,
   },
@@ -91,10 +91,10 @@ export const IsolatedPoints: Story = {
   args: {
     series: [
       {
-        name: 'Toyota Camry',
-        values: camry.map((v, i) => (i % 3 === 1 ? v : NaN)),
+        name: 'Northline',
+        values: northline.map((v, i) => (i % 3 === 1 ? v : NaN)),
       },
-      { name: 'Honda Accord', values: accord },
+      { name: 'Coastal Freight', values: coastal },
     ],
   },
 };

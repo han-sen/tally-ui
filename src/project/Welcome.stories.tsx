@@ -53,15 +53,13 @@ function ExternalLink({
 
 // Sample data in the shape of the Dashboard preview's, so the cards here
 // match what visitors find there.
-const totalViewsTrend = [
-  38200, 39100, 40400, 41800, 42600, 44100, 45300, 46200, 47100, 47800, 48210,
+const shipmentsTrend = [
+  9800, 10100, 10400, 10900, 11200, 11500, 11800, 12100, 12400, 12600, 12840,
 ];
-const dailyAverageTrend = [
-  1720, 1705, 1690, 1668, 1650, 1642, 1630, 1621, 1615, 1610, 1607,
+const onTimeTrend = [
+  96.3, 96.2, 96.1, 95.9, 95.8, 95.7, 95.6, 95.5, 95.4, 95.3, 95.2,
 ];
-const peakDayTrend = [
-  1940, 1948, 1935, 1952, 1944, 1950, 1946, 1952, 1949, 1951, 1952,
-];
+const delayedTrend = [61, 58, 57, 53, 51, 48, 46, 44, 41, 40, 38];
 const weekly = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(
   (label, i) => ({
     label,
@@ -118,7 +116,7 @@ export const Welcome: Story = {
                 </ExternalLink>
               </li>
               <li>
-                <StoryLink id="foundations-dashboard-preview--attention-tracker">
+                <StoryLink id="foundations-dashboard-preview--logistics-overview">
                   Dashboard preview
                 </StoryLink>
               </li>
@@ -137,14 +135,14 @@ export const Welcome: Story = {
             <Heading level={2} size="lg" id="sample-heading">
               A sample, live
             </Heading>
-            <StoryLink id="foundations-dashboard-preview--attention-tracker">
+            <StoryLink id="foundations-dashboard-preview--logistics-overview">
               See the full dashboard
             </StoryLink>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
             <StatCard
-              label="Total views"
-              value="48,210"
+              label="Shipments"
+              value="12,840"
               delta={{
                 value: '4.2%',
                 direction: 'up',
@@ -153,53 +151,53 @@ export const Welcome: Story = {
               }}
               chart={
                 <Sparkline
-                  data={totalViewsTrend}
+                  data={shipmentsTrend}
                   className="h-16 w-full text-tally-success-chart"
                 />
               }
             />
             <StatCard
-              label="Daily average"
-              value="1,607"
+              label="On-time rate"
+              value="95.2%"
               delta={{
-                value: '1.1%',
+                value: '1.1 pts',
                 direction: 'down',
                 sentiment: 'negative',
                 comparison: 'last 30 days',
               }}
               chart={
                 <Sparkline
-                  data={dailyAverageTrend}
+                  data={onTimeTrend}
                   className="h-16 w-full text-tally-danger-chart"
                 />
               }
             />
             <StatCard
-              label="Peak day"
-              value="1,952"
+              label="Delayed shipments"
+              value="38"
               delta={{
-                value: '0%',
-                direction: 'flat',
-                sentiment: 'neutral',
+                value: '23',
+                direction: 'down',
+                sentiment: 'positive',
                 comparison: 'last 30 days',
               }}
               chart={
                 <Sparkline
-                  data={peakDayTrend}
-                  className="h-16 w-full text-tally-info-chart"
+                  data={delayedTrend}
+                  className="h-16 w-full text-tally-success-chart"
                 />
               }
             />
           </div>
           <Card>
             <Card.Header>
-              <Card.Title>Views this week</Card.Title>
-              <Card.Description>Toyota Camry</Card.Description>
+              <Card.Title>Orders this week</Card.Title>
+              <Card.Description>All warehouses</Card.Description>
             </Card.Header>
             <Card.Content>
               <BarChart
                 data={weekly}
-                label="Daily views for Toyota Camry this week"
+                label="Orders per day across all warehouses this week"
                 formatValue={(v) => v.toLocaleString('en-US')}
               />
             </Card.Content>

@@ -16,7 +16,7 @@ export interface SparklineProps extends Omit<
   data: number[];
   /**
    * Text alternative that describes the trend, for example
-   * `"Views trending up over 30 days"`. When provided the chart is exposed to
+   * `"Shipments trending up over 30 days"`. When provided the chart is exposed to
    * assistive tech as an image with this name. When omitted it is treated as
    * decorative and hidden
    */
@@ -71,7 +71,7 @@ const GLOW_SPACE_TOP = Math.max(
  * ```tsx
  * <Sparkline
  *   data={[3, 5, 4, 8, 7, 12]}
- *   label="Views trending up"
+ *   label="Shipments trending up"
  *   className="h-8 w-24 text-tally-success-fg"
  * />
  * ```

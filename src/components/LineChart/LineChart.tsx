@@ -19,7 +19,7 @@ import { YAxis } from '../charts/YAxis';
 
 export interface LineChartSeries {
   /**
-   * The series name, like "Toyota Camry". Shown in the tooltip and read in
+   * The series name, like "Northline". Shown in the tooltip and read in
    * announcements. Must be unique within a chart.
    */
   name: string;
@@ -49,7 +49,7 @@ export interface LineChartProps extends Omit<
   series: LineChartSeries[];
   /**
    * Text alternative that describes the chart, for example
-   * `"Daily views for three sedans over the last 30 days"`.
+   * `"Daily shipments by carrier over the last 30 days"`.
    */
   label: string;
   /**
@@ -87,7 +87,7 @@ export interface LineChartProps extends Omit<
  * focusable: ArrowLeft and ArrowRight move between points (stopping at the
  * ends), Home and End jump to the first and last, and Escape clears it. Screen
  * readers hear `label` as the chart's name, and the active point is announced,
- * like "Aug 12: Toyota Camry 1,602, Honda Accord 1,410", when it is
+ * like "Aug 12: Northline 1,602, Coastal Freight 1,410", when it is
  * reached with the keyboard.
  *
  * Series take the `tally-chart-1` to `tally-chart-4` colors in order, then
@@ -97,11 +97,11 @@ export interface LineChartProps extends Omit<
  * @example
  * ```tsx
  * <LineChart
- *   label="Daily views for two sedans in August"
+ *   label="Daily shipments for two carriers in August"
  *   xLabels={['Aug 1', 'Aug 2', 'Aug 3']}
  *   series={[
- *     { name: 'Toyota Camry', values: [1364, 1402, 1388] },
- *     { name: 'Honda Accord', values: [1210, 1198, NaN] },
+ *     { name: 'Northline', values: [1364, 1402, 1388] },
+ *     { name: 'Coastal Freight', values: [1210, 1198, NaN] },
  *   ]}
  *   formatValue={(v) => v.toLocaleString('en-US')}
  * />

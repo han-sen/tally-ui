@@ -5,7 +5,7 @@ import { cn } from '../../lib/utils';
 import { legendVariants } from './Legend.variants';
 
 export interface LegendItem {
-  /** The series name, like "Toyota Camry". Must be unique within a legend. */
+  /** The series name, like "Northline". Must be unique within a legend. */
   label: string;
   /**
    * A text color class for the swatch, like `text-tally-chart-1`. The swatch
@@ -14,8 +14,8 @@ export interface LegendItem {
    * colors will match:
    *
    * ```tsx
-   * <Legend items={[{ label: 'Camry', colorClassName: 'text-tally-chart-1' }]} />
-   * <LineChart series={[{ name: 'Camry', colorClassName: 'text-tally-chart-1', … }]} … />
+   * <Legend items={[{ label: 'Northline', colorClassName: 'text-tally-chart-1' }]} />
+   * <LineChart series={[{ name: 'Northline', colorClassName: 'text-tally-chart-1', … }]} … />
    * ```
    */
   colorClassName: string;
@@ -37,8 +37,8 @@ export interface LegendProps
  * ```tsx
  * <Legend
  *   items={[
- *     { label: 'Toyota Camry', colorClassName: 'text-tally-chart-1' },
- *     { label: 'Honda Accord', colorClassName: 'text-tally-chart-2' },
+ *     { label: 'Northline', colorClassName: 'text-tally-chart-1' },
+ *     { label: 'Coastal Freight', colorClassName: 'text-tally-chart-2' },
  *   ]}
  * />
  * ```
@@ -49,8 +49,8 @@ export interface LegendProps
  * <Legend
  *   orientation="vertical"
  *   items={[
- *     { label: 'Toyota Camry', colorClassName: 'text-tally-chart-1', value: '48,210' },
- *     { label: 'Honda Accord', colorClassName: 'text-tally-chart-2', value: '41,980' },
+ *     { label: 'Northline', colorClassName: 'text-tally-chart-1', value: '48,210' },
+ *     { label: 'Coastal Freight', colorClassName: 'text-tally-chart-2', value: '41,980' },
  *   ]}
  * />
  * ```

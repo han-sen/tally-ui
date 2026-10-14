@@ -40,7 +40,7 @@ export const NegativeDelta: Story = {
 
 export const IncreaseIsBad: Story = {
   args: {
-    label: 'Open recalls',
+    label: 'Delayed shipments',
     value: '12',
     delta: {
       value: '3',

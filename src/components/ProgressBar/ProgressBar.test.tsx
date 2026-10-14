@@ -28,7 +28,7 @@ describe('ProgressBar', () => {
   });
 
   it('scales the fill to a custom max', () => {
-    render(<ProgressBar label="Articles loaded" value={3} max={5} />);
+    render(<ProgressBar label="Pallets loaded" value={3} max={5} />);
 
     expect(screen.getByRole('progressbar')).toHaveAttribute(
       'aria-valuetext',

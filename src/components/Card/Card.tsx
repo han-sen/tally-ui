@@ -17,7 +17,7 @@ export interface CardHeaderProps extends CardProps {
   actions?: ReactNode;
   /**
    * Accessible name for the ellipsis button. Name it after the card when a
-   * page has several, like "Total views actions".
+   * page has several, like "Total shipments actions".
    * @default 'More actions'
    */
   actionsLabel?: string;
@@ -73,7 +73,7 @@ export function Card({ children, className, ...props }: CardProps) {
  *     </>
  *   }
  * >
- *   <Card.Title>Total views</Card.Title>
+ *   <Card.Title>Total shipments</Card.Title>
  * </Card.Header>
  * ```
  */

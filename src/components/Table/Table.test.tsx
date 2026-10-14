@@ -6,21 +6,21 @@ import { Table } from './Table';
 function renderTable() {
   return render(
     <Table>
-      <Table.Caption>Open recalls</Table.Caption>
+      <Table.Caption>Delayed shipments</Table.Caption>
       <Table.Header>
         <Table.Row>
-          <Table.Head>Vehicle</Table.Head>
-          <Table.Head numeric>Cost</Table.Head>
+          <Table.Head>Shipment</Table.Head>
+          <Table.Head numeric>Weight</Table.Head>
         </Table.Row>
       </Table.Header>
       <Table.Body>
         <Table.Row>
-          <Table.Cell>Accord</Table.Cell>
-          <Table.Cell numeric>$1,200</Table.Cell>
+          <Table.Cell>SHP-10482</Table.Cell>
+          <Table.Cell numeric>1,240 kg</Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>Civic</Table.Cell>
-          <Table.Cell numeric>$800</Table.Cell>
+          <Table.Cell>SHP-10483</Table.Cell>
+          <Table.Cell numeric>860 kg</Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>,
@@ -31,7 +31,7 @@ describe('Table', () => {
   it('exposes a table named by its caption', () => {
     renderTable();
     expect(
-      screen.getByRole('table', { name: 'Open recalls' }),
+      screen.getByRole('table', { name: 'Delayed shipments' }),
     ).toBeInTheDocument();
   });
 
@@ -41,13 +41,13 @@ describe('Table', () => {
     expect(screen.getAllByRole('row')).toHaveLength(3);
     expect(screen.getAllByRole('columnheader')).toHaveLength(2);
     expect(screen.getAllByRole('cell')).toHaveLength(4);
-    expect(screen.getByRole('cell', { name: 'Accord' })).toBeInTheDocument();
+    expect(screen.getByRole('cell', { name: 'SHP-10482' })).toBeInTheDocument();
   });
 
   it('defaults heads to scope="col"', () => {
     renderTable();
     expect(
-      screen.getByRole('columnheader', { name: 'Vehicle' }),
+      screen.getByRole('columnheader', { name: 'Shipment' }),
     ).toHaveAttribute('scope', 'col');
   });
 
@@ -56,25 +56,24 @@ describe('Table', () => {
       <Table>
         <Table.Body>
           <Table.Row>
-            <Table.Head scope="row">Accord</Table.Head>
-            <Table.Cell>$1,200</Table.Cell>
+            <Table.Head scope="row">SHP-10482</Table.Head>
+            <Table.Cell>1,240 kg</Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table>,
     );
 
-    expect(screen.getByRole('rowheader', { name: 'Accord' })).toHaveAttribute(
-      'scope',
-      'row',
-    );
+    expect(
+      screen.getByRole('rowheader', { name: 'SHP-10482' }),
+    ).toHaveAttribute('scope', 'row');
   });
 
   it('right-aligns numeric heads and cells with tabular numerals', () => {
     renderTable();
 
     for (const element of [
-      screen.getByRole('columnheader', { name: 'Cost' }),
-      screen.getByRole('cell', { name: '$1,200' }),
+      screen.getByRole('columnheader', { name: 'Weight' }),
+      screen.getByRole('cell', { name: '1,240 kg' }),
     ]) {
       expect(element).toHaveClass('text-right');
       expect(element).toHaveClass('tabular-nums');
@@ -85,9 +84,9 @@ describe('Table', () => {
     renderTable();
 
     expect(
-      screen.getByRole('columnheader', { name: 'Vehicle' }),
+      screen.getByRole('columnheader', { name: 'Shipment' }),
     ).not.toHaveClass('text-right');
-    expect(screen.getByRole('cell', { name: 'Accord' })).not.toHaveClass(
+    expect(screen.getByRole('cell', { name: 'SHP-10482' })).not.toHaveClass(
       'tabular-nums',
     );
   });
@@ -104,7 +103,7 @@ describe('Table', () => {
       <Table className="custom-class" id="my-table">
         <Table.Body>
           <Table.Row>
-            <Table.Cell>Accord</Table.Cell>
+            <Table.Cell>SHP-10482</Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table>,

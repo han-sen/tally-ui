@@ -38,17 +38,17 @@ export interface TableCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
  * @example
  * ```tsx
  * <Table>
- *   <Table.Caption>Open recalls</Table.Caption>
+ *   <Table.Caption>Delayed shipments</Table.Caption>
  *   <Table.Header>
  *     <Table.Row>
- *       <Table.Head>Vehicle</Table.Head>
- *       <Table.Head numeric>Cost</Table.Head>
+ *       <Table.Head>Shipment</Table.Head>
+ *       <Table.Head numeric>Weight</Table.Head>
  *     </Table.Row>
  *   </Table.Header>
  *   <Table.Body>
  *     <Table.Row>
- *       <Table.Cell>2022 Honda Accord</Table.Cell>
- *       <Table.Cell numeric>$1,200</Table.Cell>
+ *       <Table.Cell>SHP-10482</Table.Cell>
+ *       <Table.Cell numeric>1,240 kg</Table.Cell>
  *     </Table.Row>
  *   </Table.Body>
  * </Table>
@@ -82,9 +82,7 @@ export function TableCaption({ className, ...props }: TableCaptionProps) {
  * Header section (`<thead>`) that holds the column headings.
  */
 export function TableHeader({ className, ...props }: TableHeaderProps) {
-  return (
-    <thead {...props} className={cn('[&_tr]:border-b', className)} />
-  );
+  return <thead {...props} className={cn('[&_tr]:border-b', className)} />;
 }
 
 /**

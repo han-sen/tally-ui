@@ -144,16 +144,16 @@ describe('Tabs', () => {
 
   it('links tabs whose value contains a space', () => {
     render(
-      <Tabs defaultValue="page views">
+      <Tabs defaultValue="on-time rate">
         <Tabs.List>
-          <Tabs.Trigger value="page views">Page views</Tabs.Trigger>
+          <Tabs.Trigger value="on-time rate">On-time rate</Tabs.Trigger>
         </Tabs.List>
-        <Tabs.Content value="page views">Chart</Tabs.Content>
+        <Tabs.Content value="on-time rate">Chart</Tabs.Content>
       </Tabs>,
     );
 
-    const trigger = screen.getByRole('tab', { name: 'Page views' });
-    const panel = screen.getByRole('tabpanel', { name: 'Page views' });
+    const trigger = screen.getByRole('tab', { name: 'On-time rate' });
+    const panel = screen.getByRole('tabpanel', { name: 'On-time rate' });
 
     // A space would split the id reference in two
     expect(trigger.id).not.toContain(' ');

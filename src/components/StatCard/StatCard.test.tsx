@@ -103,7 +103,7 @@ describe('StatCard', () => {
   it('keeps direction and sentiment independent', () => {
     render(
       <StatCard
-        label="Open recalls"
+        label="Delayed shipments"
         value="12"
         delta={{
           value: '3',
@@ -205,14 +205,14 @@ describe('StatCard', () => {
     const user = userEvent.setup();
     render(
       <StatCard
-        label="Total views"
+        label="Total shipments"
         value="48,210"
         actions={<button type="button">Export CSV</button>}
       />,
     );
 
     await user.click(
-      screen.getByRole('button', { name: 'Total views actions' }),
+      screen.getByRole('button', { name: 'Total shipments actions' }),
     );
 
     expect(screen.getByRole('button', { name: 'Export CSV' })).toBeVisible();
@@ -221,19 +221,19 @@ describe('StatCard', () => {
   it('keeps the actions button while loading', () => {
     render(
       <StatCard
-        label="Total views"
+        label="Total shipments"
         isLoading
         actions={<button type="button">Export CSV</button>}
       />,
     );
 
     expect(
-      screen.getByRole('button', { name: 'Total views actions' }),
+      screen.getByRole('button', { name: 'Total shipments actions' }),
     ).toBeInTheDocument();
   });
 
   it('shows no actions button without actions', () => {
-    render(<StatCard label="Total views" value="48,210" />);
+    render(<StatCard label="Total shipments" value="48,210" />);
 
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
