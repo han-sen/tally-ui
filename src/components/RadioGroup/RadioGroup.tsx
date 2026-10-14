@@ -93,10 +93,10 @@ export interface RadioGroupProps<V extends string> extends Omit<
  * With descriptions:
  * ```tsx
  * <RadioGroup
- *   label="Sort articles by"
+ *   label="Sort carriers by"
  *   options={[
- *     { value: 'total', label: 'Total views', description: 'All views in the range' },
- *     { value: 'change', label: 'Change', description: 'Rise or fall since the last range' },
+ *     { value: 'total', label: 'Volume', description: 'Shipments in the range' },
+ *     { value: 'on-time', label: 'On-time rate', description: 'Share delivered by the promised date' },
  *   ]}
  * />
  * ```

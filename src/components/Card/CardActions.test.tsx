@@ -18,7 +18,7 @@ function renderCard(props: { onExport?: () => void } = {}) {
             </>
           }
         >
-          <Card.Title>Total views</Card.Title>
+          <Card.Title>Total shipments</Card.Title>
         </Card.Header>
       </Card>
       <button type="button">Outside</button>
@@ -32,7 +32,7 @@ describe('Card.Header actions', () => {
     render(
       <Card>
         <Card.Header>
-          <Card.Title>Total views</Card.Title>
+          <Card.Title>Total shipments</Card.Title>
         </Card.Header>
       </Card>,
     );
@@ -43,14 +43,14 @@ describe('Card.Header actions', () => {
   it('uses actionsLabel as the button name', () => {
     render(
       <Card>
-        <Card.Header actionsLabel="Total views actions" actions="Export">
-          <Card.Title>Total views</Card.Title>
+        <Card.Header actionsLabel="Total shipments actions" actions="Export">
+          <Card.Title>Total shipments</Card.Title>
         </Card.Header>
       </Card>,
     );
 
     expect(
-      screen.getByRole('button', { name: 'Total views actions' }),
+      screen.getByRole('button', { name: 'Total shipments actions' }),
     ).toBeInTheDocument();
   });
 

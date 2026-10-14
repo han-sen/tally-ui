@@ -18,8 +18,8 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement>;
  *
  * @example
  * ```tsx
- * <label htmlFor="article">Article</label>
- * <Input id="article" placeholder="Toyota Camry" />
+ * <label htmlFor="tracking-number">Tracking number</label>
+ * <Input id="tracking-number" placeholder="SHP-10482" />
  * ```
  */
 export const Input = forwardRef<HTMLInputElement, InputProps>(

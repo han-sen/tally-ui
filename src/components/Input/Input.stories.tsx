@@ -19,20 +19,20 @@ export const Default: Story = {};
 
 export const WithPlaceholder: Story = {
   args: {
-    placeholder: 'Toyota Camry',
+    placeholder: 'SHP-10482',
   },
 };
 
 export const WithLabel: Story = {
   args: {
     'aria-label': undefined,
-    id: 'article',
-    placeholder: 'Toyota Camry',
+    id: 'tracking-number',
+    placeholder: 'SHP-10482',
   },
   render: (args) => (
     <div className="flex w-64 flex-col gap-2">
-      <label htmlFor="article" className="text-sm font-medium">
-        Article
+      <label htmlFor="tracking-number" className="text-sm font-medium">
+        Tracking number
       </label>
       <Input {...args} />
     </div>
@@ -41,34 +41,34 @@ export const WithLabel: Story = {
 
 export const WithValue: Story = {
   args: {
-    defaultValue: 'Honda Accord',
+    defaultValue: 'SHP-20931',
   },
 };
 
 export const Disabled: Story = {
   args: {
     disabled: true,
-    defaultValue: 'Honda Accord',
+    defaultValue: 'SHP-20931',
   },
 };
 
 export const ReadOnly: Story = {
   args: {
     readOnly: true,
-    defaultValue: 'Honda Accord',
+    defaultValue: 'SHP-20931',
   },
 };
 
 export const Invalid: Story = {
   args: {
     'aria-invalid': true,
-    defaultValue: 'Not an article',
+    defaultValue: 'SHP-20',
   },
 };
 
 export const Search: Story = {
   args: {
     type: 'search',
-    placeholder: 'Search articles',
+    placeholder: 'Search shipments',
   },
 };

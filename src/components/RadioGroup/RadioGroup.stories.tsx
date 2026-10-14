@@ -32,20 +32,20 @@ export const Horizontal: Story = {
 
 export const WithDescriptions: Story = {
   args: {
-    label: 'Sort articles by',
+    label: 'Sort carriers by',
     defaultValue: 'total',
     options: [
       {
         value: 'total',
-        label: 'Total views',
-        description: 'All views in the date range',
+        label: 'Volume',
+        description: 'Shipments in the date range',
       },
       {
-        value: 'change',
-        label: 'Change',
-        description: 'Rise or fall since the previous range',
+        value: 'on-time',
+        label: 'On-time rate',
+        description: 'Share delivered by the promised date',
       },
-      { value: 'name', label: 'Name', description: 'Alphabetical by title' },
+      { value: 'name', label: 'Name', description: 'Alphabetical by carrier' },
     ],
   },
 };

@@ -21,9 +21,9 @@ export const WithAction: Story = {
       <EmptyState.Icon>
         <SearchX />
       </EmptyState.Icon>
-      <EmptyState.Title>No articles match your search</EmptyState.Title>
+      <EmptyState.Title>No warehouses match your search</EmptyState.Title>
       <EmptyState.Description>
-        Try a different article or a wider date range.
+        Try a different name or a wider date range.
       </EmptyState.Description>
       <EmptyState.Actions>
         <Button variant="secondary">Clear search</Button>
@@ -38,9 +38,9 @@ export const WithoutAction: Story = {
       <EmptyState.Icon>
         <Inbox />
       </EmptyState.Icon>
-      <EmptyState.Title>No views recorded</EmptyState.Title>
+      <EmptyState.Title>No shipments yet</EmptyState.Title>
       <EmptyState.Description>
-        There were no page views for this period.
+        No shipments were sent in this period.
       </EmptyState.Description>
     </EmptyState>
   ),
@@ -58,7 +58,7 @@ export const InsideCard: Story = {
   render: () => (
     <Card className="w-96">
       <Card.Header>
-        <Card.Title>Daily views</Card.Title>
+        <Card.Title>Daily shipments</Card.Title>
         <Card.Description>Last 30 days</Card.Description>
       </Card.Header>
       <Card.Content>
@@ -66,9 +66,9 @@ export const InsideCard: Story = {
           <EmptyState.Icon>
             <Inbox />
           </EmptyState.Icon>
-          <EmptyState.Title>No views recorded</EmptyState.Title>
+          <EmptyState.Title>No shipments yet</EmptyState.Title>
           <EmptyState.Description>
-            There were no page views for this period.
+            No shipments were sent in this period.
           </EmptyState.Description>
         </EmptyState>
       </Card.Content>
@@ -81,18 +81,20 @@ export const InsideTable: Story = {
     <Table>
       <Table.Header>
         <Table.Row>
-          <Table.Head>Rank</Table.Head>
-          <Table.Head>Article</Table.Head>
-          <Table.Head numeric>Views</Table.Head>
+          <Table.Head>Warehouse</Table.Head>
+          <Table.Head numeric>Shipments</Table.Head>
+          <Table.Head numeric>Capacity</Table.Head>
         </Table.Row>
       </Table.Header>
       <Table.Body>
         <Table.Row>
           <Table.Cell colSpan={3}>
             <EmptyState role="status">
-              <EmptyState.Title>No articles match your search</EmptyState.Title>
+              <EmptyState.Title>
+                No warehouses match your search
+              </EmptyState.Title>
               <EmptyState.Description>
-                Try a different article name.
+                Try a different warehouse name.
               </EmptyState.Description>
             </EmptyState>
           </Table.Cell>

@@ -7,7 +7,8 @@ const meta: Meta<typeof Text> = {
   component: Text,
   tags: ['autodocs'],
   args: {
-    children: 'Wikimedia publishes daily totals about a day late.',
+    children:
+      'Carrier data updates hourly, so the latest hour may be incomplete.',
   },
 };
 export default meta;
@@ -32,8 +33,8 @@ export const Variants: Story = {
     <div className="flex flex-col gap-2">
       <Text>Default text on a surface</Text>
       <Text variant="muted">Muted text for supporting details</Text>
-      <Text variant="success">Views rose 4.2% this week</Text>
-      <Text variant="danger">Views fell 1.1% this week</Text>
+      <Text variant="success">Shipments rose 4.2% this week</Text>
+      <Text variant="danger">Shipments fell 1.1% this week</Text>
     </div>
   ),
 };

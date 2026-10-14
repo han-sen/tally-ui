@@ -4,21 +4,21 @@ import { Combobox } from './Combobox';
 
 const fruits = ['Apple', 'Banana', 'Cherry', 'Mango', 'Peach'];
 
-interface Article {
+interface Warehouse {
   id: string;
-  title: string;
-  views: number;
+  name: string;
+  shipments: number;
 }
 
-// Titles with spaces and symbols, to check that option ids stay valid.
-const articles: Article[] = [
-  { id: 'Toyota Camry', title: 'Toyota Camry', views: 48210 },
-  { id: 'Honda Accord', title: 'Honda Accord', views: 39874 },
-  { id: 'Ford F-150', title: 'Ford F-150', views: 61532 },
+// Names with spaces and symbols, to check that option ids stay valid.
+const warehouses: Warehouse[] = [
+  { id: 'Reno, NV', name: 'Reno, NV', shipments: 4821 },
+  { id: 'Columbus, OH', name: 'Columbus, OH', shipments: 3987 },
+  { id: 'Atlanta, GA', name: 'Atlanta, GA', shipments: 6153 },
   {
-    id: 'C++ (programming language)',
-    title: 'C++ (programming language)',
-    views: 27103,
+    id: 'Ontario, CA (Building #2)',
+    name: 'Ontario, CA (Building #2)',
+    shipments: 2710,
   },
 ];
 
@@ -91,32 +91,32 @@ export const WithEmptyMessage: Story = {
 export const ObjectItems: Story = {
   render: () => (
     <Combobox
-      label="Article"
-      placeholder="Toyota Camry"
-      items={articles}
-      getLabel={(article) => article.title}
-      getKey={(article) => article.id}
+      label="Warehouse"
+      placeholder="Reno, NV"
+      items={warehouses}
+      getLabel={(warehouse) => warehouse.name}
+      getKey={(warehouse) => warehouse.id}
     />
   ),
 };
 
-/** Custom rows via `renderItem`; the option is still announced by its title. */
+/** Custom rows via `renderItem`; the option is still announced by its name. */
 export const CustomRows: Story = {
   render: () => (
     <Combobox
-      label="Article"
+      label="Warehouse"
       placeholder="Type a letter, like o"
-      items={articles}
-      getLabel={(article) => article.title}
-      getKey={(article) => article.id}
-      renderItem={(article, { selected }) => (
+      items={warehouses}
+      getLabel={(warehouse) => warehouse.name}
+      getKey={(warehouse) => warehouse.id}
+      renderItem={(warehouse, { selected }) => (
         <span className="flex items-center justify-between gap-3">
           <span className="truncate">
             {selected ? '✓ ' : ''}
-            {article.title}
+            {warehouse.name}
           </span>
           <span className="shrink-0 font-mono text-xs font-normal text-tally-muted-fg">
-            {article.views.toLocaleString()}
+            {warehouse.shipments.toLocaleString()}
           </span>
         </span>
       )}

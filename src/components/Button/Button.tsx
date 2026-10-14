@@ -6,7 +6,8 @@ import { cn } from '../../lib/utils';
 import { buttonVariants } from './Button.variants';
 
 export interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   /**
    * Renders a spinner and disables the button. Use for in-flight async

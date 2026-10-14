@@ -96,23 +96,23 @@ describe('RadioGroup', () => {
   it('names a radio by its label and describes it with its description', () => {
     render(
       <RadioGroup
-        label="Sort articles by"
+        label="Sort carriers by"
         options={[
           {
             value: 'total',
-            label: 'Total views',
-            description: 'All views in the range',
+            label: 'Volume',
+            description: 'Shipments in the range',
           },
-          { value: 'change', label: 'Change' },
+          { value: 'on-time', label: 'On-time rate' },
         ]}
       />,
     );
 
-    const total = screen.getByRole('radio', { name: 'Total views' });
-    expect(total).toHaveAccessibleDescription('All views in the range');
-    expect(screen.getByRole('radio', { name: 'Change' })).not.toHaveAttribute(
-      'aria-describedby',
-    );
+    const total = screen.getByRole('radio', { name: 'Volume' });
+    expect(total).toHaveAccessibleDescription('Shipments in the range');
+    expect(
+      screen.getByRole('radio', { name: 'On-time rate' }),
+    ).not.toHaveAttribute('aria-describedby');
   });
 
   it('follows a controlled value', async () => {

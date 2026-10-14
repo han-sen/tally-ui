@@ -14,7 +14,7 @@ export default meta;
 
 type Story = StoryObj<typeof BarChart>;
 
-// Deterministic fixture shaped like daily pageviews, so the story never changes.
+// Deterministic fixture shaped like daily order counts, so the story never changes.
 const days = (count: number) =>
   Array.from({ length: count }, (_, i) => ({
     label: `Aug ${i + 1}`,
@@ -24,14 +24,14 @@ const days = (count: number) =>
 export const ThirtyDays: Story = {
   args: {
     data: days(30),
-    label: 'Daily views for Toyota Camry, August 1 to 30',
+    label: 'Orders per day, August 1 to 30',
   },
 };
 
 export const SevenDays: Story = {
   args: {
     data: days(7),
-    label: 'Daily views for Toyota Camry, August 1 to 7',
+    label: 'Orders per day, August 1 to 7',
   },
 };
 
@@ -44,7 +44,7 @@ export const WithMissingValue: Story = {
       <BarChart
         {...args}
         data={data}
-        label="Daily views with one missing day"
+        label="Orders per day with one missing day"
       />
     );
   },
@@ -60,7 +60,7 @@ export const NoData: Story = {
 export const Height: Story = {
   args: {
     data: days(30),
-    label: 'Daily views over the last 30 days',
+    label: 'Orders per day over the last 30 days',
     height: 160,
   },
 };
@@ -73,7 +73,7 @@ export const Height: Story = {
 export const Resizable: Story = {
   args: {
     data: days(30),
-    label: 'Daily views over the last 30 days',
+    label: 'Orders per day over the last 30 days',
   },
   decorators: [
     (Story) => (

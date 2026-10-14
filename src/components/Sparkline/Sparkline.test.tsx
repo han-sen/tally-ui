@@ -55,10 +55,10 @@ describe('Sparkline', () => {
   });
 
   it('is exposed as a named image when a label is given', () => {
-    render(<Sparkline data={[3, 5, 4, 8]} label="Views trending up" />);
+    render(<Sparkline data={[3, 5, 4, 8]} label="Shipments trending up" />);
 
     expect(
-      screen.getByRole('img', { name: 'Views trending up' }),
+      screen.getByRole('img', { name: 'Shipments trending up' }),
     ).toBeInTheDocument();
   });
 

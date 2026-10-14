@@ -27,12 +27,12 @@ const renderThreeDays = (data = threeDays) =>
   render(
     <BarChart
       data={data}
-      label="Views"
+      label="Orders"
       formatValue={(v) => v.toLocaleString('en-US')}
     />,
   );
 
-const getChart = () => screen.getByRole('img', { name: 'Views' });
+const getChart = () => screen.getByRole('img', { name: 'Orders' });
 
 // jsdom has no layout, so place the SVG at the left edge of the page. At the
 // mocked 600px width, three bars are 170px apart with centers at x = 142, 312
@@ -54,15 +54,15 @@ describe('BarChart', () => {
   mockElementWidth(600);
 
   it('is exposed as an image named by its label', () => {
-    render(<BarChart data={days(3)} label="Daily views for Camry" />);
+    render(<BarChart data={days(3)} label="Orders per day" />);
 
     expect(
-      screen.getByRole('img', { name: 'Daily views for Camry' }),
+      screen.getByRole('img', { name: 'Orders per day' }),
     ).toBeInTheDocument();
   });
 
   it('draws one bar per drawable value', () => {
-    const { container } = render(<BarChart data={days(7)} label="Views" />);
+    const { container } = render(<BarChart data={days(7)} label="Orders" />);
     expect(bars(container)).toHaveLength(7);
   });
 
@@ -73,7 +73,7 @@ describe('BarChart', () => {
           { label: 'A', value: 10 },
           { label: 'B', value: 20 },
         ]}
-        label="Views"
+        label="Orders"
       />,
     );
 
@@ -90,7 +90,7 @@ describe('BarChart', () => {
           { label: 'A', value: 500 },
           { label: 'B', value: 1995 },
         ]}
-        label="Views"
+        label="Orders"
       />,
     );
 
@@ -101,7 +101,7 @@ describe('BarChart', () => {
   it('leaves an empty slot for a missing value instead of closing the gap', () => {
     const data = days(5);
     data[2] = { label: 'Aug 3', value: Number.NaN };
-    const { container } = render(<BarChart data={data} label="Views" />);
+    const { container } = render(<BarChart data={data} label="Orders" />);
 
     const drawn = bars(container);
     expect(drawn).toHaveLength(4);
@@ -116,24 +116,24 @@ describe('BarChart', () => {
 
   it('shows an empty state when nothing is drawable', () => {
     const { container, rerender } = render(
-      <BarChart data={[]} label="Views" />,
+      <BarChart data={[]} label="Orders" />,
     );
     expect(screen.getByText('No data to display')).toBeInTheDocument();
     expect(container.querySelector('svg')).not.toBeInTheDocument();
 
     rerender(
-      <BarChart data={[{ label: 'A', value: Number.NaN }]} label="Views" />,
+      <BarChart data={[{ label: 'A', value: Number.NaN }]} label="Orders" />,
     );
     expect(screen.getByText('No data to display')).toBeInTheDocument();
   });
 
   it('shows every x label when they fit and thins them when they do not', () => {
     const { container, rerender } = render(
-      <BarChart data={days(7)} label="Views" />,
+      <BarChart data={days(7)} label="Orders" />,
     );
     expect(xLabelsOf(container)).toHaveLength(7);
 
-    rerender(<BarChart data={days(30)} label="Views" />);
+    rerender(<BarChart data={days(30)} label="Orders" />);
     const thinned = xLabelsOf(container);
     expect(thinned.length).toBeLessThan(30);
     expect(thinned[0]).toBe('Aug 1');
@@ -143,7 +143,7 @@ describe('BarChart', () => {
     const { container } = render(
       <BarChart
         data={days(3)}
-        label="Views"
+        label="Orders"
         formatValue={(v) => `$${v}`}
         formatLabel={(l) => l.replace('Aug ', 'Day ')}
       />,
@@ -267,7 +267,7 @@ describe('BarChart', () => {
     const { container } = render(
       <BarChart
         data={days(3)}
-        label="Views"
+        label="Orders"
         formatValue={(v) => v}
         formatLabel={(l) => l}
       />,
@@ -282,7 +282,7 @@ describe('BarChart', () => {
     render(
       <BarChart
         data={days(3)}
-        label="Views"
+        label="Orders"
         className="w-full text-tally-success-fg"
         data-testid="chart"
       />,
@@ -295,8 +295,8 @@ describe('BarChart', () => {
   });
 
   it('draws at the measured width and the given height', () => {
-    render(<BarChart data={days(3)} label="Views" height={160} />);
-    const svg = screen.getByRole('img', { name: 'Views' });
+    render(<BarChart data={days(3)} label="Orders" height={160} />);
+    const svg = screen.getByRole('img', { name: 'Orders' });
 
     expect(svg).toHaveAttribute('width', '600');
     expect(svg).toHaveAttribute('height', '160');
@@ -307,7 +307,7 @@ describe('BarChart', () => {
     const { container } = render(
       <BarChart
         data={days(3)}
-        label="Views"
+        label="Orders"
         height={160}
         style={{ maxWidth: 800 }}
       />,
@@ -321,19 +321,19 @@ describe('BarChart', () => {
 
   it('draws nothing until it has a width, but stays named', () => {
     vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(0);
-    const { container } = render(<BarChart data={days(3)} label="Views" />);
+    const { container } = render(<BarChart data={days(3)} label="Orders" />);
 
-    expect(screen.getByRole('img', { name: 'Views' })).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Orders' })).toBeInTheDocument();
     expect(bars(container)).toHaveLength(0);
     expect(container.querySelectorAll('text')).toHaveLength(0);
   });
 
   it('redraws when the container is resized', () => {
-    render(<BarChart data={days(3)} label="Views" />);
+    render(<BarChart data={days(3)} label="Orders" />);
 
     latestObserver().report(400);
 
-    expect(screen.getByRole('img', { name: 'Views' })).toHaveAttribute(
+    expect(screen.getByRole('img', { name: 'Orders' })).toHaveAttribute(
       'viewBox',
       '0 0 400 300',
     );

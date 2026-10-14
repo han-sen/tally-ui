@@ -25,7 +25,7 @@ export interface TextProps
  *
  * @example
  * ```tsx
- * <Text variant="muted" size="sm">Wikipedia page views for car models</Text>
+ * <Text variant="muted" size="sm">Shipments across all carriers and warehouses</Text>
  * <Text as="span" mono>48,210</Text>
  * ```
  */

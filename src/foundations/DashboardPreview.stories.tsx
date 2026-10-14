@@ -7,6 +7,7 @@ import { BarChart } from '../components/BarChart/BarChart';
 import { Button } from '../components/Button/Button';
 import { Card } from '../components/Card/Card';
 import { Combobox } from '../components/Combobox/Combobox';
+import { DonutChart } from '../components/DonutChart/DonutChart';
 import { EmptyState } from '../components/EmptyState/EmptyState';
 import { Legend } from '../components/Legend/Legend';
 import { LineChart } from '../components/LineChart/LineChart';
@@ -26,95 +27,101 @@ export default meta;
 
 type Story = StoryObj;
 
-// Deterministic fixtures shaped like Wikimedia daily pageviews.
-const daily = Array.from({ length: 30 }, (_, i) => ({
+// Deterministic fixtures shaped like daily order and shipment counts.
+const dailyOrders = Array.from({ length: 30 }, (_, i) => ({
   label: `Aug ${i + 1}`,
   value: Math.round(1400 + 300 * Math.sin(i / 4) + i * 12),
 }));
 
-const articles = [
+// Colors are written out in full, since Tailwind only generates classes it can
+// find in the source. Each carrier keeps its color across every chart.
+const carriers = [
   {
-    name: 'Toyota Camry',
-    views: [
+    name: 'Northline',
+    colorClassName: 'text-tally-chart-1',
+    onTime: 97.1,
+    shipments: [
       1364, 1365, 1369, 1402, 1450, 1433, 1510, 1548, 1602, 1590, 1655, 1701,
     ],
   },
   {
-    name: 'Honda Accord',
-    views: [
+    name: 'Coastal Freight',
+    colorClassName: 'text-tally-chart-2',
+    onTime: 95.8,
+    shipments: [
       1180, 1175, 1190, 1162, 1140, 1155, 1120, 1101, 1098, 1075, 1080, 1052,
     ],
   },
   {
-    name: 'Ford F-150',
-    views: [
+    name: 'Summit Express',
+    colorClassName: 'text-tally-chart-3',
+    onTime: 91.4,
+    shipments: [
       2210, 2250, 2190, 2305, 2280, 2340, 2298, 2360, 2331, 2402, 2385, 2420,
     ],
   },
 ];
 
-// The last 12 days of August, matching the compared articles' views.
-const comparedDays = Array.from({ length: 12 }, (_, i) => `Aug ${i + 19}`);
-const articleColors = [
-  'text-tally-chart-1',
-  'text-tally-chart-2',
-  'text-tally-chart-3',
-];
+// The last 12 days of August, matching the carriers' shipments.
+const recentDays = Array.from({ length: 12 }, (_, i) => `Aug ${i + 19}`);
 
-// Articles the user can add, as a search for "car models" might return them.
-const suggestedArticles = [
-  'Chevrolet Silverado',
-  'Honda CR-V',
-  'Hyundai Elantra',
-  'Nissan Altima',
-  'Ram Pickup',
-  'Subaru Outback',
-  'Tesla Model 3',
-  'Tesla Model Y',
-  'Toyota Corolla',
-  'Toyota RAV4',
+// Warehouses the user can add, as a search might return them.
+const warehouses = [
+  'Atlanta, GA',
+  'Columbus, OH',
+  'Dallas, TX',
+  'Denver, CO',
+  'Newark, NJ',
+  'Ontario, CA',
+  'Phoenix, AZ',
+  'Reno, NV',
+  'Savannah, GA',
+  'Seattle, WA',
 ];
 
 const total = (values: number[]) => values.reduce((sum, v) => sum + v, 0);
 
-// Combined views of every compared article, for each one's share.
-const comparedTotal = articles.reduce(
-  (sum, { views }) => sum + total(views),
+// Shipments across every carrier, for each one's share.
+const allShipments = carriers.reduce(
+  (sum, { shipments }) => sum + total(shipments),
   0,
 );
 
-// Small trend fixtures for the stat cards, shaped to match each delta.
-const totalViewsTrend = [
-  38200, 39100, 40400, 41800, 42600, 44100, 45300, 46200, 47100, 47800, 48210,
-];
-const dailyAverageTrend = [
-  1720, 1705, 1690, 1668, 1650, 1642, 1630, 1621, 1615, 1610, 1607,
-];
-const peakDayTrend = [
-  1940, 1948, 1935, 1952, 1944, 1950, 1946, 1952, 1949, 1951, 1952,
-];
+// Below this on-time rate, a carrier is flagged as having delays.
+const ON_TIME_TARGET = 95;
 
-export const AttentionTracker: Story = {
+// Small trend fixtures for the stat cards, shaped to match each delta.
+const shipmentsTrend = [
+  9800, 10100, 10400, 10900, 11200, 11500, 11800, 12100, 12400, 12600, 12840,
+];
+const onTimeTrend = [
+  96.3, 96.2, 96.1, 95.9, 95.8, 95.7, 95.6, 95.5, 95.4, 95.3, 95.2,
+];
+const delayedTrend = [61, 58, 57, 53, 51, 48, 46, 44, 41, 40, 38];
+
+const formatCount = (v: number) => v.toLocaleString('en-US');
+
+export const LogisticsOverview: Story = {
   render: () => (
     <div className="min-h-screen bg-tally-background p-6">
       <div className="mx-auto flex max-w-5xl flex-col gap-6">
         <header className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <Heading level={1}>Attention tracker</Heading>
+            <Heading level={1}>Logistics overview</Heading>
             <Text variant="muted" size="sm">
-              Wikipedia page views for car models
+              Shipments across all carriers and warehouses
             </Text>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-56">
               <Combobox
-                label="Add an article"
+                label="Add a warehouse"
                 hideLabel
-                placeholder="Add an article"
-                items={suggestedArticles}
-                getLabel={(title) => title}
-                getKey={(title) => title}
-                emptyMessage="No matching articles"
+                placeholder="Add a warehouse"
+                items={warehouses}
+                getLabel={(name) => name}
+                getKey={(name) => name}
+                emptyMessage="No matching warehouses"
               />
             </div>
             <Button>Add</Button>
@@ -125,9 +132,9 @@ export const AttentionTracker: Story = {
         </header>
 
         <Alert variant="warning">
-          <Alert.Title>Data is delayed</Alert.Title>
+          <Alert.Title>Weather delays in the Northeast</Alert.Title>
           <Alert.Description>
-            Wikimedia publishes daily totals about a day late.
+            Summit Express shipments may arrive a day late.
           </Alert.Description>
         </Alert>
 
@@ -147,7 +154,7 @@ export const AttentionTracker: Story = {
 
         <div className="grid gap-4 md:grid-cols-4">
           <StatCard
-            label="Total views"
+            label="Shipments"
             actions={
               <>
                 <Button variant="ghost" size="sm" className="justify-start">
@@ -158,7 +165,7 @@ export const AttentionTracker: Story = {
                 </Button>
               </>
             }
-            value="48,210"
+            value="12,840"
             delta={{
               value: '4.2%',
               direction: 'up',
@@ -167,13 +174,13 @@ export const AttentionTracker: Story = {
             }}
             chart={
               <Sparkline
-                data={totalViewsTrend}
+                data={shipmentsTrend}
                 className="h-20 w-full text-tally-success-chart"
               />
             }
           />
           <StatCard
-            label="Daily average"
+            label="On-time rate"
             actions={
               <>
                 <Button variant="ghost" size="sm" className="justify-start">
@@ -184,22 +191,23 @@ export const AttentionTracker: Story = {
                 </Button>
               </>
             }
-            value="1,607"
+            value="95.2%"
             delta={{
-              value: '1.1%',
+              value: '1.1 pts',
               direction: 'down',
               sentiment: 'negative',
               comparison: 'last 30 days',
             }}
             chart={
               <Sparkline
-                data={dailyAverageTrend}
+                data={onTimeTrend}
                 className="h-20 w-full text-tally-danger-chart"
               />
             }
           />
+          {/* Fewer delays is good news, so a falling number is positive. */}
           <StatCard
-            label="Peak day"
+            label="Delayed shipments"
             actions={
               <>
                 <Button variant="ghost" size="sm" className="justify-start">
@@ -210,26 +218,26 @@ export const AttentionTracker: Story = {
                 </Button>
               </>
             }
-            value="1,952"
+            value="38"
             delta={{
-              value: '0%',
-              direction: 'flat',
-              sentiment: 'neutral',
+              value: '23',
+              direction: 'down',
+              sentiment: 'positive',
               comparison: 'last 30 days',
             }}
             chart={
               <Sparkline
-                data={peakDayTrend}
-                className="h-20 w-full text-tally-info-chart"
+                data={delayedTrend}
+                className="h-20 w-full text-tally-success-chart"
               />
             }
           />
-          <StatCard label="Articles tracked" isLoading />
+          <StatCard label="Avg. delivery time" isLoading />
         </div>
 
         <Card>
           <Card.Header
-            actionsLabel="Daily views actions"
+            actionsLabel="Orders per day actions"
             actions={
               <>
                 <Button variant="ghost" size="sm" className="justify-start">
@@ -239,62 +247,91 @@ export const AttentionTracker: Story = {
                   Export CSV
                 </Button>
                 <Button variant="ghost" size="sm" className="justify-start">
-                  Change article
+                  Change warehouse
                 </Button>
               </>
             }
           >
-            <Card.Title>Daily views</Card.Title>
-            <Card.Description>Toyota Camry, last 30 days</Card.Description>
+            <Card.Title>Orders per day</Card.Title>
+            <Card.Description>All warehouses, last 30 days</Card.Description>
           </Card.Header>
           <Card.Content>
             <BarChart
-              data={daily}
-              label="Daily views for Toyota Camry over the last 30 days"
-              formatValue={(v) => v.toLocaleString('en-US')}
-            />
-          </Card.Content>
-        </Card>
-
-        <Card>
-          <Card.Header>
-            <Card.Title>Views compared</Card.Title>
-            <Card.Description>
-              Three articles, last 12 days. Hover or focus the chart and use the
-              arrow keys for daily values.
-            </Card.Description>
-          </Card.Header>
-          <Card.Content className="flex flex-col gap-4">
-            <Legend
-              items={articles.map((article, i) => ({
-                label: article.name,
-                colorClassName: articleColors[i] ?? '',
-              }))}
-            />
-            <LineChart
-              label="Daily views for three vehicle articles over the last 12 days"
-              xLabels={comparedDays}
-              series={articles.map((article, i) => ({
-                name: article.name,
-                values: article.views,
-                colorClassName: articleColors[i],
-              }))}
-              formatValue={(v) => v.toLocaleString('en-US')}
+              data={dailyOrders}
+              label="Orders per day across all warehouses over the last 30 days"
+              formatValue={formatCount}
             />
           </Card.Content>
         </Card>
 
         <div className="grid gap-4 md:grid-cols-3">
           <Card className="md:col-span-2">
+            <Card.Header>
+              <Card.Title>Shipments by carrier</Card.Title>
+              <Card.Description>
+                Last 12 days. Hover or focus the chart and use the arrow keys
+                for daily values.
+              </Card.Description>
+            </Card.Header>
+            <Card.Content className="flex flex-col gap-4">
+              <Legend
+                items={carriers.map((carrier) => ({
+                  label: carrier.name,
+                  colorClassName: carrier.colorClassName,
+                }))}
+              />
+              <LineChart
+                label="Daily shipments by carrier over the last 12 days"
+                xLabels={recentDays}
+                series={carriers.map((carrier) => ({
+                  name: carrier.name,
+                  values: carrier.shipments,
+                  colorClassName: carrier.colorClassName,
+                }))}
+                formatValue={formatCount}
+              />
+            </Card.Content>
+          </Card>
+
+          <Card>
+            <Card.Header>
+              <Card.Title>Share of shipments</Card.Title>
+              <Card.Description>By carrier, last 12 days</Card.Description>
+            </Card.Header>
+            <Card.Content className="flex flex-col gap-4">
+              <DonutChart
+                label="Share of shipments by carrier over the last 12 days"
+                data={carriers.map((carrier) => ({
+                  label: carrier.name,
+                  value: total(carrier.shipments),
+                  colorClassName: carrier.colorClassName,
+                }))}
+                formatValue={formatCount}
+                height={200}
+              />
+              <Legend
+                orientation="vertical"
+                items={carriers.map((carrier) => ({
+                  label: carrier.name,
+                  colorClassName: carrier.colorClassName,
+                  value: formatCount(total(carrier.shipments)),
+                }))}
+              />
+            </Card.Content>
+          </Card>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          <Card className="md:col-span-2">
             <Card.Header
-              actionsLabel="Compared articles actions"
+              actionsLabel="Carrier performance actions"
               actions={
                 <>
                   <Button variant="ghost" size="sm" className="justify-start">
                     Export CSV
                   </Button>
                   <Button variant="ghost" size="sm" className="justify-start">
-                    Sort by total views
+                    Sort by volume
                   </Button>
                   <Button
                     variant="ghost"
@@ -306,8 +343,8 @@ export const AttentionTracker: Story = {
                 </>
               }
             >
-              <Card.Title>Compared articles</Card.Title>
-              <Card.Description>Views over the last 12 days</Card.Description>
+              <Card.Title>Carrier performance</Card.Title>
+              <Card.Description>Last 12 days</Card.Description>
             </Card.Header>
             <Card.Content>
               <Table>
@@ -315,25 +352,26 @@ export const AttentionTracker: Story = {
                   <Table.Row>
                     {/* w-full lets this column absorb the spare width, so the
                         others fit their content instead of stretching. */}
-                    <Table.Head className="w-full">Article</Table.Head>
+                    <Table.Head className="w-full">Carrier</Table.Head>
                     <Table.Head>Trend</Table.Head>
-                    <Table.Head numeric className="whitespace-nowrap">
-                      Total views
-                    </Table.Head>
+                    <Table.Head numeric>Shipments</Table.Head>
                     <Table.Head>Share</Table.Head>
-                    <Table.Head>Status</Table.Head>
+                    <Table.Head>On time</Table.Head>
                   </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                  {articles.map(({ name, views }) => {
-                    const rising = views[views.length - 1]! >= views[0]!;
+                  {carriers.map(({ name, shipments, onTime }) => {
+                    const rising =
+                      shipments[shipments.length - 1]! >= shipments[0]!;
                     return (
                       <Table.Row key={name}>
-                        <Table.Cell>{name}</Table.Cell>
+                        <Table.Cell className="whitespace-nowrap">
+                          {name}
+                        </Table.Cell>
                         <Table.Cell>
                           <Sparkline
-                            data={views}
-                            label={`${name} trend, ${rising ? 'rising' : 'falling'}`}
+                            data={shipments}
+                            label={`${name} shipments, ${rising ? 'rising' : 'falling'}`}
                             className={
                               rising
                                 ? 'h-8 w-24 text-tally-success-chart'
@@ -342,14 +380,14 @@ export const AttentionTracker: Story = {
                           />
                         </Table.Cell>
                         <Table.Cell numeric>
-                          {total(views).toLocaleString('en-US')}
+                          {formatCount(total(shipments))}
                         </Table.Cell>
                         <Table.Cell>
                           <div className="flex items-center gap-2">
                             <ProgressBar
-                              label={`${name} share of views`}
-                              value={total(views)}
-                              max={comparedTotal}
+                              label={`${name} share of shipments`}
+                              value={total(shipments)}
+                              max={allShipments}
                               size="sm"
                               hideLabel
                               className="w-20"
@@ -359,14 +397,20 @@ export const AttentionTracker: Story = {
                               aria-hidden="true"
                               className="text-xs text-tally-muted-fg tabular-nums"
                             >
-                              {Math.round((total(views) / comparedTotal) * 100)}
+                              {Math.round(
+                                (total(shipments) / allShipments) * 100,
+                              )}
                               %
                             </span>
                           </div>
                         </Table.Cell>
                         <Table.Cell>
-                          <Badge variant={rising ? 'success' : 'danger'}>
-                            {rising ? 'Rising' : 'Falling'}
+                          <Badge
+                            variant={
+                              onTime >= ON_TIME_TARGET ? 'success' : 'warning'
+                            }
+                          >
+                            {onTime}%
                           </Badge>
                         </Table.Cell>
                       </Table.Row>
@@ -383,7 +427,7 @@ export const AttentionTracker: Story = {
                 <EmptyState.Icon>
                   <SearchX />
                 </EmptyState.Icon>
-                <EmptyState.Title>No articles match</EmptyState.Title>
+                <EmptyState.Title>No warehouses match</EmptyState.Title>
                 <EmptyState.Description>
                   Try a different name or a wider date range.
                 </EmptyState.Description>

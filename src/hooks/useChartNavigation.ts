@@ -7,7 +7,7 @@ export interface UseChartNavigationOptions {
   count: number;
   /**
    * Describes the item at `index` for screen readers, like
-   * `"Aug 12: Toyota Camry 1,602"`. Only called for keyboard moves.
+   * `"Aug 12: Northline 1,602"`. Only called for keyboard moves.
    */
   describe: (index: number) => string;
   /**

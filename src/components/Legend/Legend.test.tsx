@@ -4,8 +4,8 @@ import { describe, it, expect } from 'vitest';
 import { Legend, type LegendItem } from './Legend';
 
 const items: LegendItem[] = [
-  { label: 'Toyota Camry', colorClassName: 'text-tally-chart-1' },
-  { label: 'Honda Accord', colorClassName: 'text-tally-chart-2' },
+  { label: 'Northline', colorClassName: 'text-tally-chart-1' },
+  { label: 'Coastal Freight', colorClassName: 'text-tally-chart-2' },
 ];
 
 describe('Legend', () => {
@@ -14,15 +14,15 @@ describe('Legend', () => {
 
     const entries = within(screen.getByRole('list')).getAllByRole('listitem');
     expect(entries).toHaveLength(2);
-    expect(entries[0]).toHaveTextContent('Toyota Camry');
-    expect(entries[1]).toHaveTextContent('Honda Accord');
+    expect(entries[0]).toHaveTextContent('Northline');
+    expect(entries[1]).toHaveTextContent('Coastal Freight');
   });
 
   it('colors each swatch with its class and hides it from assistive tech', () => {
     render(<Legend items={items} />);
 
     const swatch = screen
-      .getByText('Toyota Camry')
+      .getByText('Northline')
       .parentElement?.querySelector('[aria-hidden="true"]');
     expect(swatch).toHaveClass('text-tally-chart-1', 'bg-current');
   });
@@ -32,18 +32,18 @@ describe('Legend', () => {
       <Legend
         items={[
           {
-            label: 'Toyota Camry',
+            label: 'Northline',
             colorClassName: 'text-tally-chart-1',
             value: '48,210',
           },
-          { label: 'Honda Accord', colorClassName: 'text-tally-chart-2' },
+          { label: 'Coastal Freight', colorClassName: 'text-tally-chart-2' },
         ]}
       />,
     );
 
-    const [camry, accord] = screen.getAllByRole('listitem');
-    expect(camry).toHaveTextContent('Toyota Camry48,210');
-    expect(accord).toHaveTextContent(/^Honda Accord$/);
+    const [northline, coastal] = screen.getAllByRole('listitem');
+    expect(northline).toHaveTextContent('Northline48,210');
+    expect(coastal).toHaveTextContent(/^Coastal Freight$/);
   });
 
   it('shows a value of 0', () => {
@@ -51,7 +51,7 @@ describe('Legend', () => {
       <Legend
         items={[
           {
-            label: 'Toyota Camry',
+            label: 'Northline',
             colorClassName: 'text-tally-chart-1',
             value: 0,
           },

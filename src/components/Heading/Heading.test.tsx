@@ -5,11 +5,11 @@ import { Heading } from './Heading';
 
 describe('Heading', () => {
   it('renders the element for its level', () => {
-    render(<Heading level={3}>Compared articles</Heading>);
+    render(<Heading level={3}>Carrier performance</Heading>);
 
     const heading = screen.getByRole('heading', {
       level: 3,
-      name: 'Compared articles',
+      name: 'Carrier performance',
     });
     expect(heading.tagName).toBe('H3');
   });
@@ -31,7 +31,7 @@ describe('Heading', () => {
   it('lets size override the level default without changing the element', () => {
     render(
       <Heading level={2} size="sm">
-        Compared articles
+        Carrier performance
       </Heading>,
     );
 

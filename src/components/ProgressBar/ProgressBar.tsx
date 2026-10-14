@@ -21,7 +21,7 @@ export interface ProgressBarProps
    */
   max?: number;
   /**
-   * What the bar measures, like "Upload" or "Share of views". Shown above the
+   * What the bar measures, like "Upload" or "Warehouse capacity". Shown above the
    * bar with the percentage, and used as the accessible name.
    */
   label: string;
@@ -43,13 +43,13 @@ export interface ProgressBarProps
  *
  * @example
  * ```tsx
- * <ProgressBar label="Share of views" value={62} variant="success" />
+ * <ProgressBar label="Warehouse capacity" value={62} variant="success" />
  * ```
  *
  * @example
  * A count instead of a percentage, read as "60%":
  * ```tsx
- * <ProgressBar label="Articles loaded" value={3} max={5} size="sm" hideLabel />
+ * <ProgressBar label="Pallets loaded" value={3} max={5} size="sm" hideLabel />
  * ```
  */
 export function ProgressBar({

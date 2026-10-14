@@ -8,10 +8,10 @@ const meta: Meta<typeof Legend> = {
   tags: ['autodocs'],
   args: {
     items: [
-      { label: 'Toyota Camry', colorClassName: 'text-tally-chart-1' },
-      { label: 'Honda Accord', colorClassName: 'text-tally-chart-2' },
-      { label: 'Ford F-150', colorClassName: 'text-tally-chart-3' },
-      { label: 'Tesla Model 3', colorClassName: 'text-tally-chart-4' },
+      { label: 'Northline', colorClassName: 'text-tally-chart-1' },
+      { label: 'Coastal Freight', colorClassName: 'text-tally-chart-2' },
+      { label: 'Summit Express', colorClassName: 'text-tally-chart-3' },
+      { label: 'Harbor Logistics', colorClassName: 'text-tally-chart-4' },
     ],
   },
 };
@@ -27,17 +27,17 @@ export const VerticalWithValues: Story = {
     orientation: 'vertical',
     items: [
       {
-        label: 'Toyota Camry',
+        label: 'Northline',
         colorClassName: 'text-tally-chart-1',
         value: '48,210',
       },
       {
-        label: 'Honda Accord',
+        label: 'Coastal Freight',
         colorClassName: 'text-tally-chart-2',
         value: '41,980',
       },
       {
-        label: 'Ford F-150',
+        label: 'Summit Express',
         colorClassName: 'text-tally-chart-3',
         value: '39,455',
       },

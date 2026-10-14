@@ -28,7 +28,7 @@ export interface BarChartProps extends Omit<
   data: { label: string; value: number }[];
   /**
    * Text alternative that describes the chart, for example
-   * `"Daily views per vehicle over the last 30 days"`.
+   * `"Orders per day over the last 30 days"`.
    */
   label: string;
   /**
@@ -82,7 +82,7 @@ const barClipPath = `inset(0 round ${BAR_RADIUS}px ${BAR_RADIUS}px 0 0)`;
  *     { label: 'Aug 1', value: 1400 },
  *     { label: 'Aug 2', value: 1520 },
  *   ]}
- *   label="Daily views for Toyota Camry"
+ *   label="Orders per day in August"
  *   formatValue={(v) => v.toLocaleString('en-US')}
  *   height={240}
  *   className="max-w-2xl text-tally-primary"

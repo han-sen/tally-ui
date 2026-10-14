@@ -41,7 +41,7 @@ export const WithActions: Story = {
   render: (args) => (
     <Card {...args} className="w-80">
       <Card.Header
-        actionsLabel="Total views actions"
+        actionsLabel="Total shipments actions"
         actions={
           <>
             <Button variant="ghost" size="sm" className="justify-start">
@@ -53,7 +53,7 @@ export const WithActions: Story = {
           </>
         }
       >
-        <Card.Title>Total views</Card.Title>
+        <Card.Title>Total shipments</Card.Title>
         <Card.Description>Last 30 days</Card.Description>
       </Card.Header>
       <Card.Content className="text-2xl font-semibold">48,210</Card.Content>

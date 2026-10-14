@@ -37,8 +37,8 @@ const defaultSizes: Record<HeadingLevel, HeadingSize> = {
  *
  * @example
  * ```tsx
- * <Heading level={1}>Attention tracker</Heading>
- * <Heading level={2} size="sm" variant="muted">Compared articles</Heading>
+ * <Heading level={1}>Logistics overview</Heading>
+ * <Heading level={2} size="sm" variant="muted">Carrier performance</Heading>
  * ```
  */
 export function Heading({

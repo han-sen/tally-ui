@@ -26,9 +26,9 @@ export type EmptyStateActionsProps = EmptyStateProps;
  * ```tsx
  * <EmptyState>
  *   <EmptyState.Icon><SearchX /></EmptyState.Icon>
- *   <EmptyState.Title>No articles match your search</EmptyState.Title>
+ *   <EmptyState.Title>No warehouses match your search</EmptyState.Title>
  *   <EmptyState.Description>
- *     Try a different article or a wider date range.
+ *     Try a different name or a wider date range.
  *   </EmptyState.Description>
  *   <EmptyState.Actions>
  *     <Button variant="secondary">Clear search</Button>
@@ -36,11 +36,7 @@ export type EmptyStateActionsProps = EmptyStateProps;
  * </EmptyState>
  * ```
  */
-export function EmptyState({
-  children,
-  className,
-  ...props
-}: EmptyStateProps) {
+export function EmptyState({ children, className, ...props }: EmptyStateProps) {
   return (
     <div
       {...props}
