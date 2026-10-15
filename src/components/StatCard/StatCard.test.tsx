@@ -136,6 +136,38 @@ describe('StatCard', () => {
     expect(card).toHaveClass('bg-tally-surface');
   });
 
+  describe('without a value', () => {
+    it('shows "N/A" and announces "No data"', () => {
+      render(<StatCard label="Revenue" />);
+
+      expect(screen.getByText('N/A')).toHaveAttribute('aria-hidden', 'true');
+      expect(screen.getByText('No data')).toHaveClass('sr-only');
+    });
+
+    it('treats an empty string as no value', () => {
+      render(<StatCard label="Revenue" value="" />);
+
+      expect(screen.getByText('N/A')).toBeInTheDocument();
+    });
+
+    it('accepts an optional value alongside a boolean isLoading', () => {
+      const data = undefined as { total: string } | undefined;
+      const isLoading = false as boolean;
+
+      render(
+        <StatCard label="Revenue" isLoading={isLoading} value={data?.total} />,
+      );
+
+      expect(screen.getByText('N/A')).toBeInTheDocument();
+    });
+
+    it('shows skeletons, not "N/A", while loading', () => {
+      render(<StatCard label="Revenue" isLoading />);
+
+      expect(screen.queryByText('N/A')).not.toBeInTheDocument();
+    });
+  });
+
   describe('when loading', () => {
     it('marks the card as busy and announces what is loading', () => {
       render(<StatCard label="Revenue" isLoading data-testid="stat-card" />);
