@@ -1,0 +1,69 @@
+{
+  "name": "StatCard",
+  "import": "import { StatCard } from '@han-sen/tally-ui';",
+  "summary": "...", // source
+  "useWhen": [
+    "You want to show a single aggregate value, with optional chart for over-time view, such as Total Shipments",
+  ], // missing
+  "avoidWhen": [
+    "Comparison data that needs to render in table form",
+    "Wrapping this component within another Card instance.",
+  ], // missing
+  "props": [
+    {
+      "name": "value",
+      "type": "string",
+      "required": false,
+      "default": null,
+      "description": "...", // source
+    },
+    {
+      "name": "isLoading",
+      "type": "boolean",
+      "required": false,
+      "default": false,
+      "description": "...", // source
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": true,
+      "default": null,
+      "description": "...", // source
+    },
+    {
+      "name": "delta",
+      "type": "{ value: string; direction: 'up' | 'down' | 'flat'; sentiment: 'positive' | 'negative' | 'neutral'; comparison?: string }", // partial
+      "required": false,
+      "default": null,
+      "description": "Object containing the information to display value change over time. A direction to control arrow orientation, sentiment to decide badge color, and comparison denoting the time period i.e. 'last 30 days'. For example: a rising cost is direction: 'up' with sentiment: 'negative'.", // missing
+    },
+    {
+      "name": "chart",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "...", // source
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "required": false,
+      "default": null,
+      "description": "...", // source
+    },
+    {
+      "name": "actionsLabel",
+      "type": "string",
+      "required": false,
+      "default": "`${label} actions`", // partial
+      "description": "...", // source
+    },
+  ],
+  "examples": [
+    "<StatCard label='Revenue' value='$2400' delta={{value: '2.4%', direction: 'up', sentiment: 'positive', comparison: 'vs last week'}}/>",
+    "<StatCard label='Revenue' value='$2400' delta={{value: '2.4%', direction: 'up', sentiment: 'positive', comparison: 'vs last week'}} chart={<Sparkline data={[1900, 2000, 1950, 2100, 2250, 2180, 2400]} className='h-30 w-full text-tally-success-fg'/>}/>",
+    "<StatCard label='Shipments' isLoading={isLoading} value={data?.total} />",
+  ],
+  "related": ["Card", "Sparkline"],
+}

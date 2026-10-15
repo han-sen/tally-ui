@@ -83,3 +83,9 @@ export const LoadingStatCard: Story = {
     isLoading: true,
   },
 };
+
+export const NoData: Story = {
+  args: {
+    label: 'Revenue',
+  },
+};

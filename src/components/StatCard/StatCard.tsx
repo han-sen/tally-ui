@@ -11,22 +11,35 @@ import { Badge } from '../Badge/Badge';
 import { Skeleton } from '../Skeleton/Skeleton';
 
 export interface DeltaProps {
+  /** The change, already formatted (for example `"2.4%"`). */
   value: string;
+  /** A direction to control arrow orientation. */
   direction: Direction;
+  /**
+   * Whether the change is good or bad, which sets the badge color.
+   * Independent of direction: a rising cost is `'up'` and `'negative'`.
+   */
   sentiment: Sentiment;
+  /** The period being compared against, e.g. `"vs last week"`. */
   comparison?: string;
 }
 
-interface StatCardBaseProps extends Omit<
+export interface StatCardProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
   'children'
 > {
   /** Short name of the metric. Stays visible while loading. */
   label: string;
+  /**
+   * The headline number, already formatted (for example `"$2,400"`).
+   * When it's missing or empty and the card isn't loading, the card shows
+   * "N/A" (announced as "No data").
+   */
+  value?: string;
   /** Optional change compared to an earlier period. */
   delta?: DeltaProps;
   /**
-   * Optional visual below the value and delta, typically a `Sparkline`.
+   * Optional visual between the value and the delta, typically a `Sparkline`.
    * Not shown while loading.
    */
   chart?: ReactNode;
@@ -41,24 +54,12 @@ interface StatCardBaseProps extends Omit<
    * @default `${label} actions`
    */
   actionsLabel?: string;
-}
-
-interface StatCardLoadingProps extends StatCardBaseProps {
   /**
-   * Shows skeleton placeholders instead of the value and delta.
-   * `value` and `delta` are ignored while loading, so `value` is optional.
+   * Shows skeleton placeholders instead of the value, chart, and delta.
+   * @default false
    */
-  isLoading: true;
-  value?: string;
+  isLoading?: boolean;
 }
-
-interface StatCardLoadedProps extends StatCardBaseProps {
-  isLoading?: false;
-  /** The headline number, already formatted (for example `"$2,400"`). */
-  value: string;
-}
-
-export type StatCardProps = StatCardLoadingProps | StatCardLoadedProps;
 
 const sentimentVariant: Record<Sentiment, Status> = {
   positive: 'success',
@@ -109,6 +110,22 @@ function DeltaIndicator({ delta }: { delta: DeltaProps }) {
  * `delta.sentiment` says whether that is good or bad, so a rising
  * cost can be shown as an increase that is negative.
  *
+ * Optionally render a chart in the card body, for example a Sparkline to display
+ * time-series data that matches the `delta.comparison` time interval.
+ *
+ * @useWhen
+ * You want to show a single aggregate value, with optional chart
+ * for over-time view, such as Total Shipments.
+ *
+ * @avoidWhen
+ * You have data that needs to render in table form or side by side comparison.
+ *
+ * @avoidWhen
+ * This component would be wrapped within another Card instance.
+ *
+ * @related
+ * {@link Card}
+ *
  * @example
  * ```tsx
  * <StatCard
@@ -121,6 +138,11 @@ function DeltaIndicator({ delta }: { delta: DeltaProps }) {
  *     comparison: 'vs last week',
  *   }}
  * />
+ * ```
+ *
+ * @example
+ * ```tsx
+ * <StatCard label="Shipments" isLoading={isLoading} value={data?.total} />
  * ```
  */
 export function StatCard({
@@ -160,7 +182,14 @@ export function StatCard({
           </div>
         ) : (
           <div className="flex flex-col gap-3">
-            <p className="text-4xl font-bold">{value}</p>
+            {!value ? (
+              <p className="text-4xl font-bold text-tally-muted-fg">
+                <span aria-hidden={true}>N/A</span>
+                <span className="sr-only">No data</span>
+              </p>
+            ) : (
+              <p className="text-4xl font-bold">{value}</p>
+            )}
             {chart}
             {delta && <DeltaIndicator delta={delta} />}
           </div>
