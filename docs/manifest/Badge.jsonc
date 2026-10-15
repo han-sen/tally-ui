@@ -1,0 +1,61 @@
+// Worked example of a manifest entry: what an agent gets back from
+// get_component("Badge"). Each comment says where the value would come from:
+//   source  = the extractor can read it from the code as-is
+//   partial = it's in the code, but someone has to pick or clean it up
+//   missing = nowhere in the code yet; needs a home (JSDoc tag or side file)
+{
+  "name": "Badge", // source: the export name
+  "import": "import { Badge } from '@han-sen/tally-ui';", // source: src/index.ts + package name
+
+  // partial: the JSDoc just says "Badge component", which tells an agent nothing
+  "summary": "A small colored label for a short status or category, like 'Delayed' or '98%'.",
+
+  // missing: no "when to use" anywhere in the source
+  "useWhen": [
+    "Showing a status next to a value, such as on-time rate in a table cell.",
+    "Tagging a row or card with a category."
+  ],
+
+  // missing: this is where agents go wrong most, and nothing records it
+  "avoidWhen": [
+    "Clickable things. Badge is a <span> with no interaction; use Button.",
+    "Long text. Keep it to a word or a short number."
+  ],
+
+  "props": [
+    {
+      "name": "variant",
+      // partial: the extractor sees VariantProps<typeof badgeVariants>, which
+      // expands to "primary" | ... | null | undefined. The null is a cva quirk
+      // and should be dropped.
+      "type": "'primary' | 'success' | 'danger' | 'warning' | 'info'",
+      "required": false,
+      // partial: the default lives in cva's defaultVariants (and in
+      // `variant ?? 'primary'`), not in the props, so a props-only extractor misses it
+      "default": "primary",
+      // missing: no JSDoc on variant at all
+      "description": "The color, chosen by meaning: success for good, warning for needs attention, danger for bad."
+    },
+    {
+      "name": "children",
+      "type": "ReactNode", // source
+      "required": true, // source
+      "default": null,
+      "description": "Text content for the badge" // source: the existing JSDoc
+    }
+  ],
+
+  // partial: BadgeProps extends HTMLAttributes<HTMLSpanElement>. The extractor
+  // would list ~250 inherited props, which is noise. Collapse them into one line.
+  "extends": "All <span> attributes (className, id, aria-*, ...) are passed through.",
+
+  // partial: the JSDoc example and the stories are toy content ("Test"). The best
+  // real example is in DashboardPreview.stories.tsx, which no extractor would find.
+  "examples": [
+    "<Badge variant=\"success\">On time</Badge>",
+    "<Badge variant={onTime >= target ? 'success' : 'warning'}>{onTime}%</Badge>"
+  ],
+
+  // missing
+  "related": ["Alert", "Table"]
+}

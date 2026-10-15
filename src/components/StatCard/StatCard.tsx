@@ -11,9 +11,16 @@ import { Badge } from '../Badge/Badge';
 import { Skeleton } from '../Skeleton/Skeleton';
 
 export interface DeltaProps {
+  /** The change, already formatted (for example `"2.4%"`). */
   value: string;
+  /** A direction to control arrow orientation. */
   direction: Direction;
+  /**
+   * Whether the change is good or bad, which sets the badge color.
+   * Independent of direction: a rising cost is `'up'` and `'negative'`.
+   */
   sentiment: Sentiment;
+  /** The period being compared against, e.g. `"vs last week"`. */
   comparison?: string;
 }
 
@@ -103,6 +110,22 @@ function DeltaIndicator({ delta }: { delta: DeltaProps }) {
  * `delta.sentiment` says whether that is good or bad, so a rising
  * cost can be shown as an increase that is negative.
  *
+ * Optionally render a chart in the card body, for example a Sparkline to display
+ * time-series data that matches the `delta.comparison` time interval.
+ *
+ * @useWhen
+ * You want to show a single aggregate value, with optional chart
+ * for over-time view, such as Total Shipments.
+ *
+ * @avoidWhen
+ * You have data that needs to render in table form or side by side comparison.
+ *
+ * @avoidWhen
+ * This component would be wrapped within another Card instance.
+ *
+ * @related
+ * {@link Card}
+ *
  * @example
  * ```tsx
  * <StatCard
@@ -115,6 +138,11 @@ function DeltaIndicator({ delta }: { delta: DeltaProps }) {
  *     comparison: 'vs last week',
  *   }}
  * />
+ * ```
+ *
+ * @example
+ * ```tsx
+ * <StatCard label="Shipments" isLoading={isLoading} value={data?.total} />
  * ```
  */
 export function StatCard({
