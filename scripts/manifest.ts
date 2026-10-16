@@ -60,4 +60,4 @@ const manifest = docs
     examples: toExamples(doc.tags?.example),
   }));
 
-console.log(JSON.stringify(manifest, null, 2));
+fs.writeFileSync('./dist/manifest.json', JSON.stringify(manifest, null, 2));
