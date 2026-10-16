@@ -31,3 +31,5 @@ storybook-static
 
 # Local Claude Code config
 .claude/
+
+scratch.json

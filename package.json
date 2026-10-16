@@ -17,14 +17,16 @@
       "import": "./dist/index.js"
     },
     "./styles.css": "./dist/styles.css",
-    "./tokens.css": "./dist/tokens.css"
+    "./tokens.css": "./dist/tokens.css",
+    "./manifest.json": "./dist/manifest.json"
   },
   "scripts": {
     "build": "tsc -b",
-    "build:lib": "rm -rf dist && npm run build:js && npm run build:types && npm run build:css",
+    "build:lib": "rm -rf dist && npm run build:js && npm run build:types && npm run build:css && npm run build:manifest",
     "build:js": "vite build --config vite.lib.config.ts",
     "build:types": "tsc -p tsconfig.build.json",
     "build:css": "tailwindcss -i src/styles.css -o dist/styles.css --minify && cp src/tokens.css dist/tokens.css",
+    "build:manifest": "node --experimental-strip-types --no-warnings scripts/manifest.ts",
     "prepack": "npm run build:lib",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -75,6 +77,7 @@
     "jsdom": "^29.1.1",
     "prettier": "^3.9.9",
     "react": "^19.2.8",
+    "react-docgen-typescript": "^2.4.0",
     "react-dom": "^19.2.8",
     "storybook": "^10.6.0",
     "tailwindcss": "^4.3.3",

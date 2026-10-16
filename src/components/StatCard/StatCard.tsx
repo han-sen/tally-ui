@@ -114,14 +114,12 @@ function DeltaIndicator({ delta }: { delta: DeltaProps }) {
  * time-series data that matches the `delta.comparison` time interval.
  *
  * @useWhen
- * You want to show a single aggregate value, with optional chart
- * for over-time view, such as Total Shipments.
+ * - You want to show a single aggregate value, with optional chart
+ *  for over-time view, such as Total Shipments.
  *
  * @avoidWhen
- * You have data that needs to render in table form or side by side comparison.
- *
- * @avoidWhen
- * This component would be wrapped within another Card instance.
+ * - You have data that needs to render in table form or side by side comparison.
+ * - This component would be wrapped within another Card instance.
  *
  * @related
  * {@link Card}
