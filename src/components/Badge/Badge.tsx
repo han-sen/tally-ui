@@ -7,16 +7,37 @@ import type { VariantProps } from 'class-variance-authority';
 export interface BadgeProps
   extends HTMLAttributes<HTMLSpanElement>, VariantProps<typeof badgeVariants> {
   /**
-   * Text content for the badge
+   * The color, chosen by meaning: success for good, warning for needs
+   * attention, danger for bad, info for neutral notes, primary for anything else.
+   * @default 'primary'
    */
+  variant?: VariantProps<typeof badgeVariants>['variant'];
+  /** Text content for the badge */
   children: ReactNode;
 }
 
 /**
- * Badge component
+ * Badge component used for denoting an element's
+ * category or status, for example a shipment status
+ * like 'pending', 'shipped', or 'delivered'.
+ *
+ * @useWhen
+ * - Showing a status next to a value, such as on-time rate in a table cell.
+ * - Tagging a row or card with a category or status.
+ *
+ * @avoidWhen
+ * - Rendering clickable elements, badge is a span.
+ *  Use a Button for interactive elements.
+ * - You need long text. Keep it to a word or two or a number.
  *
  * @example
- * <Badge variant="primary">Test</Badge>
+ * ```tsx
+ * <Badge variant="primary">Pending</Badge>
+ * ```
+ * @example
+ * ```tsx
+ * <Badge variant="success">Delivered</Badge>
+ * ```
  */
 
 export const Badge = ({
