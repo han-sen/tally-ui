@@ -32,6 +32,18 @@ export interface ProgressBarProps
    * @default false
    */
   hideLabel?: boolean;
+  /**
+   * Fill color, chosen by meaning: `success` for on track, `warning` for
+   * close to a limit, `danger` for over or behind, `info` and `primary` for
+   * neutral progress.
+   * @default 'primary'
+   */
+  variant?: VariantProps<typeof progressIndicatorVariants>['variant'];
+  /**
+   * Bar thickness. Use `sm` in dense places like table cells.
+   * @default 'md'
+   */
+  size?: VariantProps<typeof progressTrackVariants>['size'];
 }
 
 /**
@@ -40,6 +52,16 @@ export interface ProgressBarProps
  * The bar is a `progressbar` for screen readers, named by `label` and read as
  * a percentage. The label and percentage show above the bar unless `hideLabel`
  * is set.
+ *
+ * @useWhen
+ * - You show how much of a goal or limit is used, like warehouse capacity or
+ *   on-time rate against a target.
+ * - You show a share in a table cell. Set `hideLabel` and `size="sm"`.
+ *
+ * @avoidWhen
+ * - You compare values across categories. Use BarChart.
+ * - You show change over time. Use LineChart or Sparkline.
+ * - Something is loading with no known progress. Use Skeleton.
  *
  * @example
  * ```tsx

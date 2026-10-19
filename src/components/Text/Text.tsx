@@ -13,6 +13,25 @@ export interface TextProps
    */
   as?: 'p' | 'span' | 'div';
   /**
+   * Font size on the type scale. Use `sm` or `xs` for captions and secondary
+   * details next to body text.
+   * @default 'md'
+   */
+  size?: VariantProps<typeof textVariants>['size'];
+  /**
+   * Text color, chosen by meaning: `muted` for secondary details, `success`
+   * and `danger` when the text itself carries a good or bad status. Every
+   * option passes WCAG AA as body text on a surface.
+   * @default 'default'
+   */
+  variant?: VariantProps<typeof textVariants>['variant'];
+  /**
+   * Font weight. Use `medium` or `semibold` for emphasis inside body text, not
+   * for headings.
+   * @default 'normal'
+   */
+  weight?: VariantProps<typeof textVariants>['weight'];
+  /**
    * Monospace with fixed-width digits, so numbers in a column line up.
    * @default false
    */
@@ -22,6 +41,15 @@ export interface TextProps
 /**
  * Body text that uses the library's type scale and colors, so text stays on
  * the tokens instead of one-off classes.
+ *
+ * @useWhen
+ * - You need body copy, a caption, or a supporting detail under a value.
+ * - You show numbers or IDs that should line up in a column. Set `mono`.
+ *
+ * @avoidWhen
+ * - You need a heading or section title. Use Heading, which keeps the heading
+ *   level separate from its size.
+ * - You need a short status label on an item. Use Badge.
  *
  * @example
  * ```tsx
