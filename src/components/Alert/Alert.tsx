@@ -7,6 +7,15 @@ import { statusIcons, type Status } from '../../lib/statusIcons';
 
 export interface AlertProps
   extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof alertVariants> {
+  /**
+   * Color and icon, chosen by meaning: `danger` for failures, `warning` for
+   * problems that need attention soon, `success` for confirmations, `info` and
+   * `primary` for neutral. `danger` and `warning` are announced
+   * immediately.
+   * @default 'primary'
+   */
+  variant?: VariantProps<typeof alertVariants>['variant'];
+  /** Plain text for a one-line alert, or `Alert.Title` and `Alert.Description`. */
   children: ReactNode;
 }
 
@@ -29,6 +38,14 @@ const getRole = (status: Status) => {
  *
  * Compose the content with `Alert.Title` and `Alert.Description`,
  * or pass plain text for a single-line alert.
+ *
+ * @useWhen
+ * - You show a message about a page or section that needs attention, like a
+ *   delayed shipment, a failed sync, or a confirmation after an action.
+ *
+ * @avoidWhen
+ * - You show a short status on one item, like a table row. Use Badge instead.
+ * - You flag one invalid form field. Set `aria-invalid` on the Input instead.
  *
  * @example
  * ```tsx

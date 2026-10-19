@@ -29,10 +29,27 @@ export interface LegendProps
     VariantProps<typeof legendVariants> {
   /** One entry per series, in the order the chart draws them. */
   items: LegendItem[];
+  /**
+   * How the items are laid out: a wrapping row (horizontal), which fits under
+   * a chart, or a stacked column (vertical), which fits beside one.
+   * @default 'horizontal'
+   */
+  orientation?: VariantProps<typeof legendVariants>['orientation'];
 }
 
 /**
  * Color swatches and labels that key a chart's series.
+ *
+ * @useWhen
+ * - You show a chart with more than one series or slice, such as a LineChart
+ *   comparing carriers or a DonutChart of shipment shares.
+ *
+ * @avoidWhen
+ * - The chart has a single series. Its title already says what it shows.
+ * - You need a filter. Legend items aren't clickable.
+ *
+ * @related {@link LineChart} {@link DonutChart}
+ *
  * @example
  * ```tsx
  * <Legend
