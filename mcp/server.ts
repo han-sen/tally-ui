@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { McpServer } from '@modelcontextprotocol/server';
 import { StdioServerTransport } from '@modelcontextprotocol/server/stdio';
 import { readFile } from 'node:fs/promises';
@@ -8,9 +10,10 @@ type ManifestEntry = {
   description: string;
 };
 
-// Reads a file from this repo's dist/, wherever the server was started from.
+// Reads a file from dist/. This runs as the compiled dist/mcp/server.js, so
+// ../ is dist/, wherever the server was started from.
 const readDist = (file: string) =>
-  readFile(new URL(`../dist/${file}`, import.meta.url), 'utf8');
+  readFile(new URL(`../${file}`, import.meta.url), 'utf8');
 
 const readManifest = async (): Promise<ManifestEntry[]> =>
   JSON.parse(await readDist('manifest.json'));
