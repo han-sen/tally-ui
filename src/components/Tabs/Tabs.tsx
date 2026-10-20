@@ -98,18 +98,26 @@ export interface TabsProps {
  * to the first and last tab, and disabled tabs are skipped. Whether moving
  * also selects the tab is set by `activationMode`.
  *
+ * @useWhen
+ * - You switch between views of the same data in one place, like a chart by
+ *   day, week, or month.
+ *
+ * @avoidWhen
+ * - People need to compare the views side by side. Show them together.
+ * - You pick a value for a form. Use RadioGroup.
+ *
  * @example
  * ```tsx
- * <Tabs defaultValue="account">
+ * <Tabs defaultValue="daily">
  *   <Tabs.List>
- *     <Tabs.Trigger value="account">Account</Tabs.Trigger>
- *     <Tabs.Trigger value="contact">Contact</Tabs.Trigger>
+ *     <Tabs.Trigger value="daily">Daily</Tabs.Trigger>
+ *     <Tabs.Trigger value="weekly">Weekly</Tabs.Trigger>
  *   </Tabs.List>
- *   <Tabs.Content value="account">
- *     <p>Account page</p>
+ *   <Tabs.Content value="daily">
+ *     <BarChart label="Shipments per day" data={daily} />
  *   </Tabs.Content>
- *   <Tabs.Content value="contact">
- *     <p>Contact page</p>
+ *   <Tabs.Content value="weekly">
+ *     <BarChart label="Shipments per week" data={weekly} />
  *   </Tabs.Content>
  * </Tabs>
  * ```

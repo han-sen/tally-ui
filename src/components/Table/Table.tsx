@@ -35,6 +35,15 @@ export interface TableCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
  * The table scrolls horizontally inside its own container when it is wider
  * than the space available. Props and `className` apply to the `<table>`.
  *
+ * @useWhen
+ * - You list records that share the same fields, like shipments with an ID,
+ *   carrier, and weight. Set `numeric` on number columns so right-align text.
+ *
+ * @avoidWhen
+ * - You show a trend or comparison people should read at a glance. Use a
+ *   chart.
+ * - You show one or two values. Use StatCard or Text.
+ *
  * @example
  * ```tsx
  * <Table>

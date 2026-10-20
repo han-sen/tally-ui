@@ -13,6 +13,15 @@ export type SkeletonProps = Omit<HTMLAttributes<HTMLSpanElement>, 'children'>;
  * assistive tech. Announce the loading state on the surrounding component
  * instead, for example with `aria-busy` and visually hidden status text.
  *
+ * @useWhen
+ * - You build a loading state for your own layout, like table rows or a
+ *   card's content, shaped like what will replace it.
+ *
+ * @avoidWhen
+ * - The component has its own `isLoading`, like StatCard, Button, or
+ *   Combobox. Use that instead.
+ * - Nothing is coming. Use EmptyState.
+ *
  * @example
  * ```tsx
  * <Skeleton className="h-4 w-32" />
