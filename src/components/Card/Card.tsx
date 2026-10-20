@@ -33,14 +33,25 @@ export type CardFooterProps = CardProps;
  * Compose it with `Card.Header`, `Card.Title`, `Card.Description`,
  * `Card.Content`, and `Card.Footer`. All parts are optional.
  *
+ * @useWhen
+ * - You need to group a chart, table, or list under one heading, like a dashboard
+ *   panel.
+ *
+ * @avoidWhen
+ * - You show a single headline number. Use StatCard, which is already a Card.
+ * - You lay out the page itself. Card is a surface for content, not a layout
+ *   container.
+ *
  * @example
  * ```tsx
  * <Card>
  *   <Card.Header>
- *     <Card.Title>Median price</Card.Title>
+ *     <Card.Title>Shipments by carrier</Card.Title>
  *     <Card.Description>Last 30 days</Card.Description>
  *   </Card.Header>
- *   <Card.Content>$24,300</Card.Content>
+ *   <Card.Content>
+ *     <LineChart label="Daily shipments by carrier" xLabels={days} series={series} />
+ *   </Card.Content>
  *   <Card.Footer>Updated today</Card.Footer>
  * </Card>
  * ```

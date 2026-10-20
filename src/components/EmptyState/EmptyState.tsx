@@ -22,6 +22,16 @@ export type EmptyStateActionsProps = EmptyStateProps;
  * user just did (for example a filter that matches nothing), pass
  * `role="status"` so the change is announced.
  *
+ * @useWhen
+ * - A table, list, or panel has nothing to show, like a search or filter with
+ *   no matches.
+ *
+ * @avoidWhen
+ * - Something went wrong, like a failed request. Use Alert.
+ * - The data is still loading. Use Skeleton or the component's `isLoading`.
+ * - A chart has no data. BarChart, LineChart, and DonutChart already render
+ *   one.
+ *
  * @example
  * ```tsx
  * <EmptyState>
