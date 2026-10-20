@@ -67,12 +67,36 @@ const GLOW_SPACE_TOP = Math.max(
  * comes from the `--tally-chart-glow-opacity` token, and setting that to `0`
  * turns it off.
  *
+ * @useWhen
+ * - You show the shape of a trend in a small space, like the `chart` slot of a
+ *   StatCard. Give it at least `h-16` there; the default `h-8` looks flat at
+ *   card width.
+ *
+ * @avoidWhen
+ * - Readers need exact values, axes, or a tooltip. Use LineChart or BarChart.
+ * - You compare several series. Use LineChart.
+ *
  * @example
  * ```tsx
  * <Sparkline
  *   data={[3, 5, 4, 8, 7, 12]}
  *   label="Shipments trending up"
- *   className="h-8 w-24 text-tally-success-fg"
+ *   className="h-8 w-24 text-tally-success-chart"
+ * />
+ * ```
+ *
+ * @example
+ * ```tsx
+ * <StatCard
+ *   label="Total shipments"
+ *   value="48,210"
+ *   chart={
+ *     <Sparkline
+ *       data={[1180, 1215, 1302, 1268, 1340, 1395, 1418]}
+ *       label="Shipments trending up over 7 days"
+ *       className="h-16 w-full text-tally-success-chart"
+ *     />
+ *   }
  * />
  * ```
  */

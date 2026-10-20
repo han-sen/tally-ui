@@ -75,6 +75,15 @@ const barClipPath = `inset(0 round ${BAR_RADIUS}px ${BAR_RADIUS}px 0 0)`;
  * still a stop, announced as "no data". With no drawable values it renders an
  * `EmptyState` instead.
  *
+ * @useWhen
+ * - You compare one measure across categories or periods, like shipments per
+ *   warehouse or orders per day.
+ *
+ * @avoidWhen
+ * - You compare several series. BarChart draws one; use LineChart.
+ * - You show shares of a whole. Use DonutChart.
+ * - You only need the shape of a trend in a small space. Use Sparkline.
+ *
  * @example
  * ```tsx
  * <BarChart
