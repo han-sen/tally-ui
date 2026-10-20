@@ -16,6 +16,13 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement>;
  * Always give it an accessible name, either a `<label htmlFor>` pointing at its
  * `id` or an `aria-label`.
  *
+ * @useWhen
+ * - You need arbitrary text, like a tracking number or a search query.
+ *
+ * @avoidWhen
+ * - People pick from a known list, like a carrier or warehouse. Use Combobox.
+ * - People pick one of a few options. Use RadioGroup.
+ *
  * @example
  * ```tsx
  * <label htmlFor="tracking-number">Tracking number</label>

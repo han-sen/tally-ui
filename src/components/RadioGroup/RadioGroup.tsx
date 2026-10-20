@@ -74,6 +74,15 @@ export interface RadioGroupProps<V extends string> extends Omit<
  *
  * For switching between panels of content, use `Tabs` instead.
  *
+ * @useWhen
+ * - People pick exactly one of a few options that should all be visible, like
+ *   a date range or a sort order.
+ *
+ * @avoidWhen
+ * - There are more options than fit comfortably, or they come from data. Use
+ *   Combobox.
+ * - The choice switches which content is shown. Use Tabs.
+ *
  * @example
  * ```tsx
  * <RadioGroup

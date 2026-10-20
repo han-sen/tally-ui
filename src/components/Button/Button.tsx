@@ -14,13 +14,46 @@ export interface ButtonProps
    * actions (e.g. form submission) rather than manually toggling `disabled`.
    */
   isLoading?: boolean;
+  /**
+   * Visual weight, chosen by importance: `primary` for the main action in a
+   * view (usually one), `secondary` for other actions, `ghost` for low-emphasis
+   * actions like menu items, and `danger` for destructive actions like delete.
+   * @default 'primary'
+   */
+  variant?: VariantProps<typeof buttonVariants>['variant'];
+  /**
+   * Height and padding. Use `sm` in dense places like card headers and table
+   * rows.
+   * @default 'md'
+   */
+  size?: VariantProps<typeof buttonVariants>['size'];
 }
 
 /**
- * Primary interactive control for triggering an action.
+ * Button that triggers an action, like saving, exporting, or opening a menu.
+ * It is a native `<button>`, so `type`, `disabled`, and `onClick` work as
+ * usual.
+ *
+ * @useWhen
+ * - You trigger an action on the current page, like submitting a form or
+ *   exporting a table.
+ *
+ * @avoidWhen
+ * - You go to another page. Use a link (`<a>`) so it opens in a new tab and
+ *   reads as navigation.
+ * - You show a status. Use Badge, which isn't clickable.
  *
  * @example
- * <Button variant="primary" size="md" onClick={handleSave}>Save</Button>
+ * ```tsx
+ * <Button onClick={handleExport}>Export CSV</Button>
+ * ```
+ *
+ * @example
+ * ```tsx
+ * <Button variant="secondary" isLoading={isSaving} onClick={handleSave}>
+ *   Save
+ * </Button>
+ * ```
  */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (

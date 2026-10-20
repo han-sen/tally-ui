@@ -35,6 +35,15 @@ const defaultSizes: Record<HeadingLevel, HeadingSize> = {
  * big it looks. They are separate so a small heading can still be the right
  * level, for example an `h2` styled as `sm` inside a dense card.
  *
+ * @useWhen
+ * - You title a page or a section of one. Pick `level` from the page outline,
+ *   then `size` for how big it should look.
+ *
+ * @avoidWhen
+ * - You title a card. Use Card.Title, which sits in the card's header.
+ * - You only want bold or larger text that isn't a section title. Use Text
+ *   with `weight` or `size`.
+ *
  * @example
  * ```tsx
  * <Heading level={1}>Logistics overview</Heading>
