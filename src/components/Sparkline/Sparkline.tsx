@@ -46,8 +46,8 @@ const GLOW_OPACITY_FALLBACK = 0.45;
 // glow reaches past it: two standard deviations of blur (past which it is
 // effectively invisible), shifted by the offset. Upward the stroke's half width
 // counts too, since the offset no longer hides it. The stroke width is in
-// pixels, which matches viewBox units at the default `h-8` and overestimates at
-// taller sizes, so it stays safe. The area fill still reaches the bottom.
+// pixels, which matches viewBox units at `h-8` and overestimates at taller
+// sizes like the default `h-16`, so it stays safe. The area fill still reaches the bottom.
 const GLOW_SPACE_BOTTOM = GLOW_OFFSET_Y + 2 * GLOW_BLUR_Y;
 const GLOW_SPACE_TOP = Math.max(
   0,
@@ -58,9 +58,11 @@ const GLOW_SPACE_TOP = Math.max(
  * Tiny line chart with a soft area fill that shows the shape of a trend.
  *
  * Points are spaced evenly by index, so use it for regularly spaced values
- * such as daily totals. It fills the width of its container by default
- * (`h-8 w-full`); override with `className` (for example `h-16 w-48`) and
- * color it with a text color class, since the line and fill use `currentColor`.
+ * such as daily totals. By default it fills the width of its container at
+ * `h-16` in `text-tally-primary-chart`, which suits a StatCard's `chart` slot.
+ * Override either with `className`, for example `h-8 w-24` for a small inline
+ * trend, or a text color class like `text-tally-success-chart`, since the line
+ * and fill use `currentColor`.
  *
  * The line has a soft glow in its own color, so it looks lifted off the
  * surface. It's part of the library's style rather than a prop: its strength
@@ -69,8 +71,7 @@ const GLOW_SPACE_TOP = Math.max(
  *
  * @useWhen
  * - You show the shape of a trend in a small space, like the `chart` slot of a
- *   StatCard. Give it at least `h-16` there; the default `h-8` looks flat at
- *   card width.
+ *   StatCard or next to a value in a table row.
  *
  * @avoidWhen
  * - Readers need exact values, axes, or a tooltip. Use LineChart or BarChart.
@@ -155,7 +156,10 @@ export function Sparkline({
       fill="none"
       stroke="currentColor"
       {...props}
-      className={cn('block h-8 w-full overflow-visible', className)}
+      className={cn(
+        'block h-16 w-full overflow-visible text-tally-primary-chart',
+        className,
+      )}
       viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
       preserveAspectRatio="none"
       role={label ? 'img' : undefined}

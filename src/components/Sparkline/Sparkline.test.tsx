@@ -111,7 +111,7 @@ describe('Sparkline', () => {
 
     const svg = screen.getByTestId('sparkline');
     expect(svg).toHaveClass('w-full');
-    expect(svg).toHaveClass('h-8');
+    expect(svg).toHaveClass('h-16');
     expect(svg).toHaveAttribute('preserveAspectRatio', 'none');
   });
 
