@@ -22,7 +22,8 @@
   },
   "scripts": {
     "build": "tsc -b",
-    "build:lib": "rm -rf dist && npm run build:js && npm run build:types && npm run build:css && npm run build:manifest",
+    "build:lib": "rm -rf dist && npm run build:js && npm run build:types && npm run build:css && npm run build:manifest && npm run build:mcp",
+    "build:mcp": "tsc -p tsconfig.mcp.json",
     "build:js": "vite build --config vite.lib.config.ts",
     "build:types": "tsc -p tsconfig.build.json",
     "build:css": "tailwindcss -i src/styles.css -o dist/styles.css --minify && cp src/tokens.css dist/tokens.css",

@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.node.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "allowImportingTsExtensions": false,
+    "outDir": "dist/mcp",
+    "rootDir": "mcp",
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.mcp.tsbuildinfo"
+  },
+  "include": ["mcp"]
+}
