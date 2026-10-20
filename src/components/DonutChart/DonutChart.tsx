@@ -68,6 +68,17 @@ const NO_MARGIN: ChartMargin = { top: 0, right: 0, bottom: 0, left: 0 };
  * repeat. Pass `colorClassName` to pick a color, and use the same classes in a
  * `Legend` next to the chart. Other props go to the wrapping `<div>`.
  *
+ * @useWhen
+ * - You show how a total splits into a handful of parts, like each carrier's
+ *   share of all shipments.
+ *
+ * @avoidWhen
+ * - You have a large amount of segments, or segments with similar values. Use
+ *   BarChart, where small differences are easier to read.
+ * - You show change over time. Use LineChart.
+ *
+ * @related {@link Legend}
+ *
  * @example
  * ```tsx
  * <DonutChart

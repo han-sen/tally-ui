@@ -94,6 +94,17 @@ export interface LineChartProps extends Omit<
  * repeat. Pass `colorClassName` to pick a color, and use the same classes in a
  * `Legend` next to the chart. Other props go to the wrapping `<div>`.
  *
+ * @useWhen
+ * - You show change over time, especially to compare a few series, like daily
+ *   shipments per carrier.
+ *
+ * @avoidWhen
+ * - You show shares of a whole. Use DonutChart.
+ * - You compare one value per category with no time order. Use BarChart.
+ * - You only need the shape of a trend in a card, without axes. Use Sparkline.
+ *
+ * @related {@link Legend}
+ *
  * @example
  * ```tsx
  * <LineChart
