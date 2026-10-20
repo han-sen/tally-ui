@@ -145,15 +145,25 @@ export interface ComboboxProps<T> extends Omit<
  * `value` and `inputValue` each work controlled or uncontrolled. Leave a prop
  * out (rather than passing `undefined` later) to stay uncontrolled.
  *
+ * @useWhen
+ * - People pick one item from a long or searchable list, like a warehouse or
+ *   carrier.
+ * - The options come from a search request. Pass `filter={null}` and
+ *   `isLoading`.
+ *
+ * @avoidWhen
+ * - There are only a few options. Use RadioGroup so they're all visible.
+ * - People type free text that doesn't need to match a list. Use Input.
+ *
  * @example
  * A static list, filtered as the user types:
  * ```tsx
  * <Combobox
- *   label="Fruit"
- *   items={['Apple', 'Banana', 'Cherry']}
- *   getLabel={(fruit) => fruit}
- *   getKey={(fruit) => fruit}
- *   onValueChange={(fruit) => console.log(fruit)}
+ *   label="Carrier"
+ *   items={['Northline', 'Coastal Freight', 'Summit Express']}
+ *   getLabel={(carrier) => carrier}
+ *   getKey={(carrier) => carrier}
+ *   onValueChange={(carrier) => setCarrier(carrier)}
  * />
  * ```
  *
