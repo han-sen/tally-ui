@@ -49,19 +49,41 @@ pbcopy < docs/experiment/prompt.md
 
 ## Runs
 
-Two conditions, three runs each: with MCP and without MCP. Everything else
-stays the same, so any difference comes from the MCP server.
+Two conditions, with MCP and without MCP, alternating so a change in the
+model or the API over time affects both equally. All runs used the same
+tarball, with no Tally changes in between. The plan was three runs each; we
+stopped after two each (four total), which keeps the comparison balanced.
+Runs 5 and 6 can be added later with the same tarball.
 
-Alternate the conditions (with, without, with, without, …) instead of doing
-all of one first, so a change in the model or the API over the days of
-testing affects both conditions equally. Use the same tarball for all six
-runs, and don't change Tally until they're done.
+| Run | Condition   | Date       | Notes                                                             |
+| --- | ----------- | ---------- | ----------------------------------------------------------------- |
+| 1   | With MCP    | 2026-10-25 | MCP tools offered but never called; read README and `.d.ts` files |
+| 2   | Without MCP | 2026-10-25 | Found and read `dist/manifest.json` directly                      |
+| 3   | With MCP    | 2026-10-25 | Called `get_component` ×4 and `get_tokens`                        |
+| 4   | Without MCP | 2026-10-25 | Read README and `.d.ts` files                                     |
 
-| Run | Condition   | Date | Notes |
-| --- | ----------- | ---- | ----- |
-| 1   | With MCP    |      |       |
-| 2   | Without MCP |      |       |
-| 3   | With MCP    |      |       |
-| 4   | Without MCP |      |       |
-| 5   | With MCP    |      |       |
-| 6   | Without MCP |      |       |
+## Results
+
+All four runs:
+
+- Type-checked, built, and linted with no errors, from the prompt alone
+  (no "Continue" needed).
+- Used no raw colors. Their own CSS used `var(--tally-*)` tokens.
+- Used Tally components for every need: Combobox for search, LineChart and
+  Legend for the comparison, Table for the top ten, and Alert, EmptyState,
+  and Skeleton for failures, empty data, and loading. Three of four used
+  StatCard for the headline numbers; run 2 used a summary Table.
+- Passed an axe check with 0 violations (run 1 checked on initial load only;
+  runs 2–4 also with an article added).
+
+The MCP server made little difference. The same JSDoc reaches agents through
+the shipped `.d.ts` files and `manifest.json`, so both conditions got the
+guidance. What mattered was the content of the docs, not how they were
+delivered.
+
+The runs found Tally bugs the agents had to work around:
+
+- LineChart's fixed y-axis margin cuts off wide labels such as "12,000"
+  (runs 1, 3, and 4).
+- Heading doesn't forward a `ref` (run 1).
+- `EmptyState.Icon` expects an icon, but Tally doesn't export any (run 1).
