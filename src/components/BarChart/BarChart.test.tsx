@@ -34,9 +34,10 @@ const renderThreeDays = (data = threeDays) =>
 
 const getChart = () => screen.getByRole('img', { name: 'Orders' });
 
-// jsdom has no layout, so place the SVG at the left edge of the page. At the
-// mocked 600px width, three bars are 170px apart with centers at x = 142, 312
-// and 482, and the first gap runs from 210 to 244.
+// jsdom has no layout, so place the SVG at the left edge of the page. The
+// three-day data tops out at a "2,000" tick, which needs a 43px left margin.
+// At the mocked 600px width, three bars are about 170px apart with centers
+// near x = 144, 313.5 and 483, and the first gap runs from about 212 to 246.
 function mockChartRect(svg: Element) {
   vi.spyOn(svg, 'getBoundingClientRect').mockReturnValue({
     left: 0,
@@ -151,6 +152,20 @@ describe('BarChart', () => {
 
     expect(screen.getByText('$0')).toBeInTheDocument();
     expect(xLabelsOf(container)).toEqual(['Day 1', 'Day 2', 'Day 3']);
+  });
+
+  it('widens the left margin so large y labels fit', () => {
+    const { container } = renderThreeDays([
+      { label: 'Aug 1', value: 9000 },
+      { label: 'Aug 2', value: 11500 },
+    ]);
+
+    // The top tick is "12,000": 6 × 7 + 8 = 50.
+    expect(screen.getByText('12,000')).toBeInTheDocument();
+    expect(container.querySelector('svg > g')).toHaveAttribute(
+      'transform',
+      'translate(50, 16)',
+    );
   });
 
   it('shows a tooltip for the bar under the pointer', () => {

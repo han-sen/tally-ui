@@ -8,10 +8,30 @@ export interface ChartMargin {
   left: number;
 }
 
+/**
+ * The margin BarChart and LineChart share: room on the left for y tick labels
+ * and below for x labels. A chart with no axes, like a donut, passes zeros.
+ */
+export const CARTESIAN_MARGIN: ChartMargin = {
+  top: 16,
+  right: 16,
+  bottom: 32,
+  left: 40,
+};
+
+/** Space between a y tick label and the plot's left edge, in drawing units. */
+export const Y_LABEL_GAP = 8;
+
 // Rough width of one character at text-xs (12px) and the space left between
 // labels, both in drawing units. Used to decide how many x labels fit.
 const CHAR_WIDTH = 6.5;
 const LABEL_GAP = 12;
+
+// Rough width of one y label character at text-xs (12px). Wider than
+// CHAR_WIDTH because y labels are mostly digits, about 7.6 each in Inter;
+// commas and periods are narrow, so whole labels measure at most about 7 per
+// character. Overestimating only adds a little space; underestimating clips.
+const Y_CHAR_WIDTH = 7;
 
 /**
  * How often to show an x-axis label so labels never overlap: 1 shows every
@@ -53,6 +73,49 @@ export function getValueScale(values: number[], height: number) {
     .domain([0, Math.max(0, ...values)])
     .range([height, 0])
     .nice(Y_TICK_COUNT);
+}
+
+/**
+ * How wide the left margin must be to fit the y-axis labels: the longest
+ * label's estimated width plus the gap to the plot, and never less than
+ * `CARTESIAN_MARGIN.left`.
+ *
+ * @param labels The y tick labels as they will be displayed (already formatted).
+ */
+export function getYAxisWidth(labels: string[]): number {
+  if (!labels.length) {
+    return CARTESIAN_MARGIN.left;
+  }
+  const longestLabel = Math.max(...labels.map((label) => label.length));
+  const labelWidth = longestLabel * Y_CHAR_WIDTH;
+
+  // The label needs its own width plus the gap to the plot, and never less
+  // than the default margin.
+  return Math.max(CARTESIAN_MARGIN.left, labelWidth + Y_LABEL_GAP);
+}
+
+/**
+ * The margin for a cartesian chart (BarChart, LineChart): `CARTESIAN_MARGIN`
+ * with the left side widened to fit the y tick labels, so large numbers like
+ * "12,000" aren't cut off.
+ *
+ * The ticks depend only on the values, not the chart's size, so this can run
+ * before the chart is measured.
+ *
+ * @param values Every drawable value the chart will plot, across all series.
+ * @param formatValue The chart's `formatValue`, so the labels measured match
+ *   the labels drawn.
+ */
+export function getCartesianMargin(
+  values: number[],
+  formatValue?: (value: number) => string | number,
+): ChartMargin {
+  // Ticks come from the domain alone, so any height works here.
+  const labels = getValueScale(values, 0)
+    .ticks(Y_TICK_COUNT)
+    .map((tick) => String(formatValue?.(tick) ?? tick));
+
+  return { ...CARTESIAN_MARGIN, left: getYAxisWidth(labels) };
 }
 
 // The chart color classes, in order. Tailwind only generates classes it finds

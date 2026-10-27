@@ -1,5 +1,5 @@
 import type { ScaleLinear } from 'd3-scale';
-import { Y_TICK_COUNT } from '../../lib/chart';
+import { Y_LABEL_GAP, Y_TICK_COUNT } from '../../lib/chart';
 
 export interface YAxisProps {
   /**
@@ -40,7 +40,7 @@ export function YAxis({ scale, width, formatValue }: YAxisProps) {
     <g key={tick} transform={`translate(0, ${scale(tick)})`}>
       <line x2={width} className="stroke-tally-border" />
       <text
-        x={-8}
+        x={-Y_LABEL_GAP}
         textAnchor="end"
         dominantBaseline="middle"
         className="fill-tally-muted-fg text-xs"

@@ -1,16 +1,5 @@
-import type { ChartMargin } from '../lib/chart';
+import { CARTESIAN_MARGIN, type ChartMargin } from '../lib/chart';
 import { useElementWidth } from './useElementWidth';
-
-/**
- * The margin BarChart and LineChart share: room on the left for y tick labels
- * and below for x labels. A chart with no axes, like a donut, passes zeros.
- */
-export const CARTESIAN_MARGIN: ChartMargin = {
-  top: 16,
-  right: 16,
-  bottom: 32,
-  left: 40,
-};
 
 export interface UseChartSizeResult {
   /** Attach to the chart's wrapping `<div>`, the element that gets measured. */

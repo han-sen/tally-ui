@@ -5,6 +5,7 @@ import { scaleBand } from 'd3-scale';
 import { useChartSize } from '../../hooks/useChartSize';
 import {
   EMPTY_DATA_MESSAGE,
+  getCartesianMargin,
   getCartesianTooltipPosition,
   getValueScale,
 } from '../../lib/chart';
@@ -131,9 +132,14 @@ export function BarChart({
       `${formattedLabels[index]}: ${formatBarValue(data[index]?.value)}`,
   });
 
-  const { ref, width, innerWidth, innerHeight, margin } = useChartSize(height);
+  const values = data.map((d) => d.value).filter(isDrawable);
 
-  const values = data.filter((d) => isDrawable(d.value));
+  // The left margin grows to fit the widest y label. It's worked out before
+  // the hook, so it has to cope with no data; an empty list gives the default.
+  const { ref, width, innerWidth, innerHeight, margin } = useChartSize(
+    height,
+    getCartesianMargin(values, formatValue),
+  );
 
   if (values.length === 0) {
     return (
@@ -147,10 +153,7 @@ export function BarChart({
   // missing day shows as an empty gap instead of the bars closing up around it.
   const xScale = scaleBand().domain(labels).range([0, innerWidth]).padding(0.2);
 
-  const yScale = getValueScale(
-    values.map((d) => d.value),
-    innerHeight,
-  );
+  const yScale = getValueScale(values, innerHeight);
 
   // Each bar's label, tooltip, and pointer target line up on its center.
   const bandCenter = (index: number) =>
