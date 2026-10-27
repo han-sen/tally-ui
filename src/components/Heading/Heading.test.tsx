@@ -1,3 +1,4 @@
+import { createRef } from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
@@ -68,5 +69,19 @@ describe('Heading', () => {
     const heading = screen.getByText('Title');
     expect(heading).toHaveAttribute('id', 'section-title');
     expect(heading).toHaveClass('mb-2', 'font-semibold');
+  });
+
+  it('forwards ref to the heading element so it can take focus', () => {
+    const ref = createRef<HTMLHeadingElement>();
+    render(
+      <Heading level={2} ref={ref} tabIndex={-1}>
+        Title
+      </Heading>,
+    );
+
+    expect(ref.current).toBe(screen.getByRole('heading', { level: 2 }));
+
+    ref.current?.focus();
+    expect(ref.current).toHaveFocus();
   });
 });

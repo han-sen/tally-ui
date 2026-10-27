@@ -34,6 +34,10 @@ export type EmptyStateActionsProps = EmptyStateProps;
  *
  * @example
  * ```tsx
+ * // Tally doesn't export icons. Use your app's icon library or an inline
+ * // <svg>. Tally's own icons come from lucide-react.
+ * import { SearchX } from 'lucide-react';
+ *
  * <EmptyState>
  *   <EmptyState.Icon><SearchX /></EmptyState.Icon>
  *   <EmptyState.Title>No warehouses match your search</EmptyState.Title>
@@ -63,6 +67,10 @@ export function EmptyState({ children, className, ...props }: EmptyStateProps) {
 /**
  * Slot for an icon, shown in a muted circle. The icon is decorative, so the
  * wrapper is hidden from assistive tech and the title carries the meaning.
+ *
+ * Tally doesn't export icons, so bring your own: any `<svg>` element, such as
+ * one from your app's icon library or written inline. It's sized to 20px.
+ * Leave the slot out if you have no icon; every part is optional.
  */
 export function EmptyStateIcon({
   children,

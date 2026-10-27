@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import type { HTMLAttributes } from 'react';
 import type { VariantProps } from 'class-variance-authority';
 
@@ -35,6 +36,9 @@ const defaultSizes: Record<HeadingLevel, HeadingSize> = {
  * big it looks. They are separate so a small heading can still be the right
  * level, for example an `h2` styled as `sm` inside a dense card.
  *
+ * Forwards `ref` to the heading element, so you can move focus to it, for
+ * example after a view changes. Add `tabIndex={-1}` so it can take focus.
+ *
  * @useWhen
  * - You title a page or a section of one. Pick `level` from the page outline,
  *   then `size` for how big it should look.
@@ -50,30 +54,28 @@ const defaultSizes: Record<HeadingLevel, HeadingSize> = {
  * <Heading level={2} size="sm" variant="muted">Carrier performance</Heading>
  * ```
  */
-export function Heading({
-  level,
-  size,
-  variant,
-  className,
-  children,
-  ...props
-}: HeadingProps) {
-  const Tag = `h${level}` as const;
-  const resolvedVariant = variant ?? 'default';
+export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
+  ({ level, size, variant, className, children, ...props }, ref) => {
+    const Tag = `h${level}` as const;
+    const resolvedVariant = variant ?? 'default';
 
-  return (
-    <Tag
-      {...props}
-      data-variant={resolvedVariant}
-      className={cn(
-        headingVariants({
-          size: size ?? defaultSizes[level],
-          variant: resolvedVariant,
-        }),
-        className,
-      )}
-    >
-      {children}
-    </Tag>
-  );
-}
+    return (
+      <Tag
+        {...props}
+        ref={ref}
+        data-variant={resolvedVariant}
+        className={cn(
+          headingVariants({
+            size: size ?? defaultSizes[level],
+            variant: resolvedVariant,
+          }),
+          className,
+        )}
+      >
+        {children}
+      </Tag>
+    );
+  },
+);
+
+Heading.displayName = 'Heading';
