@@ -150,3 +150,18 @@ export const Resizable: Story = {
     ),
   ],
 };
+
+/**
+ * The left margin grows to fit the widest y label, so values in the tens of
+ * thousands show in full.
+ */
+export const LargeValues: Story = {
+  args: {
+    label: 'Daily shipments by carrier over the last 30 days, network-wide',
+    series: [
+      { name: 'Northline', values: northline.map((v) => v * 10) },
+      { name: 'Coastal Freight', values: coastal.map((v) => v * 10) },
+      { name: 'Summit Express', values: summit.map((v) => v * 10) },
+    ],
+  },
+};

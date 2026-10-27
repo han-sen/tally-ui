@@ -83,3 +83,15 @@ export const Resizable: Story = {
     ),
   ],
 };
+
+/**
+ * The left margin grows to fit the widest y label, so values in the tens of
+ * thousands show in full.
+ */
+export const LargeValues: Story = {
+  args: {
+    data: days(30).map((d) => ({ ...d, value: d.value * 10 })),
+    label: 'Orders per day across all warehouses, August 1 to 30',
+    formatValue: (v) => v.toLocaleString('en-US'),
+  },
+};

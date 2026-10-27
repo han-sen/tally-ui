@@ -28,9 +28,10 @@ function getChart() {
   return screen.getByRole('img', { name: 'Daily shipments for two carriers' });
 }
 
-// jsdom has no layout, so place the SVG at the left edge of the page. At the
-// mocked 600px width, the plot starts at x = 40 and the three points sit at
-// 40, 312 and 584.
+// jsdom has no layout, so place the SVG at the left edge of the page. These
+// fixtures top out at a "2,000" tick, which needs a 43px left margin. At the
+// mocked 600px width, the plot starts at x = 43 and the three points sit at
+// 43, 313.5 and 584.
 function mockChartRect(svg: Element) {
   vi.spyOn(svg, 'getBoundingClientRect').mockReturnValue({
     left: 0,
@@ -227,15 +228,28 @@ describe('LineChart', () => {
   });
 
   // Step 2: crosshair and tooltip
+  it('widens the left margin so large y labels fit', () => {
+    const { container } = renderChart({
+      series: [{ name: 'Northline', values: [9000, 11500, 10200] }],
+    });
+
+    // The top tick is "12,000": 6 × 7 + 8 = 50.
+    expect(screen.getByText('12,000')).toBeInTheDocument();
+    expect(container.querySelector('svg > g')).toHaveAttribute(
+      'transform',
+      'translate(50, 16)',
+    );
+  });
+
   it('shows a crosshair and tooltip for the point under the pointer', () => {
     renderChart();
     const svg = getChart();
     mockChartRect(svg);
 
-    // 300 is just left of the middle point at 312, so it snaps to Aug 2.
+    // 300 is just left of the middle point at 313.5, so it snaps to Aug 2.
     fireEvent.pointerMove(svg, { clientX: 300 });
 
-    expect(screen.getByTestId('crosshair')).toHaveAttribute('x1', '272');
+    expect(screen.getByTestId('crosshair')).toHaveAttribute('x1', '270.5');
     expect(screen.getByText('1,402')).toBeInTheDocument();
     expect(screen.getByText('1,198')).toBeInTheDocument();
   });

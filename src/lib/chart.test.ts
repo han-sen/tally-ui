@@ -1,10 +1,12 @@
 import { describe, it, expect } from 'vitest';
 
 import {
+  getCartesianMargin,
   getCartesianTooltipPosition,
   getChartColor,
   getLabelStep,
   getValueScale,
+  getYAxisWidth,
 } from './chart';
 
 describe('getLabelStep', () => {
@@ -37,6 +39,45 @@ describe('getValueScale', () => {
 
   it('starts at 0 for an empty list', () => {
     expect(getValueScale([], 200).domain()).toEqual([0, 0]);
+  });
+});
+
+describe('getYAxisWidth', () => {
+  it('keeps the default margin for short labels', () => {
+    // 3 × 7 + 8 = 29, under the 40 minimum.
+    expect(getYAxisWidth(['0', '250', '500'])).toBe(40);
+  });
+
+  it('grows to fit wide labels', () => {
+    // "12,000" is 6 characters: 6 × 7 + 8 = 50.
+    expect(getYAxisWidth(['0', '6,000', '12,000'])).toBe(50);
+  });
+
+  it('sizes to the longest label, not the last one', () => {
+    // "2,000" is 5 characters: 5 × 7 + 8 = 43.
+    expect(getYAxisWidth(['2,000', '0'])).toBe(43);
+  });
+
+  it('returns the default margin for no labels', () => {
+    expect(getYAxisWidth([])).toBe(40);
+  });
+});
+
+describe('getCartesianMargin', () => {
+  it('widens only the left side, using the formatted tick labels', () => {
+    // The ticks run 0 to 12,000, so the widest label is "12,000".
+    expect(
+      getCartesianMargin([11500], (v) => v.toLocaleString('en-US')),
+    ).toEqual({ top: 16, right: 16, bottom: 32, left: 50 });
+  });
+
+  it('measures the raw numbers when there is no formatValue', () => {
+    // "12000" is 5 characters: 5 × 7 + 8 = 43.
+    expect(getCartesianMargin([11500]).left).toBe(43);
+  });
+
+  it('keeps the default margin when there are no values', () => {
+    expect(getCartesianMargin([]).left).toBe(40);
   });
 });
 

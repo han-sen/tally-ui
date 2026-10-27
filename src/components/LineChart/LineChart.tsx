@@ -2,6 +2,7 @@
 
 import type { HTMLAttributes, PointerEvent } from 'react';
 import {
+  getCartesianMargin,
   getCartesianTooltipPosition,
   getChartColor,
   getValueScale,
@@ -153,10 +154,17 @@ export function LineChart({
         .join(', ')}`,
   });
 
-  const { ref, width, innerWidth, innerHeight, margin } = useChartSize(height);
+  // Every drawable value from every series, so all lines share one y-axis.
+  const allValues = series.flatMap((s) => s.values.filter(isDrawable));
 
-  const hasData = series.some((d) => d.values.some(isDrawable));
-  if (!hasData) {
+  // The left margin grows to fit the widest y label. It's worked out before
+  // the hook, so it has to cope with no data; an empty list gives the default.
+  const { ref, width, innerWidth, innerHeight, margin } = useChartSize(
+    height,
+    getCartesianMargin(allValues, formatValue),
+  );
+
+  if (allValues.length === 0) {
     return (
       <EmptyState className={className}>
         <EmptyState.Title>No data to display</EmptyState.Title>
@@ -167,9 +175,6 @@ export function LineChart({
   const xScale = scaleLinear()
     .domain([0, xLabels.length - 1])
     .range([0, innerWidth]);
-
-  // Every drawable value from every series, so all lines share one y-axis.
-  const allValues = series.flatMap((s) => s.values.filter(isDrawable));
 
   const yScale = getValueScale(allValues, innerHeight);
 
